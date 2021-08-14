@@ -4,3 +4,5 @@ import thunk from 'redux-thunk'
 import { reducer } from './reducer'
 
 export const store = createStore(reducer, composeWithDevTools(applyMiddleware(thunk)))
+
+export type rootState = ReturnType<typeof reducer>

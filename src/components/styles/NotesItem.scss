@@ -1,0 +1,80 @@
+@import 'constants';
+
+.notesItem__container {
+    width: 250px;
+    height: 300px;
+    margin: 10px 5px;
+    border-radius: 10px;
+    border: 2px solid $secondaryColor;
+    overflow: hidden;
+    transition: .1s all;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    & a {
+      text-decoration: none;
+      color: black;
+    }
+    &:hover {
+      border-color: $activeColor;
+      cursor: pointer;
+    }
+    &-title {
+      text-align: center;
+      border-bottom: 2px solid $secondaryColor;
+    }
+    &-MD_container {
+      padding: 0 10px;
+      text-overflow: ellipsis;
+    }
+    &_tags {
+      display: flex;
+      height: 20px;
+      padding: 0 10px;
+      &-tag {
+        color: #2395ff;
+      }
+    }
+    &__delete {
+      &-container {
+        display: flex;
+        justify-content: flex-end;
+      }
+      &-btn {
+        outline: none;
+        border: none;
+        width: 30px;
+        height: 30px;
+        margin: 0 3px 3px 0;
+        border: 1px solid red;
+        background-color: white;
+        border-radius: 7px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: red;
+        &:hover {
+          background-color: red;
+          color: white;
+        }
+      }
+    }
+    &__fixed-btn {
+      outline: none;
+      border: none;
+      width: 30px;
+      height: 30px;
+      margin: 0 3px 3px 0;
+      border: 1px solid green;
+      background-color: white;
+      border-radius: 7px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: green;
+      &:hover {
+        background-color: green;
+        color: white;
+      }
+    }
+  }

@@ -1,20 +1,26 @@
-import React from 'react';
+import React from 'react'
+import { BrowserRouter as Router } from 'react-router-dom'
+import { Container } from 'react-bootstrap'
 import { Provider } from 'react-redux'
+import SideBar from './components/SideBar'
+import MainContentWraper from './components/MainContentWraper'
 import { store } from './store/store'
-import TestComp from './components/test';
+import './styles.scss'
+
 
 function App() {
 
   
   return (
     <Provider store={store}>
-      <TestComp/>
-      {/* <Router>
-        <Container className="container App">
+      <Router>
+        <Container className="container__sidebar">
           <SideBar />
+        </Container>
+        <Container className="container__main App">
           <MainContentWraper />
         </Container>
-      </Router> */}
+      </Router> 
     </Provider>
   );
 }

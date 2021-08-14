@@ -1,0 +1,29 @@
+@import 'constants';
+
+.Search__container {
+    width: 100%;
+    margin-top: 20px;
+    display: flex;
+    justify-content: space-around;
+    &_input {
+        width: 700px;
+        outline: none;
+        height: 35px;
+        padding: 0 10px;
+        border-radius: 5px;
+        border: 1px solid $primaryColor;
+    }
+    &_btn {
+        width: 110px;
+        outline: none;
+        height: 35px;
+        border-radius: 5px;
+        border: 1px solid $primaryColor;
+        transition: all .1s;
+        color: $primaryColor;
+        &:hover {
+            background-color: $primaryColor;
+            color: white;
+        }
+    }
+}

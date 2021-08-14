@@ -1,0 +1,87 @@
+@import 'constants';
+
+.notesList {
+    &__container {
+      padding-left: 30px;
+      padding-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      overflow-y: scroll;
+      height: calc(100vh - 245px);
+
+    &::-webkit-scrollbar {
+        width: 1em;
+    }
+     
+    &::-webkit-scrollbar-track {
+      background-color: #d0d0d0;
+      border-radius: 5px;
+    }
+     
+    &::-webkit-scrollbar-thumb {
+      background-color: $primaryColor;
+      border-radius: 5px;
+    }
+    }
+    &__container-fixed {
+      padding-left: 30px;
+      padding-top: 10px;
+      display: flex;
+      flex-wrap: wrap;
+      height: auto;
+    }
+    &__back {
+      width: 30px;
+      height: 30px;
+      border-radius: 5px;
+      margin-top: 10px;
+      margin-left: 30px;
+      background-color: white;
+      color: $primaryColor;
+      border: 2px solid $primaryColor;
+      &:hover {
+        color: $secondaryColor;
+        border: 2px solid $secondaryColor;
+      }
+    }
+    &__fixed_title {
+      font-size: 20px;
+      margin: 10px 0 0 30px;
+    }
+    &__fixed_container-stats {
+      display: flex;
+      justify-content: space-between;
+      cursor: pointer;
+      transition: all .1s;
+      &:hover .notesList__fixed_btn-showFixedList {
+        background-color: $primaryColor;
+        color: white;
+      }
+    }
+    &__fixed_btn-showFixedList {
+      width: 30px;
+      height: 30px;
+      border-radius: 5px;
+      margin-top: 10px;
+      margin-right: 30px;
+      background-color: white;
+      color: $primaryColor;
+      border: 2px solid $primaryColor;
+    }
+    &__fixed_container {
+      padding-bottom: 10px;
+      border-bottom: 2px solid $primaryColor;
+      transition: all .1s;
+    }
+    &__fixed_bottom-line {
+      width: 50%;
+      margin: 0 auto;
+      height: 2px;
+      margin-top: 10px;
+      background-color: $primaryColor;
+    }
+  }
+
+.rotateBtnShowList {
+  transform: rotate(180deg);
+}

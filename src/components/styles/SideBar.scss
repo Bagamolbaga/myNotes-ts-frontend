@@ -1,0 +1,140 @@
+@import 'constants';
+
+.sideBar {
+    &__container {
+      background: linear-gradient(180deg, $primaryColor 0%, $secondaryColor 100%);
+      display: flex;
+      flex-direction: column;
+      width: 100%;
+    }
+    &__avatar_container {
+      height: 280px;
+      width: 100%;
+      margin-bottom: 40px;
+      background-color: $primaryColor;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-end;
+      text-align: center;
+      h2 {
+        font-style: normal;
+        font-weight: bold;
+        font-size: 16px;
+        line-height: 16px;
+        color: white;
+        margin: 15px 0;
+        cursor: pointer;
+      }
+      .logout {
+        border: 2px solid $primaryColor;
+        background-color: $secondaryColor;
+        outline: none;
+        color: white;
+        &:hover {
+          background-color: $primaryColor;
+        }
+      }
+    }
+    &__img_container {
+      height: 190px;
+      width: 190px;
+      border-radius: 100%;
+      overflow: hidden;
+      img {
+        width: 100%;
+        object-fit: cover;
+        height: 100%;
+      }
+    }
+    &__btn_notes {
+      height: 50px;
+      margin-top: 20px;
+      background-color: $primaryColor;
+      border: none;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 20px;
+      line-height: 23px;
+      transition: .1s all;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-decoration: none;
+      &-all {
+        margin-bottom: 60px;
+        &-cheked {
+          background-color: $activeColor;
+        }
+      }
+      &:hover {
+        background-color: $secondaryColor;
+      }
+      &:focus {
+        background-color: none;
+        border: none;
+      }
+      
+    }
+    &__btn_group {
+      &-add {
+        margin-top: 60px;
+      }
+      &-cheked {
+        height: 35px;
+        margin-top: 10px;
+        background-color: $activeColor;
+        border-color: $darkenColor;
+        font-style: normal;
+        font-weight: bold;
+        font-size: 20px;
+        line-height: 23px;
+        border: none;
+        color: white;
+      }
+      height: 35px;
+      margin-top: 10px;
+      background-color: $primaryColor;
+      border: none;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 20px;
+      line-height: 23px;
+      transition: .1s all;
+      color: white;
+      &:hover {
+        background-color: $secondaryColor;
+        color: #0d6efd;
+      }
+      &:focus {
+        background-color: none;
+        border: none;
+      }
+    }
+    &__input_add {
+      margin: 10px 5px;
+      height: 30px;
+      border-radius: 5px;
+      outline: none;
+      border: 1px solid $primaryColor;
+      padding: 0 10px;
+    }
+    &__btn_group_add {
+      border: none;
+      outline: none;
+      background-color: $primaryColor;
+      margin: 0 50px;
+      color: white;
+      border-radius: 5px;
+      border: 1px solid $primaryColor;
+      transition: .1s all;
+      cursor: pointer;
+      &-back {
+        margin-top: 10px;
+      }
+      &:hover {
+        background-color: $secondaryColor;
+      }
+    }
+  }

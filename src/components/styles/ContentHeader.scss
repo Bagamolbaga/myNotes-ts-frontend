@@ -1,0 +1,28 @@
+@import 'constants';
+
+.contentHeader__container {
+    height: 130px;
+    width: 100%;
+    padding-left: 30px;
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid $primaryColor;
+    &-title {
+      font-family: Arial, sans-serif;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 40px;
+      line-height: 46px;
+      background: -webkit-linear-gradient(180deg, $primaryColor, $secondaryColor);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    &-stats {
+      font-family: Arial, sans-serif;
+      font-style: normal;
+      font-weight: bold;
+      font-size: 20px;
+      line-height: 23px;
+      color: $darkenColor;
+    }
+  }
