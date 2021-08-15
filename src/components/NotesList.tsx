@@ -34,10 +34,10 @@ const NotesList: React.FC<NotesListProps> = ({ search, isFixedList }) => {
             { filteredNotes.map((note) => <NotesItem key={note.id} data={note} />) }
           </div>
         )
-      :
-      <div className="notesList__container-loader">
-        <Loader />
-      </div>
+        :
+        <div className="notesList__container-loader">
+          <Loader />
+        </div>
     
   )
 }
