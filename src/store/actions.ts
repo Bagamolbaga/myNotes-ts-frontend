@@ -17,6 +17,7 @@ export enum actionTypes {
     SET_EROR = 'SET_EROR',
     GO_BACK = 'GO_BACK',
     DELETE_NOTE = 'DELETE_NOTE',
+    SET_LOADING = 'SET_LOADING'
 }
 
 interface setUserAction {
@@ -90,6 +91,11 @@ interface goBackAction {
     type: actionTypes.GO_BACK
 }
 
+interface setLoadingAction {
+  type: actionTypes.SET_LOADING
+  payload: boolean
+}
+
 export const createNote = (value: INote) : createNoteAction => ({
     type: actionTypes.CREATE_NOTE,
     payload: value,
@@ -127,11 +133,6 @@ export const createNote = (value: INote) : createNoteAction => ({
     payload: value,
   })
   
-//   export const showActiveGroup = (value) => ({
-//     type: actionTypes.SHOW_ACTIVE_GROUP,
-//     payload: value,
-//   })
-  
   export const selectNote = (id: number) : selectNoteAction => ({
     type: actionTypes.SELECT_NOTE,
     payload: id,
@@ -145,16 +146,6 @@ export const createNote = (value: INote) : createNoteAction => ({
     toUnFixed?: boolean
     id?: number
   }
-
-//   type toFixedNote = {
-//     toFixed: boolean
-//     id: number
-//   }
-
-//   type toUnFixedNote = {
-//     toUnFixed: boolean
-//     id: number
-//   }
 
   export const editNote = (value: editNoteObj) : editNoteAction => ({
     type: actionTypes.EDIT_SELECT_NOTE,
@@ -184,6 +175,11 @@ export const createNote = (value: INote) : createNoteAction => ({
     type: actionTypes.GO_BACK,
   })
 
+  export const setLoading = (value: boolean) : setLoadingAction => ({
+    type: actionTypes.SET_LOADING,
+    payload: value
+  })
+
 export type IAction = 
     setUserAction | 
     createNoteAction |
@@ -199,4 +195,5 @@ export type IAction =
     deleteNoteAction |
     logoutActionAction |
     setAuthErrorAction |
-    goBackAction
+    goBackAction |
+    setLoadingAction

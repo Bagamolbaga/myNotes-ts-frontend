@@ -5,8 +5,10 @@
     width: 100%;
     padding-left: 30px;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     border-bottom: 2px solid $primaryColor;
+    flex-direction: column;
+    justify-content: space-around;
     &-title {
       font-family: Arial, sans-serif;
       font-style: normal;

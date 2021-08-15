@@ -10,10 +10,11 @@ import NoteCreateForm from './NoteCreateForm'
 import Authorization from './Authorization'
 import NoteEditForm from './NoteEditForm'
 import FixedNotesListWraper from './FixedNotesListWraper'
+import './styles/MainContentWraper.scss'
 import './styles/NotesList.scss'
 
 const MainContentWraper: React.FC = () => (
-  <Col>
+  <Col className="mainContentWraper">
     <ContentHeader />
     <BtnGoBack />
     <div className="notesList__main_container">

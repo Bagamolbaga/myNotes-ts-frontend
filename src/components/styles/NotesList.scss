@@ -30,6 +30,10 @@
       flex-wrap: wrap;
       height: auto;
     }
+    &__container-loader {
+      display: flex;
+      justify-content: center;
+    }
     &__back {
       width: 30px;
       height: 30px;
@@ -39,6 +43,7 @@
       background-color: white;
       color: $primaryColor;
       border: 2px solid $primaryColor;
+      cursor: pointer;
       &:hover {
         color: $secondaryColor;
         border: 2px solid $secondaryColor;

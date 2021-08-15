@@ -16,7 +16,7 @@ const FixedNotesListWraper: React.FC = () => {
   return (
     <>
       <div className="notesList__fixed_container-stats" onClick={() => setShowFixedList(!showFixedList)}>
-        <p className="notesList__fixed_title">{`Fixed notes ${fixedNotesLength} / 3`}</p>
+        <p className="notesList__fixed_title">{`Fixed notes ${fixedNotesLength} / 4`}</p>
         <button
           type="button"
           className={`notesList__fixed_btn-showFixedList ${btnShowFixRotate}`}

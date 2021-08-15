@@ -18,12 +18,15 @@ interface IFileUrl {
 const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
   const history = useHistory()
   const dispatch = useDispatch()
+
   const { authError, user } = useTypeSelector((state) => state)
   const [name, setName] = useState('')
   const [password, setPassword] = useState('')
 
   const [file, setFile] = useState<File>()
   const [fileUrl, setFileUrl] = useState<IFileUrl>()
+
+  const [validError, setValidError] = useState('')
 
   useEffect(() => {
     user.isLogin && history.push('/')
@@ -44,6 +47,12 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
     const url = await uploadPhoto(file)
     dispatch(registration(name, password, url))
   }
+
+  useEffect(() => {
+    (name.length < 6) && setValidError('Nickname min length 5');
+    (password.length < 6) && setValidError('Password min length 5');
+    (password.length >= 6 && name.length >= 6) && setValidError('');
+  }, [name, password])
 
   return (
     !isReg ? (
@@ -110,10 +119,11 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
               <img src={fileUrl.fileUrl.toString()} alt="avatar-preview" />
             </div>
           ) : (<p>Please select an Image for Preview</p>)}
-          <p className="authorization__container-label-error">{authError}</p>
+          <p className="authorization__container-label-error">{authError}{validError}</p>
           <button
             type="button"
             className="authorization__container-btn"
+            disabled={Boolean(validError)}
             onClick={registrHandler}
           >
             Registration

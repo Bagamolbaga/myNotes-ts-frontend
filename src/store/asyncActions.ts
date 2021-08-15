@@ -11,6 +11,7 @@ import {
   logoutAction,
   setAuthError,
   deleteNote,
+  setLoading
 } from './actions'
 import { IState } from "../types/state"
 import { API } from '../http/axios'
@@ -43,6 +44,7 @@ export const createAsyncGroup = (title: string) => async (dispatch: Dispatch<IAc
 
 export const getAsyncGroup = () => async (dispatch: Dispatch<IAction>, getState: () => IState) => {
   const { user } = getState()
+  dispatch(setLoading(true))
   const res = await API.get('api/group', {
     params: { user_id: user.id },
   })
@@ -58,6 +60,7 @@ export const getAsyncNotes = () => async (dispatch: Dispatch<IAction>, getState:
   })
   if (res.status === 200) {
     dispatch(getNotes(res.data))
+    dispatch(setLoading(false))
   }
 }
 

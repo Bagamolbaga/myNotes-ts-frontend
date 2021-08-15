@@ -21,6 +21,7 @@
         border: 1px solid $primaryColor;
         transition: all .1s;
         color: $primaryColor;
+        cursor: pointer;
         &:hover {
             background-color: $primaryColor;
             color: white;

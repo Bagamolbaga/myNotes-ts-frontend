@@ -1,6 +1,7 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom'
 import { useTypeSelector } from '../hooks/useTypeSelector'
+import Loader from './Loader'
 import NotesItem from './NotesItem'
 import './styles/NotesList.scss'
 
@@ -10,7 +11,7 @@ interface NotesListProps {
 }
 
 const NotesList: React.FC<NotesListProps> = ({ search, isFixedList }) => {
-  const { notes, selectedGroup } = useTypeSelector((state) => state)
+  const { notes, selectedGroup, loading } = useTypeSelector((state) => state)
   const query = new URLSearchParams(useLocation().search)
 
   let filteredNotes
@@ -26,9 +27,18 @@ const NotesList: React.FC<NotesListProps> = ({ search, isFixedList }) => {
   }
 
   return (
-    <div className={isFixedList ? 'notesList__container-fixed' : 'notesList__container'}>
-      { filteredNotes.map((note) => <NotesItem key={note.id} data={note} />) }
-    </div>
+    
+      !loading ? 
+        (
+          <div className={isFixedList ? 'notesList__container-fixed' : 'notesList__container'}>
+            { filteredNotes.map((note) => <NotesItem key={note.id} data={note} />) }
+          </div>
+        )
+      :
+      <div className="notesList__container-loader">
+        <Loader />
+      </div>
+    
   )
 }
 

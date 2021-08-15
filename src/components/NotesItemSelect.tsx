@@ -10,7 +10,7 @@ interface IParams {
     noteId: string
 }
 
-const NotesItemSelect = () => {
+const NotesItemSelect: React.FC = () => {
   const history = useHistory()
   const { noteId } = useParams<IParams>()
   const { notes } = useTypeSelector((state) => state)

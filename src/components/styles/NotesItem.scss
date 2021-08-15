@@ -20,8 +20,19 @@
       cursor: pointer;
     }
     &-title {
-      text-align: center;
       border-bottom: 2px solid $secondaryColor;
+      height: 30px;
+      padding: 5px 10px;
+      display: flex;
+      align-content: space-between;
+      justify-content: center;
+      align-items: center;
+      h4 {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        letter-spacing: 0.5px;
+      }
     }
     &-MD_container {
       padding: 0 10px;
@@ -53,6 +64,7 @@
         justify-content: center;
         align-items: center;
         color: red;
+        cursor: pointer;
         &:hover {
           background-color: red;
           color: white;
@@ -72,6 +84,7 @@
       justify-content: center;
       align-items: center;
       color: green;
+      cursor: pointer;
       &:hover {
         background-color: green;
         color: white;

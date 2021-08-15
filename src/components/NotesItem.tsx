@@ -35,7 +35,7 @@ const NotesItem: React.FC<NotesItemProps> = ({ data }) => {
 
     if (data.fixed) {
       dispatch(unFixedNote(id))
-    } else if (fixedNotesLength < 3) {
+    } else if (fixedNotesLength < 4) {
       dispatch(fixedNote(id))
     }
   }

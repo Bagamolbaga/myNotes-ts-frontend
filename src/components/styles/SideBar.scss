@@ -4,6 +4,7 @@
     &__container {
       background: linear-gradient(180deg, $primaryColor 0%, $secondaryColor 100%);
       display: flex;
+      align-items: center;
       flex-direction: column;
       width: 100%;
     }
@@ -49,6 +50,7 @@
     }
     &__btn_notes {
       height: 50px;
+      width: 100%;
       margin-top: 20px;
       background-color: $primaryColor;
       border: none;
@@ -83,6 +85,7 @@
       }
       &-cheked {
         height: 35px;
+        width: 100%;
         margin-top: 10px;
         background-color: $activeColor;
         border-color: $darkenColor;
@@ -94,6 +97,7 @@
         color: white;
       }
       height: 35px;
+      width: 100%;
       margin-top: 10px;
       background-color: $primaryColor;
       border: none;
@@ -103,6 +107,7 @@
       line-height: 23px;
       transition: .1s all;
       color: white;
+      cursor: pointer;
       &:hover {
         background-color: $secondaryColor;
         color: #0d6efd;

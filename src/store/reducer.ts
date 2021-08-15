@@ -7,6 +7,7 @@ const initialState: IState = {
     showCeateNoteForm: false,
     showEditNoteForm: false,
     authError: '',
+    loading: false,
     user: {
         isLogin: false,
     },
@@ -114,6 +115,8 @@ export const reducer = (state = initialState, action: IAction) : IState => {
         user: {
           isLogin: false,
         },
+        groups: [],
+        notes: []
       }
     case actionTypes.SET_EROR:
       return {
@@ -127,6 +130,11 @@ export const reducer = (state = initialState, action: IAction) : IState => {
         selectedGroup: 'All',
         showCeateNoteForm: false,
         showEditNoteForm: false,
+      }
+    case actionTypes.SET_LOADING:
+      return {
+        ...state,
+        loading: action.payload
       }
     default:
       return state
