@@ -1,9 +1,9 @@
 @import 'constants';
 
 .avatar__container {
-    height: 280px;
+    height: 17.5rem;
     width: 100%;
-    margin-bottom: 40px;
+    margin-bottom: 2.5rem;
     background-color: $primaryColor;
     display: flex;
     flex-direction: column;
@@ -14,16 +14,16 @@
       font-family: Arial, sans-serif;
       font-style: normal;
       font-weight: bold;
-      font-size: 16px;
-      line-height: 16px;
+      font-size: 1rem;
+      line-height: 1rem;
       color: white;
-      margin: 15px 0;
+      margin: 1rem 0;
       cursor: pointer;
     }
   
   &__img_container {
-    height: 190px;
-    width: 190px;
+    height: 11.875rem;
+    width: 11.875rem;
     border-radius: 100%;
     overflow: hidden;
     img {

@@ -3,10 +3,10 @@ import { useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useTypeSelector } from '../hooks/useTypeSelector'
 import MarkdownPreview from '@uiw/react-markdown-preview'
-import { faTimes, faLink } from '@fortawesome/free-solid-svg-icons'
+import { faTimes, faLink, faCopy } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { selectNote } from '../store/actions'
-import { asyncDeleteNote, fixedNote, unFixedNote } from '../store/asyncActions'
+import { asyncDeleteNote, createAsyncNote, fixedNote, unFixedNote } from '../store/asyncActions'
 import './styles/NotesItem.scss'
 import { INote } from '../types/state'
 
@@ -40,6 +40,17 @@ const NotesItem: React.FC<NotesItemProps> = ({ data }) => {
     }
   }
 
+  const cloneHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation()
+    console.log('cloned');
+    dispatch(createAsyncNote({
+      title: data.title,
+      text: data.text,
+      tags: data.tags,
+      group_id: data.group_id
+    }))
+  }
+
   return (
     <div role="button" tabIndex={0} className="notesItem__container" data-node-type="parent" onClick={() => selectHandler(data.id)}>
       <div>
@@ -59,6 +70,14 @@ const NotesItem: React.FC<NotesItemProps> = ({ data }) => {
           ))}
         </div>
         <div className="notesItem__container__delete-container">
+          <button
+            type="button"
+            className="notesItem__container__cloned-btn"
+            data-node-type="btn-clone"
+            onClick={(e) => cloneHandler(e)}
+          >
+            <FontAwesomeIcon icon={faCopy} />
+          </button>
           <button
             type="button"
             className={data.fixed ? 'notesItem__container__delete-btn' : 'notesItem__container__fixed-btn'}
