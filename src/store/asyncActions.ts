@@ -19,7 +19,7 @@ import API from '../http/API'
 
 export const createAsyncNote = (data: any) => async (dispatch: Dispatch<IAction>, getState: () => IState) => {
   const { user, selectedGroup } = getState()
-  const res = await API.note.createNote(data, user, Number(selectedGroup))
+  const res = await API.note.createNote(data, user, Number(selectedGroup === 'All' ? data.group_id : selectedGroup))
   if (res.status === 200) {
     dispatch(createNote(res.data))
   }

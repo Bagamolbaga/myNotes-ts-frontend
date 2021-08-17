@@ -51,12 +51,16 @@
         display: flex;
         justify-content: flex-end;
         padding: 0 .25rem .25rem 0;
+        > button {
+          margin-left: 5px;
+        }
       }
       &-btn {
         outline: none;
         border: none;
         width: 1.875rem;
         height: 1.875rem;
+        font-size: 1rem;
         margin: 0 .01875rem .01875rem 0;
         border: 1px solid red;
         background-color: white;
@@ -77,17 +81,38 @@
       border: none;
       width: 1.875rem;
       height: 1.875rem;
+      font-size: 1rem;
       margin: 0 .01875rem .01875rem 0;
-      border: 1px solid green;
+      border: 1px solid #008000;
       background-color: white;
       border-radius: 7px;
       display: flex;
       justify-content: center;
       align-items: center;
-      color: green;
+      color: #008000;
       cursor: pointer;
       &:hover {
-        background-color: green;
+        background-color: #008000;
+        color: white;
+      }
+    }
+    &__cloned-btn {
+      outline: none;
+      border: none;
+      width: 1.875rem;
+      height: 1.875rem;
+      font-size: 1rem;
+      margin: 0 .01875rem .01875rem 0;
+      border: 1px solid #008000;
+      background-color: white;
+      border-radius: 7px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: #008000;
+      cursor: pointer;
+      &:hover {
+        background-color: #008000;
         color: white;
       }
     }
