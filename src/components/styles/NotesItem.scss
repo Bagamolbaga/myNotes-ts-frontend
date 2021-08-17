@@ -1,9 +1,9 @@
 @import 'constants';
 
 .notesItem__container {
-    width: 250px;
-    height: 300px;
-    margin: 10px 5px;
+    width: 15.625rem;
+    height: 18.75rem;
+    margin: .625rem .3125rem;
     border-radius: 10px;
     border: 2px solid $secondaryColor;
     overflow: hidden;
@@ -21,8 +21,8 @@
     }
     &-title {
       border-bottom: 2px solid $secondaryColor;
-      height: 30px;
-      padding: 5px 10px;
+      height: 1.875rem;
+      padding: .3125rem .625rem;
       display: flex;
       align-content: space-between;
       justify-content: center;
@@ -31,17 +31,17 @@
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
-        letter-spacing: 0.5px;
+        letter-spacing: .03125rem;
       }
     }
     &-MD_container {
-      padding: 0 10px;
+      padding: 0 .625rem;
       text-overflow: ellipsis;
     }
     &_tags {
       display: flex;
-      height: 20px;
-      padding: 0 10px;
+      height: 1.25rem;
+      padding: 0 .625rem;
       &-tag {
         color: #2395ff;
       }
@@ -50,13 +50,14 @@
       &-container {
         display: flex;
         justify-content: flex-end;
+        padding: 0 .25rem .25rem 0;
       }
       &-btn {
         outline: none;
         border: none;
-        width: 30px;
-        height: 30px;
-        margin: 0 3px 3px 0;
+        width: 1.875rem;
+        height: 1.875rem;
+        margin: 0 .01875rem .01875rem 0;
         border: 1px solid red;
         background-color: white;
         border-radius: 7px;
@@ -74,9 +75,9 @@
     &__fixed-btn {
       outline: none;
       border: none;
-      width: 30px;
-      height: 30px;
-      margin: 0 3px 3px 0;
+      width: 1.875rem;
+      height: 1.875rem;
+      margin: 0 .01875rem .01875rem 0;
       border: 1px solid green;
       background-color: white;
       border-radius: 7px;
