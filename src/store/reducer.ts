@@ -82,9 +82,11 @@ export const reducer = (state = initialState, action: IAction) : IState => {
             item.fixed = false
           }
         } else if (item.id === state.selectNoteId) {
-          item.title = action.payload.title
-          item.text = action.payload.text
-          item.tags = action.payload.tags
+          if(action.payload.title && action.payload.text && action.payload.tags){
+            item.title = action.payload.title
+            item.text = action.payload.text
+            item.tags = action.payload.tags
+          }
         }
         return note
       })

@@ -27,12 +27,12 @@ export interface IGroup {
 
 export interface INote {
     id: number
-    title: string | undefined
-    text: string | undefined
+    title: string
+    text: string
     user_id: number
     group_id: number
     fixed?: boolean
-    tags: string[] | undefined
+    tags: string[]
     createdAt?: string
     updatedAt?: string
 }

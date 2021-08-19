@@ -19,9 +19,9 @@ const NoteEditForm: React.FC = () => {
   const { notes } = useTypeSelector((state) => state)
   const note = notes.filter((item) => item.id === Number(noteId))[0]
 
-  const [title, setTitle] = useState(note && note.title) || ''
-  const [md, setMd] = useState(note && note.text) || ''
-  const [tags, setTags] = useState((note && note.tags) && note.tags.join(' ')) || ''
+  const [title, setTitle] = useState(note ? note.title : '')
+  const [md, setMd] = useState(note ? note.text : '')
+  const [tags, setTags] = useState((note && note.tags) ? note.tags.join(' ') : '')
 
   const isDisableBtnSave = title && md && tags
 
