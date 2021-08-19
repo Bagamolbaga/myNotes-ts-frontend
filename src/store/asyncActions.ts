@@ -82,7 +82,7 @@ export const asyncDeleteNote = (id: number) => async (dispatch: Dispatch<IAction
 
 export const registration = (name: string, password: string, img: string) => async (dispatch: Dispatch<IAction>) => {
   const res = await API.user.registration(name, password, img)
-  if (!res.data.token) {
+  if (!res.data.token && res.data.message) {
     return dispatch(setAuthError(res.data.message))
   }
 
@@ -95,7 +95,7 @@ export const registration = (name: string, password: string, img: string) => asy
 
 export const login = (name: string, password: string) => async (dispatch: Dispatch<IAction>) => {
   const res = await API.user.login(name, password)
-  if (!res.data.token) {
+  if (!res.data.token && res.data.message) {
     return dispatch(setAuthError(res.data.message))
   }
 

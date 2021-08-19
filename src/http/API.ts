@@ -1,30 +1,29 @@
+import { IGroup } from './../types/state';
 import { AxiosResponse } from "axios"
 import { INote, IUser } from "../types/state"
 import { API } from './axios'
 
-export interface IReqPromis {
+type UserRes = {
     message?: string
-    status?: number
-    note: INote
-    notes: INote[]
+    token?: string
   }
   interface INewAPI {
     note: {
-      createNote : (data: INote, user: IUser, selectedGroup: number) => Promise<AxiosResponse<any>>
-      getNotes : (user: IUser) => Promise<AxiosResponse<any>>
+      createNote : (data: INote, user: IUser, selectedGroup: number) => Promise<AxiosResponse<INote>>
+      getNotes : (user: IUser) => Promise<AxiosResponse<INote[]>>
       editNote : (selectNoteId: number, data: {title: string, text: string, tags: string[]}) => Promise<AxiosResponse<any>>
       fixedNote : (id: number) => Promise<AxiosResponse<any>>
       unFixedNote : (id: number) => Promise<AxiosResponse<any>>
       deleteNote : (id: number) => Promise<AxiosResponse<any>>
     },
     group: {
-      createGroup : (title: string, user: IUser) => Promise<AxiosResponse<any>>
-      getGroups : (user: IUser) => Promise<AxiosResponse<any>>
+      createGroup : (title: string, user: IUser) => Promise<AxiosResponse<IGroup>>
+      getGroups : (user: IUser) => Promise<AxiosResponse<IGroup[]>>
     },
     user: {
-      registration : (name: string, password: string, img: string) => Promise<AxiosResponse<any>>
-      login : (name: string, password: string) => Promise<AxiosResponse<any>>
-      auth : () => Promise<AxiosResponse<any>>
+      registration : (name: string, password: string, img: string) => Promise<AxiosResponse<UserRes>>
+      login : (name: string, password: string) => Promise<AxiosResponse<UserRes>>
+      auth : () => Promise<AxiosResponse<UserRes>>
     }
   }
   
