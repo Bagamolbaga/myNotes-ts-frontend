@@ -21,8 +21,8 @@ type UserRes = {
       getGroups : (user: IUser) => Promise<AxiosResponse<IGroup[]>>
     },
     user: {
-      registration : (name: string, password: string, img: string) => Promise<AxiosResponse<UserRes>>
-      login : (name: string, password: string) => Promise<AxiosResponse<UserRes>>
+      registration : (nameOrEmail: string, password: string, img: string) => Promise<AxiosResponse<UserRes>>
+      login : (nameOrEmail: string, password: string) => Promise<AxiosResponse<UserRes>>
       auth : () => Promise<AxiosResponse<UserRes>>
     }
   }
@@ -91,16 +91,16 @@ type UserRes = {
       }
     },
     user: {
-      registration : async (name: string, password: string, img: string) => {
+      registration : async (nameOrEmail: string, password: string, img: string) => {
         return await API.post('api/user/registration', {
-          name,
+          nameOrEmail,
           password,
           img,
         })
       },
-      login : async (name: string, password: string) => {
+      login : async (nameOrEmail: string, password: string) => {
         return await API.post('api/user/login', {
-          name,
+          nameOrEmail,
           password,
         })
       },

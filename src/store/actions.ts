@@ -143,7 +143,7 @@ export const createNote = (value: INote) : createNoteAction => ({
     text?: string
     tags?: string[]
     toFixed?: boolean
-    toUnFixed?: boolean
+    toUnFixed?: boolean 
     id?: number
   }
 
