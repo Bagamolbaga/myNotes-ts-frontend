@@ -20,7 +20,7 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
   const dispatch = useDispatch()
 
   const { authError, user } = useTypeSelector((state) => state)
-  const [name, setName] = useState('')
+  const [nameOrEmail, setName] = useState('')
   const [password, setPassword] = useState('')
 
   const [file, setFile] = useState<File>()
@@ -45,25 +45,25 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
 
   const registrHandler = async () => {
     const url = await uploadPhoto(file)
-    dispatch(registration(name, password, url))
+    dispatch(registration(nameOrEmail, password, url))
   }
 
   useEffect(() => {
-    (name.length < 6) && setValidError('Nickname min length 5');
+    (nameOrEmail.length < 6) && setValidError('Nickname min length 5');
     (password.length < 6) && setValidError('Password min length 5');
-    (password.length >= 6 && name.length >= 6) && setValidError('');
-  }, [name, password])
+    (password.length >= 6 && nameOrEmail.length >= 6) && setValidError('');
+  }, [nameOrEmail, password])
 
   return (
     !isReg ? (
       <Row className="authorization__container">
         <h2 className="authorization__container-title">Authorization</h2>
-        <label className="authorization__container-label" htmlFor="login">Login</label>
+        <label className="authorization__container-label" htmlFor="login">Login or Email</label>
         <input
           className="authorization__container-input"
           type="text"
           id="login"
-          value={name}
+          value={nameOrEmail}
           onChange={(e) => setName(e.target.value)}
         />
         <label className="authorization__container-label" htmlFor="password">Password</label>
@@ -78,7 +78,7 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
         <button
           type="button"
           className="authorization__container-btn"
-          onClick={() => dispatch(login(name, password))}
+          onClick={() => dispatch(login(nameOrEmail, password))}
         >
           Login
         </button>
@@ -91,12 +91,12 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
       : (
         <Row className="authorization__container">
           <h2 className="authorization__container-title">Authorization</h2>
-          <label className="authorization__container-label" htmlFor="login">Login</label>
+          <label className="authorization__container-label" htmlFor="login">Login or Email</label>
           <input
             className="authorization__container-input"
             type="text"
             id="login"
-            value={name}
+            value={nameOrEmail}
             onChange={(e) => setName(e.target.value)}
           />
           <label className="authorization__container-label" htmlFor="password">Password</label>

@@ -1,5 +1,6 @@
 import React from 'react'
-import { Switch, Route } from 'react-router'
+import { useTypeSelector } from '../hooks/useTypeSelector'
+import { Switch, Route, Redirect } from 'react-router'
 import { Col } from 'react-bootstrap'
 import ContentHeader from './ContentHeader'
 import Search from './Search'
@@ -10,41 +11,65 @@ import NoteCreateForm from './NoteCreateForm'
 import Authorization from './Authorization'
 import NoteEditForm from './NoteEditForm'
 import FixedNotesListWraper from './FixedNotesListWraper'
+import ResetPassword from './ResetPassword'
 import './styles/MainContentWraper.scss'
 import './styles/NotesList.scss'
 
-const MainContentWraper: React.FC = () => (
-  <Col className="mainContentWraper">
+const MainContentWraper: React.FC = () => {
+  const { user } = useTypeSelector((state) => state)
+
+  return (
+    <Col className="mainContentWraper">
     <ContentHeader />
     <BtnGoBack />
     <div className="notesList__main_container">
-      <Switch>
-        <Route exact path="/">
-          <Search />
-          <FixedNotesListWraper />
-          <NotesList />
-        </Route>
-        <Route path="/registration">
-          <Authorization isReg />
-        </Route>
-        <Route path="/login">
-          <Authorization />
-        </Route>
-        <Route path="/note/create">
-          <NoteCreateForm />
-        </Route>
-        <Route exact path="/note/:noteId">
-          <NotesItemSelect />
-        </Route>
-        <Route exact path="/note/edit/:noteId">
-          <NoteEditForm />
-        </Route>
-        <Route path="/search">
-          <NotesList search />
-        </Route>
-      </Switch>
+      {
+        user.isLogin ? 
+          (
+            <Switch>
+              <Route exact path="/">
+                <Search />
+                <FixedNotesListWraper />
+                <NotesList />
+              </Route>
+              <Route path="/registration">
+                <Authorization isReg />
+              </Route>
+              <Route path="/login">
+                <Authorization />
+              </Route>
+              <Route path="/user/:tokenId">
+                <ResetPassword />
+              </Route>
+              <Route path="/note/create">
+                <NoteCreateForm />
+              </Route>
+              <Route exact path="/note/:noteId">
+                <NotesItemSelect />
+              </Route>
+              <Route exact path="/note/edit/:noteId">
+                <NoteEditForm />
+              </Route>
+              <Route path="/search">
+                <NotesList search />
+              </Route>
+            </Switch>
+          ) : 
+          (
+            <Switch>
+              <Route path="/registration">
+                <Authorization isReg />
+              </Route>
+              <Route path="/login">
+                <Authorization />
+              </Route>
+              <Redirect to="/login" />
+            </Switch>
+          )
+      }
     </div>
   </Col>
-)
+  )
+}
 
 export default MainContentWraper
