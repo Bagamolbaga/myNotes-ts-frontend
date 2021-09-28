@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react'
 import { Link, useHistory } from 'react-router-dom'
-import { Row } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { useTypeSelector } from '../hooks/useTypeSelector'
+import { Row } from 'react-bootstrap'
 import { uploadPhoto } from '../http/firebase'
-import { registration, login } from '../store/asyncActions'
+import { registration, login, sendEmailResetPassword } from '../store/asyncActions'
 import './styles/Authorization.scss'
 
 interface AuthorizationProps {
@@ -20,7 +20,11 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
   const dispatch = useDispatch()
 
   const { authError, user } = useTypeSelector((state) => state)
-  const [nameOrEmail, setName] = useState('')
+  const [nameOrEmail, setNameOrEmail] = useState('')
+
+  const [name, setName] = useState('')
+  const [email, setEmail] = useState('')
+
   const [password, setPassword] = useState('')
 
   const [file, setFile] = useState<File>()
@@ -45,14 +49,20 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
 
   const registrHandler = async () => {
     const url = await uploadPhoto(file)
-    dispatch(registration(nameOrEmail, password, url))
+    dispatch(registration(name, email, password, url))
+  }
+
+  const forgotPasswordHandler = async () => {
+    (!nameOrEmail.includes('@')) && setValidError('Write valid Email');
+    dispatch(sendEmailResetPassword(nameOrEmail))
   }
 
   useEffect(() => {
-    (nameOrEmail.length < 6) && setValidError('Nickname min length 5');
+    (name.length < 6) && setValidError('Nickname min length 5');
+    (!email.includes('@')) && setValidError('Nickname min length 5');
     (password.length < 6) && setValidError('Password min length 5');
-    (password.length >= 6 && nameOrEmail.length >= 6) && setValidError('');
-  }, [nameOrEmail, password])
+    (password.length >= 6 && name.length >= 6 && email.includes('@')) && setValidError('');
+  }, [name, email, password])
 
   return (
     !isReg ? (
@@ -64,7 +74,7 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
           type="text"
           id="login"
           value={nameOrEmail}
-          onChange={(e) => setName(e.target.value)}
+          onChange={(e) => setNameOrEmail(e.target.value)}
         />
         <label className="authorization__container-label" htmlFor="password">Password</label>
         <input
@@ -83,21 +93,38 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
           Login
         </button>
         <p>
+          Forgot password?
+          <span
+            className="authorization__container-span"
+            onClick={forgotPasswordHandler}
+          >
+            Reset password
+          </span>
+        </p>
+        <p>
           Dont have account?
-          <Link to="/registration"><span className="authorization__container-span">Create account</span></Link>
+          <Link to="/registration"><span className="authorization__container-span"> Create account</span></Link>
         </p>
       </Row>
     )
       : (
         <Row className="authorization__container">
           <h2 className="authorization__container-title">Authorization</h2>
-          <label className="authorization__container-label" htmlFor="login">Login or Email</label>
+          <label className="authorization__container-label" htmlFor="login">Login</label>
           <input
             className="authorization__container-input"
             type="text"
             id="login"
-            value={nameOrEmail}
+            value={name}
             onChange={(e) => setName(e.target.value)}
+          />
+          <label className="authorization__container-label" htmlFor="login">Email</label>
+          <input
+            className="authorization__container-input"
+            type="text"
+            id="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
           />
           <label className="authorization__container-label" htmlFor="password">Password</label>
           <input

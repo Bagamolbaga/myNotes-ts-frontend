@@ -80,8 +80,8 @@ export const asyncDeleteNote = (id: number) => async (dispatch: Dispatch<IAction
   }
 }
 
-export const registration = (name: string, password: string, img: string) => async (dispatch: Dispatch<IAction>) => {
-  const res = await API.user.registration(name, password, img)
+export const registration = (name: string, email: string, password: string, img: string) => async (dispatch: Dispatch<IAction>) => {
+  const res = await API.user.registration(name, email, password, img)
   if (!res.data.token && res.data.message) {
     return dispatch(setAuthError(res.data.message))
   }
@@ -121,4 +121,22 @@ export const authCheck = () => async (dispatch: Dispatch<IAction>) => {
 export const logout = () => (dispatch: Dispatch<IAction>) => {
   localStorage.setItem('my-notes-token', '')
   dispatch(logoutAction())
+}
+
+export const sendEmailResetPassword = (nameOrEmail: string) => async (dispatch: Dispatch<IAction>) => {
+  const res = await API.user.sendEmailResetPassword(nameOrEmail)
+  if (res.status !== 200 && res.data.message) {
+    return dispatch(setAuthError(res.data.message))
+  }
+
+  if (res.data.token) {
+    localStorage.setItem('my-notes-token', res.data.token)
+    dispatch(setUser(jwtDecode(res.data.token)))
+    dispatch(setAuthError(''))
+  }
+}
+
+export const resetPassword = (tokenId: string, newPass: string) => async (dispatch: Dispatch<IAction>) => {
+  await API.user.resetPassword(tokenId, newPass)
+  
 }

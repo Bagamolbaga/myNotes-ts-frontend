@@ -21,9 +21,11 @@ type UserRes = {
       getGroups : (user: IUser) => Promise<AxiosResponse<IGroup[]>>
     },
     user: {
-      registration : (nameOrEmail: string, password: string, img: string) => Promise<AxiosResponse<UserRes>>
+      registration : (name: string, email: string, password: string, img: string) => Promise<AxiosResponse<UserRes>>
       login : (nameOrEmail: string, password: string) => Promise<AxiosResponse<UserRes>>
       auth : () => Promise<AxiosResponse<UserRes>>
+      sendEmailResetPassword : (nameOrEmail: string) => Promise<AxiosResponse<UserRes>>
+      resetPassword : (tokenId: string, newPass: string) => Promise<AxiosResponse<UserRes>>
     }
   }
   
@@ -91,9 +93,10 @@ type UserRes = {
       }
     },
     user: {
-      registration : async (nameOrEmail: string, password: string, img: string) => {
+      registration : async (name: string, email: string, password: string, img: string) => {
         return await API.post('api/user/registration', {
-          nameOrEmail,
+          name,
+          email,
           password,
           img,
         })
@@ -106,6 +109,17 @@ type UserRes = {
       },
       auth : async () => {
         return await API.get('api/user/auth')
+      },
+      sendEmailResetPassword : async (nameOrEmail: string) => {
+        return await API.post('api/user/send-email-reset-password', {
+          nameOrEmail
+        })
+      },
+      resetPassword : async (tokenId: string, newPass: string) => {
+        return await API.post('api/user/reset-password', {
+          tokenId,
+          newPass
+        })
       }
     }
   }

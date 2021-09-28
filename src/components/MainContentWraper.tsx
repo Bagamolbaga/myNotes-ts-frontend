@@ -38,7 +38,7 @@ const MainContentWraper: React.FC = () => {
               <Route path="/login">
                 <Authorization />
               </Route>
-              <Route path="/user/:tokenId">
+              <Route path="/user/reset-password/:tokenId">
                 <ResetPassword />
               </Route>
               <Route path="/note/create">
@@ -63,6 +63,9 @@ const MainContentWraper: React.FC = () => {
               <Route path="/login">
                 <Authorization />
               </Route>
+              <Route path="/user/reset-password/:tokenId">
+                <ResetPassword />
+              </Route>
               <Redirect to="/login" />
             </Switch>
           )
@@ -72,4 +75,4 @@ const MainContentWraper: React.FC = () => {
   )
 }
 
-export default MainContentWraper
+export default MainContentWraper;

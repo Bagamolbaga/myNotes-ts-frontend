@@ -44,6 +44,11 @@
         background-color: $secondaryColor;
       }
     }
+
+    p {
+      margin-bottom: 5px;
+    }
+
     &-span {
       color: $primaryColor;
       cursor: pointer;
