@@ -1,3 +1,8 @@
+# [Last deploy version -->](https://my-notes-n5wd4agvh-bagamolbaga.vercel.app/)
+
+
+
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
