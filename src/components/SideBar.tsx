@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react'
-import { Link, useHistory } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useTypeSelector } from '../hooks/useTypeSelector'
 import { Col } from 'react-bootstrap'
@@ -19,9 +19,12 @@ import {
 import Avatar from './Avatar'
 import Loader from './Loader'
 import './styles/SideBar.scss'
+import { socketRef } from '../http/socket-io'
+
+
+
 
 const SideBar: React.FC = () => {
-  const history = useHistory()
   const dispatch = useDispatch()
   const [showAddGroupForm, setShowAddGroupForm] = useState(false)
   const [groupVal, setGroupVal] = useState('')
@@ -38,8 +41,11 @@ const SideBar: React.FC = () => {
     if (user.isLogin) {
       dispatch(getAsyncGroup())
       dispatch(getAsyncNotes())
+
+      socketRef.emit('joinRoom', user.id!.toString())
     }
-  }, [dispatch, history, user])
+  }, [user.isLogin])
+
 
   const isDisabled = !groupVal.length
 

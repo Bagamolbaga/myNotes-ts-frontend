@@ -15,13 +15,14 @@ import {
 } from './actions'
 import { IState } from "../types/state"
 import API from '../http/API'
-
+import { socketRef } from '../http/socket-io'
 
 export const createAsyncNote = (data: any) => async (dispatch: Dispatch<IAction>, getState: () => IState) => {
   const { user, selectedGroup } = getState()
   const res = await API.note.createNote(data, user, Number(selectedGroup === 'All' ? data.group_id : selectedGroup))
   if (res.status === 200) {
     dispatch(createNote(res.data))
+    socketRef.emit('newNote', res.data)
   }
 }
 
@@ -30,6 +31,7 @@ export const createAsyncGroup = (title: string) => async (dispatch: Dispatch<IAc
   const res = await API.group.createGroup(title, user)
   if (res.status === 200) {
     dispatch(createGroup(res.data))
+    socketRef.emit('newGroup', res.data)
   }
 }
 
@@ -56,6 +58,7 @@ export const editAsyncNotes = (data: any) => async (dispatch: Dispatch<IAction>,
   const res = await API.note.editNote(Number(selectNoteId), data)
   if (res.status === 200) {
     dispatch(editNote({ title: data.title, text: data.text, tags: data.tags }))
+    socketRef.emit('editNote', { title: data.title, text: data.text, tags: data.tags, selectNoteId })
   }
 }
 
@@ -63,6 +66,7 @@ export const fixedNote = (id: number) => async (dispatch: Dispatch<IAction>) => 
   const res = await API.note.fixedNote(id)
   if (res.status === 200) {
     dispatch(editNote({ toFixed: true, id }))
+    socketRef.emit('fixedNote', { toFixed: true, id })
   }
 }
 
@@ -70,6 +74,7 @@ export const unFixedNote = (id: number) => async (dispatch: Dispatch<IAction>) =
   const res = await API.note.unFixedNote(id)
   if (res.status === 200) {
     dispatch(editNote({ toUnFixed: true, id }))
+    socketRef.emit('unFixedNote', { toUnFixed: true, id })
   }
 }
 
@@ -77,6 +82,7 @@ export const asyncDeleteNote = (id: number) => async (dispatch: Dispatch<IAction
   const res = await API.note.deleteNote(id)
   if (res.data) {
     dispatch(deleteNote(id))
+    socketRef.emit('deleteNote', id)
   }
 }
 
