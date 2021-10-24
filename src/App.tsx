@@ -1,27 +1,40 @@
-import React from 'react'
-import { BrowserRouter as Router } from 'react-router-dom'
-import { Container } from 'react-bootstrap'
-import { Provider } from 'react-redux'
-import SideBar from './components/SideBar'
-import MainContentWraper from './components/MainContentWraper'
-import { store } from './store/store'
-import './styles.scss'
-
+import React, { useEffect, useState } from "react";
+import { Container } from "react-bootstrap";
+import SideBar from "./components/SideBar";
+import MainContentWraper from "./components/MainContentWraper";
+import { useTypeSelector } from "./hooks/useTypeSelector";
+import { authCheck, getAsyncGroup, getAsyncNotes } from "./store/asyncActions";
+import { useDispatch } from "react-redux";
+import { socketRef } from "./http/socket-io";
+import "./styles.scss";
 
 function App() {
+  const { user } = useTypeSelector((state) => state);
+  const dispatch = useDispatch();
 
-  
+  useEffect(() => {
+    dispatch(authCheck());
+  }, []);
+
+  useEffect(() => {
+    if (user.isLogin) {
+      dispatch(getAsyncGroup());
+      dispatch(getAsyncNotes());
+
+      socketRef.emit("joinRoom", user.id!.toString());
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [user.isLogin]);
+
   return (
-    <Provider store={store}>
-      <Router>
-        <Container className="container__sidebar">
-          <SideBar />
-        </Container>
-        <Container className="container__main App">
-          <MainContentWraper />
-        </Container>
-      </Router> 
-    </Provider>
+    <>
+      <Container className="container__sidebar">
+        <SideBar />
+      </Container>
+      <Container className="container__main App">
+        <MainContentWraper />
+      </Container>
+    </>
   );
 }
 

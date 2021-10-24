@@ -1,16 +1,11 @@
-import React, { useState, useEffect, useRef } from 'react'
+import React, { useState, useRef } from 'react'
 import { Link } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useTypeSelector } from '../hooks/useTypeSelector'
 import { Col } from 'react-bootstrap'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import {
-  getAsyncGroup,
-  getAsyncNotes,
-  createAsyncGroup,
-  authCheck,
-} from '../store/asyncActions'
+import { createAsyncGroup } from '../store/asyncActions'
 import {
   showAllNote,
   showCreateNoteForm,
@@ -19,33 +14,15 @@ import {
 import Avatar from './Avatar'
 import Loader from './Loader'
 import './styles/SideBar.scss'
-import { socketRef } from '../http/socket-io'
-
-
-
 
 const SideBar: React.FC = () => {
   const dispatch = useDispatch()
   const [showAddGroupForm, setShowAddGroupForm] = useState(false)
   const [groupVal, setGroupVal] = useState('')
 
-  const { groups, selectedGroup, user, showCeateNoteForm, loading } = useTypeSelector((state) => state)
+  const { groups, selectedGroup, showCeateNoteForm, loading } = useTypeSelector((state) => state)
 
   const inputRef = useRef<HTMLInputElement>(null)
-
-  useEffect(() => {
-    dispatch(authCheck())
-  }, [dispatch])
-
-  useEffect(() => {
-    if (user.isLogin) {
-      dispatch(getAsyncGroup())
-      dispatch(getAsyncNotes())
-
-      socketRef.emit('joinRoom', user.id!.toString())
-    }
-  }, [user.isLogin])
-
 
   const isDisabled = !groupVal.length
 

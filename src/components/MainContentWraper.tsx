@@ -66,7 +66,7 @@ const MainContentWraper: React.FC = () => {
               <Route path="/user/reset-password/:tokenId">
                 <ResetPassword />
               </Route>
-              <Redirect to="/login" />
+              {/* <Redirect to="/login" /> */}
             </Switch>
           )
       }

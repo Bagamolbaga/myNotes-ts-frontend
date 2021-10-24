@@ -4,6 +4,7 @@ import MarkdownPreview from '@uiw/react-markdown-preview'
 import { faPen } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useTypeSelector } from '../hooks/useTypeSelector'
+import QuillEditor from './QuillEditor'
 import './styles/NotesItemSelect.scss'
 
 interface IParams {
@@ -30,7 +31,7 @@ const NotesItemSelect: React.FC = () => {
           </button>
         </div>
         <div className="notesItemSelect__container-md-container">
-          <MarkdownPreview source={note.text} />
+          <QuillEditor value={note.text} />
         </div>
       </div>
       <div className="notesItemSelect__container_tags">

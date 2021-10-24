@@ -119,8 +119,8 @@ export const authCheck = () => async (dispatch: Dispatch<IAction>) => {
   }
 
   if (res.data.token) {
-    localStorage.setItem('my-notes-token', res.data.token)
     dispatch(setUser(jwtDecode(res.data.token)))
+    localStorage.setItem('my-notes-token', res.data.token)
   }
 }
 

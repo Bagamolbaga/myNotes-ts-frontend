@@ -5,6 +5,7 @@ import { Button } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { useTypeSelector } from '../hooks/useTypeSelector'
 import { editAsyncNotes } from '../store/asyncActions'
+import QuillEditor from './QuillEditor'
 import './styles/NoteCreateForm.scss'
 
 interface IParams {
@@ -12,22 +13,31 @@ interface IParams {
 }
 
 const NoteEditForm: React.FC = () => {
-  const history = useHistory()
   const { noteId } = useParams<IParams>()
+  const history = useHistory()
   const dispatch = useDispatch()
 
   const { notes } = useTypeSelector((state) => state)
   const note = notes.filter((item) => item.id === Number(noteId))[0]
 
   const [title, setTitle] = useState(note ? note.title : '')
-  const [md, setMd] = useState(note ? note.text : '')
+  const [editorValue, setEditorValue] = useState(note ? note.text : '')
   const [tags, setTags] = useState((note && note.tags) ? note.tags.join(' ') : '')
 
-  const isDisableBtnSave = title && md && tags
+  const isDisableBtnSave = title && editorValue && tags
+
+  const changeEditorHandler = (
+    value: string,
+    delta: any,
+    source: any,
+    editor: any
+  ) => {
+    setEditorValue(value);
+  };
 
   const editHandler = () => {
     const tagsArray = tags && tags.trim().split(' ')
-    dispatch(editAsyncNotes({ title, text: md, tags: tagsArray }))
+    dispatch(editAsyncNotes({ title, text: editorValue, tags: tagsArray }))
     history.push(`/note/${noteId}`)
   }
 
@@ -40,11 +50,10 @@ const NoteEditForm: React.FC = () => {
         onChange={(e) => setTitle(e.target.value)}
       />
       <div>
-        <MarkdownEditor
-          width="100%"
-          height="400px"
-          value={md}
-          onChange={(editor: any, data: any, value: string) => setMd(value)}
+      <QuillEditor
+          className="noteCreateForm__container-quillEditor"
+          value={editorValue}
+          onChangeHandler={changeEditorHandler}
         />
       </div>
       <input

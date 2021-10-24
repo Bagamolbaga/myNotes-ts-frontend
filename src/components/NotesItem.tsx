@@ -2,13 +2,13 @@ import React from 'react'
 import { useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useTypeSelector } from '../hooks/useTypeSelector'
-import MarkdownPreview from '@uiw/react-markdown-preview'
 import { faTimes, faLink, faCopy } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { selectNote } from '../store/actions'
 import { asyncDeleteNote, createAsyncNote, fixedNote, unFixedNote } from '../store/asyncActions'
-import './styles/NotesItem.scss'
 import { INote } from '../types/state'
+import QuillEditor from './QuillEditor'
+import './styles/NotesItem.scss'
 
 interface NotesItemProps {
     data: INote
@@ -58,7 +58,7 @@ const NotesItem: React.FC<NotesItemProps> = ({ data }) => {
           <h4>{data.title}</h4>
         </div>
         <div className="notesItem__container-MD_container">
-          <MarkdownPreview source={data.text} />
+          <QuillEditor className="notesItem__container__hideToolBar" value={data.text} />
         </div>
       </div>
       <div>
