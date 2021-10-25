@@ -1,7 +1,6 @@
-import React, { FC, useRef, useState } from "react";
+import React, { FC, useRef } from "react";
 import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
-
 
 interface QuillEditorProps {
     className?: string,

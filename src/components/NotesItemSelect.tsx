@@ -1,6 +1,5 @@
 import React from 'react'
 import { useParams, useHistory } from 'react-router-dom'
-import MarkdownPreview from '@uiw/react-markdown-preview'
 import { faPen } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { useTypeSelector } from '../hooks/useTypeSelector'
@@ -14,7 +13,7 @@ interface IParams {
 const NotesItemSelect: React.FC = () => {
   const history = useHistory()
   const { noteId } = useParams<IParams>()
-  const { notes } = useTypeSelector((state) => state)
+  const { notes } = useTypeSelector((state) => state.note)
   const note = notes.filter((item) => item.id === Number(noteId))[0]
 
   return (

@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react'
 import { useParams } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useTypeSelector } from '../hooks/useTypeSelector';
-import { resetPassword } from '../store/asyncActions'
+import { resetPassword } from '../store/asyncActions/asyncUserActions'
 import { Link } from 'react-router-dom' 
 import { Row } from 'react-bootstrap';
 import './styles/Authorization.scss'
@@ -14,7 +14,7 @@ interface IParams {
 const ResetPassword: FC = () => {
     const dispatch = useDispatch()
     const { tokenId } = useParams<IParams>()
-    const { authError } = useTypeSelector((state) => state)
+    const { authError } = useTypeSelector((state) => state.user)
 
     const [password, setPassword] = useState('')
     const [repeatPassword, setRepeatPassword] = useState('')

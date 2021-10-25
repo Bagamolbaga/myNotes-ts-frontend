@@ -1,5 +1,6 @@
 import { io } from 'socket.io-client'
-import { createGroup, createNote, deleteNote, editNote, selectNote } from '../store/actions'
+import { createGroup } from '../store/actions/groupActions'
+import { createNote, deleteNote, editNote, selectNote } from '../store/actions/noteActions'
 import { store } from '../store/store'
 import { IGroup, INote } from '../types/state'
 

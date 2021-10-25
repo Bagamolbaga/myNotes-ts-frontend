@@ -5,12 +5,9 @@ import { useTypeSelector } from '../hooks/useTypeSelector'
 import { Col } from 'react-bootstrap'
 import { faPlus } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { createAsyncGroup } from '../store/asyncActions'
-import {
-  showAllNote,
-  showCreateNoteForm,
-  selectActiveGroup,
-} from '../store/actions'
+import { createAsyncGroup } from '../store/asyncActions/asyncGroupActions'
+import { showAllNote, showCreateNoteForm } from '../store/actions/noteActions'
+import { selectActiveGroup } from '../store/actions/groupActions'
 import Avatar from './Avatar'
 import Loader from './Loader'
 import './styles/SideBar.scss'
@@ -20,7 +17,9 @@ const SideBar: React.FC = () => {
   const [showAddGroupForm, setShowAddGroupForm] = useState(false)
   const [groupVal, setGroupVal] = useState('')
 
-  const { groups, selectedGroup, showCeateNoteForm, loading } = useTypeSelector((state) => state)
+  const loading = false
+  const { showCeateNoteForm } = useTypeSelector((state) => state.note)
+  const { groups, selectedGroup } = useTypeSelector((state) => state.group)
 
   const inputRef = useRef<HTMLInputElement>(null)
 
@@ -35,6 +34,11 @@ const SideBar: React.FC = () => {
   const showGroupFormHandler = () => {
     inputRef.current?.focus()
     setShowAddGroupForm(true)
+  }
+
+  const showAllNotesHandler = () => {
+    dispatch(showAllNote())
+    // dispatch(selectActiveGroup('All'))
   }
 
   const groupList = groups.map((g) => <button type="button" onClick={() => dispatch(selectActiveGroup(g.id))} key={g.id} className={selectedGroup === g.id ? 'sideBar__btn_group-cheked' : 'sideBar__btn_group'}>{g.title}</button>)
@@ -57,7 +61,7 @@ const SideBar: React.FC = () => {
         add Note
       </Link>
 
-      <Link to="/" className={`sideBar__btn_notes sideBar__btn_notes-all ${selectedGroup === 'All' && 'sideBar__btn_notes-all-cheked'}`} onClick={() => dispatch(showAllNote())}>
+      <Link to="/" className={`sideBar__btn_notes sideBar__btn_notes-all ${selectedGroup === 'All' && 'sideBar__btn_notes-all-cheked'}`} onClick={showAllNotesHandler}>
         My notes
       </Link>
 

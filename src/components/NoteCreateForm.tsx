@@ -3,15 +3,18 @@ import { useHistory } from "react-router-dom";
 import { Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { useTypeSelector } from "../hooks/useTypeSelector";
-import { createAsyncNote } from "../store/asyncActions";
+import { createAsyncNote } from "../store/asyncActions/asyncNoteActions";
 import QuillEditor from "./QuillEditor";
 import "./styles/NoteCreateForm.scss";
 
 const NoteCreateForm: React.FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { selectedGroup, selectNoteId, showCeateNoteForm } = useTypeSelector(
-    (state) => state
+  const { selectNoteId, showCeateNoteForm } = useTypeSelector(
+    (state) => state.note
+  );
+  const { selectedGroup } = useTypeSelector(
+    (state) => state.group
   );
 
   const [title, setTitle] = useState("");

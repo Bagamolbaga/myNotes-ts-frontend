@@ -4,8 +4,8 @@ import { useDispatch } from 'react-redux'
 import { useTypeSelector } from '../hooks/useTypeSelector'
 import { faTimes, faLink, faCopy } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { selectNote } from '../store/actions'
-import { asyncDeleteNote, createAsyncNote, fixedNote, unFixedNote } from '../store/asyncActions'
+import { selectNote } from '../store/actions/noteActions'
+import { asyncDeleteNote, createAsyncNote, fixedNote, unFixedNote } from '../store/asyncActions/asyncNoteActions'
 import { INote } from '../types/state'
 import QuillEditor from './QuillEditor'
 import './styles/NotesItem.scss'
@@ -17,7 +17,7 @@ interface NotesItemProps {
 const NotesItem: React.FC<NotesItemProps> = ({ data }) => {
   const history = useHistory()
   const dispatch = useDispatch()
-  const { notes } = useTypeSelector((state) => state)
+  const { notes } = useTypeSelector((state) => state.note)
 
   const selectHandler = (id: number) => {
     history.push(`/note/${data.id}`)

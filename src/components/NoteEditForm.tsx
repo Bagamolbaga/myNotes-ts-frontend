@@ -1,10 +1,9 @@
 import React, { useState } from 'react'
 import { useParams, useHistory } from 'react-router-dom'
-import MarkdownEditor from '@uiw/react-markdown-editor'
 import { Button } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { useTypeSelector } from '../hooks/useTypeSelector'
-import { editAsyncNotes } from '../store/asyncActions'
+import { editAsyncNotes } from '../store/asyncActions/asyncNoteActions'
 import QuillEditor from './QuillEditor'
 import './styles/NoteCreateForm.scss'
 
@@ -17,7 +16,7 @@ const NoteEditForm: React.FC = () => {
   const history = useHistory()
   const dispatch = useDispatch()
 
-  const { notes } = useTypeSelector((state) => state)
+  const { notes } = useTypeSelector((state) => state.note)
   const note = notes.filter((item) => item.id === Number(noteId))[0]
 
   const [title, setTitle] = useState(note ? note.title : '')

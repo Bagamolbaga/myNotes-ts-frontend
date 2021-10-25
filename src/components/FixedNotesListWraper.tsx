@@ -5,7 +5,7 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import NotesList from './NotesList'
 
 const FixedNotesListWraper: React.FC = () => {
-  const { notes } = useTypeSelector((state) => state)
+  const { notes } = useTypeSelector((state) => state.note)
 
   const [showFixedList, setShowFixedList] = useState(true)
 

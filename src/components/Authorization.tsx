@@ -4,7 +4,7 @@ import { useDispatch } from 'react-redux'
 import { useTypeSelector } from '../hooks/useTypeSelector'
 import { Row } from 'react-bootstrap'
 import { uploadPhoto } from '../http/firebase'
-import { registration, login, sendEmailResetPassword } from '../store/asyncActions'
+import { registration, login, sendEmailResetPassword } from '../store/asyncActions/asyncUserActions'
 import './styles/Authorization.scss'
 
 interface AuthorizationProps {
@@ -19,7 +19,7 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
   const history = useHistory()
   const dispatch = useDispatch()
 
-  const { authError, user } = useTypeSelector((state) => state)
+  const { user } = useTypeSelector((state) => state)
   const [nameOrEmail, setNameOrEmail] = useState('')
 
   const [name, setName] = useState('')
@@ -84,7 +84,7 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <p className="authorization__container-label-error">{authError}</p>
+        <p className="authorization__container-label-error">{user.authError}</p>
         <button
           type="button"
           className="authorization__container-btn"
@@ -146,7 +146,7 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
               <img src={fileUrl.fileUrl.toString()} alt="avatar-preview" />
             </div>
           ) : (<p>Please select an Image for Preview</p>)}
-          <p className="authorization__container-label-error">{authError}{validError}</p>
+          <p className="authorization__container-label-error">{user.authError}{validError}</p>
           <button
             type="button"
             className="authorization__container-btn"
