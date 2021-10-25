@@ -19,7 +19,7 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
   const history = useHistory()
   const dispatch = useDispatch()
 
-  const { user } = useTypeSelector((state) => state)
+  const { authError, user } = useTypeSelector((state) => state)
   const [nameOrEmail, setNameOrEmail] = useState('')
 
   const [name, setName] = useState('')
@@ -84,7 +84,7 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
           value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
-        <p className="authorization__container-label-error">{user.authError}</p>
+        <p className="authorization__container-label-error">{authError}</p>
         <button
           type="button"
           className="authorization__container-btn"
@@ -146,7 +146,7 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
               <img src={fileUrl.fileUrl.toString()} alt="avatar-preview" />
             </div>
           ) : (<p>Please select an Image for Preview</p>)}
-          <p className="authorization__container-label-error">{user.authError}{validError}</p>
+          <p className="authorization__container-label-error">{authError}{validError}</p>
           <button
             type="button"
             className="authorization__container-btn"

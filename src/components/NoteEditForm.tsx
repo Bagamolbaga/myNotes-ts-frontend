@@ -16,7 +16,7 @@ const NoteEditForm: React.FC = () => {
   const history = useHistory()
   const dispatch = useDispatch()
 
-  const { notes } = useTypeSelector((state) => state.note)
+  const { notes } = useTypeSelector((state) => state)
   const note = notes.filter((item) => item.id === Number(noteId))[0]
 
   const [title, setTitle] = useState(note ? note.title : '')

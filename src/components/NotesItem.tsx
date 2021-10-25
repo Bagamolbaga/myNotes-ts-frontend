@@ -17,7 +17,7 @@ interface NotesItemProps {
 const NotesItem: React.FC<NotesItemProps> = ({ data }) => {
   const history = useHistory()
   const dispatch = useDispatch()
-  const { notes } = useTypeSelector((state) => state.note)
+  const { notes } = useTypeSelector((state) => state)
 
   const selectHandler = (id: number) => {
     history.push(`/note/${data.id}`)

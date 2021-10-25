@@ -10,11 +10,8 @@ import "./styles/NoteCreateForm.scss";
 const NoteCreateForm: React.FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { selectNoteId, showCeateNoteForm } = useTypeSelector(
-    (state) => state.note
-  );
-  const { selectedGroup } = useTypeSelector(
-    (state) => state.group
+  const { selectNoteId, showCeateNoteForm, selectedGroup } = useTypeSelector(
+    (state) => state
   );
 
   const [title, setTitle] = useState("");

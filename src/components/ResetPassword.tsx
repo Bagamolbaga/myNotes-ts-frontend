@@ -14,7 +14,7 @@ interface IParams {
 const ResetPassword: FC = () => {
     const dispatch = useDispatch()
     const { tokenId } = useParams<IParams>()
-    const { authError } = useTypeSelector((state) => state.user)
+    const { authError } = useTypeSelector((state) => state)
 
     const [password, setPassword] = useState('')
     const [repeatPassword, setRepeatPassword] = useState('')

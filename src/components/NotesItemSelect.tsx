@@ -13,7 +13,7 @@ interface IParams {
 const NotesItemSelect: React.FC = () => {
   const history = useHistory()
   const { noteId } = useParams<IParams>()
-  const { notes } = useTypeSelector((state) => state.note)
+  const { notes } = useTypeSelector((state) => state)
   const note = notes.filter((item) => item.id === Number(noteId))[0]
 
   return (

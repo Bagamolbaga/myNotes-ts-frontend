@@ -6,7 +6,7 @@ export enum groupActionTypes {
   SELECT_ACTIVE_GROUP = "SELECT_ACTIVE_GROUP",
   SHOW_CREATE_NOTE_FORM = "SHOW_CREATE_NOTE_FORM",
   SHOW_ACTIVE_GROUP = "SHOW_ACTIVE_GROUP",
-  SET_LOADING = "SET_LOADING",
+  // SET_LOADING = "SET_LOADING",
   SHOW_ALL_NOTES = "SHOW_ALL_NOTES",
   GO_BACK = "GO_BACK",
 }
@@ -26,10 +26,10 @@ interface selectActiveGroupAction {
   payload: number | string;
 }
 
-interface setLoadingAction {
-  type: groupActionTypes.SET_LOADING;
-  payload: boolean;
-}
+// interface setLoadingAction {
+//   type: groupActionTypes.SET_LOADING;
+//   payload: boolean;
+// }
 
 interface showAllNoteAction {
   type: groupActionTypes.SHOW_ALL_NOTES;
@@ -58,16 +58,16 @@ export const selectActiveGroup = (value: number | string): selectActiveGroupActi
   payload: value,
 });
 
-export const setLoading = (value: boolean): setLoadingAction => ({
-  type: groupActionTypes.SET_LOADING,
-  payload: value,
-});
+// export const setLoading = (value: boolean): setLoadingAction => ({
+//   type: groupActionTypes.SET_LOADING,
+//   payload: value,
+// });
 
 export type GroupActions =
   | getGroupsAction
   | createGroupAction
   | selectActiveGroupAction
-  | setLoadingAction
+  // | setLoadingAction
   | showAllNoteAction
   | showCreateNoteFormAction
   | goBackAction;

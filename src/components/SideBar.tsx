@@ -17,9 +17,7 @@ const SideBar: React.FC = () => {
   const [showAddGroupForm, setShowAddGroupForm] = useState(false)
   const [groupVal, setGroupVal] = useState('')
 
-  const loading = false
-  const { showCeateNoteForm } = useTypeSelector((state) => state.note)
-  const { groups, selectedGroup } = useTypeSelector((state) => state.group)
+  const { showCeateNoteForm, groups, selectedGroup, loading } = useTypeSelector((state) => state)
 
   const inputRef = useRef<HTMLInputElement>(null)
 

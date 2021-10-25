@@ -1,10 +1,6 @@
 import { Dispatch } from "redux";
-import {
-  GroupActions,
-  createGroup,
-  getGroups,
-  setLoading,
-} from "../actions/groupActions";
+import { GroupActions, createGroup, getGroups } from "../actions/groupActions";
+import { OtherActions, setLoading } from "../actions/otherActions";
 import { IState } from "../../types/state";
 import { socketRef } from "../../http/socket-io";
 import API from "../../http/API";
@@ -19,9 +15,11 @@ export const createAsyncGroup =
       socketRef.emit("newGroup", res.data);
     }
   };
-  
+
+type GroupAndOtherActions = GroupActions | OtherActions;
 export const getAsyncGroup =
-  () => async (dispatch: Dispatch<GroupActions>, getState: () => IState) => {
+  () =>
+  async (dispatch: Dispatch<GroupAndOtherActions>, getState: () => IState) => {
     const { user } = getState();
     dispatch(setLoading(true));
     const res = await API.group.getGroups(user);

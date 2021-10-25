@@ -1,5 +1,6 @@
 import { Dispatch } from "redux"
-import { NoteActions, createNote, deleteNote, editNote, getNotes, setLoading } from '../actions/noteActions'
+import { NoteActions, createNote, deleteNote, editNote, getNotes } from '../actions/noteActions'
+import { OtherActions, setLoading } from "../actions/otherActions"
 import { IState } from "../../types/state"
 import API from '../../http/API'
 import { socketRef } from '../../http/socket-io'
@@ -12,7 +13,9 @@ export const createAsyncNote = (data: any) => async (dispatch: Dispatch<NoteActi
     socketRef.emit('newNote', res.data)
   }
 }
-export const getAsyncNotes = () => async (dispatch: Dispatch<NoteActions>, getState: () => IState) => {
+
+type NoteAndOtherActions = NoteActions | OtherActions
+export const getAsyncNotes = () => async (dispatch: Dispatch<NoteAndOtherActions>, getState: () => IState) => {
   const { user } = getState()
   const res = await API.note.getNotes(user)
   if (res.status === 200) {

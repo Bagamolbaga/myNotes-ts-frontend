@@ -10,7 +10,7 @@ export enum noteActionTypes {
   EDIT_SELECT_NOTE = "EDIT_SELECT_NOTE",
   SHOW_EDIT_NOTE_FORM = "SHOW_EDIT_NOTE_FORM",
   DELETE_NOTE = "DELETE_NOTE",
-  SET_LOADING = "SET_LOADING",
+  // SET_LOADING = "SET_LOADING",
   GO_BACK = "GO_BACK",
 }
 
@@ -41,10 +41,10 @@ interface selectNoteAction {
   payload: number;
 }
 
-interface setLoadingAction {
-  type: noteActionTypes.SET_LOADING;
-  payload: boolean;
-}
+// interface setLoadingAction {
+//   type: noteActionTypes.SET_LOADING;
+//   payload: boolean;
+// }
 
 type editNoteObj = {
   title?: string;
@@ -110,10 +110,10 @@ export const deleteNote = (id: number): deleteNoteAction => ({
   payload: id,
 });
 
-export const setLoading = (value: boolean): setLoadingAction => ({
-  type: noteActionTypes.SET_LOADING,
-  payload: value,
-});
+// export const setLoading = (value: boolean): setLoadingAction => ({
+//   type: noteActionTypes.SET_LOADING,
+//   payload: value,
+// });
 
 export type NoteActions =
   | createNoteAction
@@ -124,6 +124,6 @@ export type NoteActions =
   | selectNoteAction
   | editNoteAction
   | deleteNoteAction
-  | setLoadingAction
+  // | setLoadingAction
   | selectActiveGroupAction
   | goBackAction;
