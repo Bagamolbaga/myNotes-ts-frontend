@@ -55,11 +55,10 @@ const NoteCreateForm: React.FC = () => {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
-        <QuillEditor
-          className="noteCreateForm__container-quillEditor"
+        {/* <QuillEditor
           value={editorValue}
           onChangeHandler={changeEditorHandler}
-        />
+        /> */}
       </div>
       <div>
         <input

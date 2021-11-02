@@ -3,17 +3,18 @@ import ReactQuill, { Quill } from "react-quill";
 import "react-quill/dist/quill.snow.css";
 
 interface QuillEditorProps {
-    className?: string,
+  className?: string;
+  value: string;
+  onChangeHandler?: (
     value: string,
-    onChangeHandler?: (value: string,
-        delta: any,
-        source: any,
-        editor: any,
-    ) => void
+    delta: any,
+    source: any,
+    editor: any
+  ) => void;
 }
 
-const QuillEditor: FC<QuillEditorProps> = ({className, value, onChangeHandler}) => {
-    const quillRef = useRef(null)
+const QuillEditor: FC<QuillEditorProps> = ({ className, value, onChangeHandler }) => {
+  const quillRef = useRef(null);
 
   const Font = Quill.import("formats/font");
   Font.whitelist = [
@@ -61,16 +62,16 @@ const QuillEditor: FC<QuillEditorProps> = ({className, value, onChangeHandler}) 
   ];
 
   return (
-      <ReactQuill
-        className={className}
-        ref={quillRef}
-        theme="snow"
-        placeholder="content..."
-        modules={modules}
-        formats={formats}
-        value={value}
-        onChange={onChangeHandler ? onChangeHandler : () => {}}
-      />
+    <ReactQuill
+      className={className}
+      ref={quillRef}
+      theme="snow"
+      placeholder="content..."
+      modules={modules}
+      formats={formats}
+      value={value}
+      onChange={onChangeHandler ? onChangeHandler : () => {}}
+    />
   );
 };
 

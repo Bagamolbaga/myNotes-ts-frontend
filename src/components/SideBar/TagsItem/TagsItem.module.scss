@@ -1,0 +1,21 @@
+.tagsItem {
+  display: flex;
+  align-items: center;
+  padding: 0 10px;
+  border-radius: 5px;
+  cursor: pointer;
+  &:hover {
+    background: #313131;
+  }
+  & p {
+    margin: 10px 0;
+  }
+  & svg {
+    font-size: 15px;
+    margin-right: 15px;
+  }
+  &Count {
+    margin-left: 5px;
+    color: #858585;
+  }
+}

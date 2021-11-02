@@ -1,0 +1,12 @@
+.noteContainer {
+    .quill .ql-container {
+        min-height: 500px;
+    }
+
+    .quill .ql-toolbar,
+    .quill .ql-container {
+        border: none;
+        border-bottom: 1px solid #424242;
+    }
+
+}

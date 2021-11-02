@@ -1,73 +1,93 @@
-import React from 'react'
-import { useHistory } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
-import { useTypeSelector } from '../hooks/useTypeSelector'
-import { faTimes, faLink, faCopy } from '@fortawesome/free-solid-svg-icons'
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { selectNote } from '../store/actions/noteActions'
-import { asyncDeleteNote, createAsyncNote, fixedNote, unFixedNote } from '../store/asyncActions/asyncNoteActions'
-import { INote } from '../types/state'
-import QuillEditor from './QuillEditor'
-import './styles/NotesItem.scss'
+import React from "react";
+import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useTypeSelector } from "../hooks/useTypeSelector";
+import { faTimes, faLink, faCopy } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { selectNote } from "../store/actions/noteActions";
+import {
+  asyncDeleteNote,
+  createAsyncNote,
+  fixedNote,
+  unFixedNote,
+} from "../store/asyncActions/asyncNoteActions";
+import { INote } from "../types/state";
+import QuillEditor from "./QuillEditor";
+import "./styles/NotesItem.scss";
 
 interface NotesItemProps {
-    data: INote
+  data: INote;
 }
 
 const NotesItem: React.FC<NotesItemProps> = ({ data }) => {
-  const history = useHistory()
-  const dispatch = useDispatch()
-  const { notes } = useTypeSelector((state) => state)
+  const history = useHistory();
+  const dispatch = useDispatch();
+  const { notes } = useTypeSelector((state) => state);
 
   const selectHandler = (id: number) => {
-    history.push(`/note/${data.id}`)
-    dispatch(selectNote(id))
-  }
+    history.push(`/note/${data.id}`);
+    dispatch(selectNote(id));
+  };
 
-  const deleteHandler = (e: React.MouseEvent<HTMLButtonElement>, id: number) => {
-    e.stopPropagation()
-    dispatch(asyncDeleteNote(id))
-  }
+  const deleteHandler = (
+    e: React.MouseEvent<HTMLButtonElement>,
+    id: number
+  ) => {
+    e.stopPropagation();
+    dispatch(asyncDeleteNote(id));
+  };
 
   const fixedHandler = (e: React.MouseEvent<HTMLButtonElement>, id: number) => {
-    e.stopPropagation()
-    const fixedNotesLength = notes.filter((note) => note.fixed).length
+    e.stopPropagation();
+    const fixedNotesLength = notes.filter((note) => note.fixed).length;
 
     if (data.fixed) {
-      dispatch(unFixedNote(id))
+      dispatch(unFixedNote(id));
     } else if (fixedNotesLength < 4) {
-      dispatch(fixedNote(id))
+      dispatch(fixedNote(id));
     }
-  }
+  };
 
   const cloneHandler = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.stopPropagation()
-    console.log('cloned');
-    dispatch(createAsyncNote({
-      title: data.title,
-      text: data.text,
-      tags: data.tags,
-      group_id: data.group_id
-    }))
-  }
+    e.stopPropagation();
+    console.log("cloned");
+    dispatch(
+      createAsyncNote({
+        title: data.title,
+        text: data.text,
+        tags: data.tags,
+        group_id: data.group_id,
+      })
+    );
+  };
 
   return (
-    <div role="button" tabIndex={0} className="notesItem__container" data-node-type="parent" onClick={() => selectHandler(data.id)}>
+    <div
+      role="button"
+      tabIndex={0}
+      className="notesItem__container"
+      data-node-type="parent"
+      onClick={() => selectHandler(data.id)}
+    >
       <div>
         <div className="notesItem__container-title">
           <h4>{data.title}</h4>
         </div>
         <div className="notesItem__container-MD_container">
-          <QuillEditor className="notesItem__container__hideToolBar" value={data.text} />
+          {/* <QuillEditor className="notesItem__container__hideToolBar" value={data.text} /> */}
         </div>
       </div>
       <div>
         <div className="notesItem__container_tags">
-          {data.tags && data.tags.map((tag) => (
-            <p key={tag + data.title} className="notesItem__container_tags-tag">
-              {`#${tag}`}
-            </p>
-          ))}
+          {data.tags &&
+            data.tags.map((tag) => (
+              <p
+                key={tag + data.title}
+                className="notesItem__container_tags-tag"
+              >
+                {`#${tag}`}
+              </p>
+            ))}
         </div>
         <div className="notesItem__container__delete-container">
           <button
@@ -80,7 +100,11 @@ const NotesItem: React.FC<NotesItemProps> = ({ data }) => {
           </button>
           <button
             type="button"
-            className={data.fixed ? 'notesItem__container__delete-btn' : 'notesItem__container__fixed-btn'}
+            className={
+              data.fixed
+                ? "notesItem__container__delete-btn"
+                : "notesItem__container__fixed-btn"
+            }
             data-node-type="btn-fix"
             onClick={(e) => fixedHandler(e, data.id)}
           >
@@ -97,7 +121,7 @@ const NotesItem: React.FC<NotesItemProps> = ({ data }) => {
         </div>
       </div>
     </div>
-  )
-}
+  );
+};
 
-export default NotesItem
+export default NotesItem;
