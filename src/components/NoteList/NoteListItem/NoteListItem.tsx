@@ -2,6 +2,7 @@ import React, { FC } from 'react';
 import { INote } from '../../../types/state';
 import QuillEditor from '../../QuillEditor';
 import s from './NoteListItem.module.scss';
+import '../../Quill.scss'
 
 interface NoteListItemProps {
 	note: INote;
@@ -21,7 +22,7 @@ const NoteListItem: FC<NoteListItemProps> = ({ note, color = 'white', selected }
 			</div>
 			<div className={s.contentContainer}>
 				<h4 className={s.title}>{note.title}</h4>
-				<p className={s.text}>{<QuillEditor className={s.NoteListItemEditorWithoutToolbar} value={note.text}/>}</p>
+				<p className={s.text}>{<QuillEditor className="quillEditor__hideToolBar" value={note.text}/>}</p>
 				<p className={s.tags}>{note.tags}</p>
 			</div>
 		</div>

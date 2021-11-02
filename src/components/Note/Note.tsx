@@ -2,7 +2,7 @@ import React, { FC, useState } from 'react';
 import QuillEditor from '../QuillEditor';
 import GroupItem from '../SideBar/GroupItem/GroupItem';
 import s from './Note.module.scss';
-import './QuillRoot.scss'
+import '../Quill.scss'
 
 const Note: FC = () => {
 	const [showOptions, setShowOptions] = useState(false);
@@ -121,7 +121,7 @@ const Note: FC = () => {
 							<h1 className={s.noteTitle}>Title</h1>
 						</div>
 					</div>
-					<QuillEditor value='adad' />
+					<QuillEditor className="quillEditor__default" value='adad' />
 				</div>
 			</div>
 		</>
