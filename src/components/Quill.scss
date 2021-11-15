@@ -3,7 +3,10 @@
     display: none;
   }
   .ql-container {
+    max-height: 45px;
+    overflow: hidden;
     border: none;
+    cursor: pointer;
   }
 }
 
