@@ -4,7 +4,8 @@ import { Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { useTypeSelector } from "../hooks/useTypeSelector";
 import { createAsyncNote } from "../store/asyncActions/asyncNoteActions";
-import QuillEditor from "./QuillEditor";
+import { OutputData } from '@editorjs/editorjs'
+import EditorJS from './Editor'
 import "./styles/NoteCreateForm.scss";
 
 const NoteCreateForm: React.FC = () => {
@@ -15,7 +16,7 @@ const NoteCreateForm: React.FC = () => {
   );
 
   const [title, setTitle] = useState("");
-  const [editorValue, setEditorValue] = useState("");
+  const [editorValue, setEditorValue] = useState<OutputData>();
   const [tags, setTags] = useState("");
 
   useEffect(() => {
@@ -27,23 +28,18 @@ const NoteCreateForm: React.FC = () => {
     dispatch(
       createAsyncNote({
         title,
-        text: editorValue,
+        text: JSON.stringify(editorValue),
         tags: tagsArray,
       })
     );
   };
 
-  const changeEditorHandler = (
-    value: string,
-    delta: any,
-    source: any,
-    editor: any
-  ) => {
+  const changeEditorHandler = (value: OutputData) => {
     setEditorValue(value);
   };
-
+  
   const isDisableBtnSave =
-    title.length && editorValue.length && selectedGroup !== "All";
+    title.length && editorValue?.blocks.length !== 0 && selectedGroup !== "All";
 
   return (
     <div className="noteCreateForm__container">
@@ -55,10 +51,11 @@ const NoteCreateForm: React.FC = () => {
           value={title}
           onChange={(e) => setTitle(e.target.value)}
         />
-        {/* <QuillEditor
+        <EditorJS
           value={editorValue}
+          readOnly={false}
           onChangeHandler={changeEditorHandler}
-        /> */}
+        />
       </div>
       <div>
         <input

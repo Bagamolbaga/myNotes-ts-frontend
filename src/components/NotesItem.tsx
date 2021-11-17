@@ -1,28 +1,24 @@
-import React from "react";
-import { useHistory } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { useTypeSelector } from "../hooks/useTypeSelector";
-import { faTimes, faLink, faCopy } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { selectNote } from "../store/actions/noteActions";
-import {
-  asyncDeleteNote,
-  createAsyncNote,
-  fixedNote,
-  unFixedNote,
-} from "../store/asyncActions/asyncNoteActions";
-import { INote } from "../types/state";
-import QuillEditor from "./QuillEditor";
-import "./styles/NotesItem.scss";
+import React from 'react'
+import { useHistory } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { useTypeSelector } from '../hooks/useTypeSelector'
+import { faTimes, faLink, faCopy } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { selectNote } from '../store/actions/noteActions'
+import { asyncDeleteNote, createAsyncNote, fixedNote, unFixedNote } from '../store/asyncActions/asyncNoteActions'
+import { INote } from '../types/state'
+import { OutputData } from '@editorjs/editorjs'
+import EditorJS from './Editor'
+import './styles/NotesItem.scss'
 
 interface NotesItemProps {
   data: INote;
 }
 
 const NotesItem: React.FC<NotesItemProps> = ({ data }) => {
-  const history = useHistory();
-  const dispatch = useDispatch();
-  const { notes } = useTypeSelector((state) => state);
+  const history = useHistory()
+  const dispatch = useDispatch()
+  const { notes, loading } = useTypeSelector((state) => state)
 
   const selectHandler = (id: number) => {
     history.push(`/note/${data.id}`);
@@ -61,6 +57,9 @@ const NotesItem: React.FC<NotesItemProps> = ({ data }) => {
     );
   };
 
+  const dataText = JSON.parse(data.text) as OutputData
+  // dataText.blocks = [dataText.blocks[0]]
+
   return (
     <div
       role="button"
@@ -74,7 +73,7 @@ const NotesItem: React.FC<NotesItemProps> = ({ data }) => {
           <h4>{data.title}</h4>
         </div>
         <div className="notesItem__container-MD_container">
-          {/* <QuillEditor className="notesItem__container__hideToolBar" value={data.text} /> */}
+          <EditorJS id={data.id} value={dataText} readOnly={true} />
         </div>
       </div>
       <div>

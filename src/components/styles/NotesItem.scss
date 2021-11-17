@@ -27,13 +27,35 @@
     height: 1.875rem;
     padding: .3125rem .625rem;
     display: flex;
-    align-content: space-between;
-    justify-content: center;
-    align-items: center;
-
-    h4 {
-      white-space: nowrap;
+    flex-direction: column;
+    justify-content: space-between;
+    & a {
+      text-decoration: none;
+      color: black;
+    }
+    &:hover {
+      border-color: $activeColor;
+      cursor: pointer;
+    }
+    &-title {
+      border-bottom: 2px solid $secondaryColor;
+      height: 1.875rem;
+      padding: .3125rem .625rem;
+      display: flex;
+      align-content: space-between;
+      justify-content: center;
+      align-items: center;
+      h4 {
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        letter-spacing: .03125rem;
+      }
+    }
+    &-MD_container {
+      max-height: 190px;
       overflow: hidden;
+      padding: 0 .625rem;
       text-overflow: ellipsis;
       letter-spacing: .03125rem;
     }

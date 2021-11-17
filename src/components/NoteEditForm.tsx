@@ -1,11 +1,12 @@
-import React, { useState } from "react";
-import { useParams, useHistory } from "react-router-dom";
-import { Button } from "react-bootstrap";
-import { useDispatch } from "react-redux";
-import { useTypeSelector } from "../hooks/useTypeSelector";
-import { editAsyncNotes } from "../store/asyncActions/asyncNoteActions";
-import QuillEditor from "./QuillEditor";
-import "./styles/NoteCreateForm.scss";
+import React, { useState } from 'react'
+import { useParams, useHistory } from 'react-router-dom'
+import { Button } from 'react-bootstrap'
+import { useDispatch } from 'react-redux'
+import { useTypeSelector } from '../hooks/useTypeSelector'
+import { editAsyncNotes } from '../store/asyncActions/asyncNoteActions'
+import { OutputData } from '@editorjs/editorjs'
+import EditorJS from './Editor'
+import './styles/NoteCreateForm.scss'
 
 interface IParams {
   noteId: string;
@@ -19,28 +20,21 @@ const NoteEditForm: React.FC = () => {
   const { notes } = useTypeSelector((state) => state);
   const note = notes.filter((item) => item.id === Number(noteId))[0];
 
-  const [title, setTitle] = useState(note ? note.title : "");
-  const [editorValue, setEditorValue] = useState(note ? note.text : "");
-  const [tags, setTags] = useState(
-    note && note.tags ? note.tags.join(" ") : ""
-  );
+  const [title, setTitle] = useState(note ? note.title : '')
+  const [editorValue, setEditorValue] = useState<OutputData>(note && JSON.parse(note.text))
+  const [tags, setTags] = useState((note && note.tags) ? note.tags.join(' ') : '')
 
   const isDisableBtnSave = title && editorValue && tags;
 
-  const changeEditorHandler = (
-    value: string,
-    delta: any,
-    source: any,
-    editor: any
-  ) => {
+  const changeEditorHandler = (value: OutputData) => {
     setEditorValue(value);
   };
 
   const editHandler = () => {
-    const tagsArray = tags && tags.trim().split(" ");
-    dispatch(editAsyncNotes({ title, text: editorValue, tags: tagsArray }));
-    history.push(`/note/${noteId}`);
-  };
+    const tagsArray = tags && tags.trim().split(' ')
+    dispatch(editAsyncNotes({ title, text: JSON.stringify(editorValue), tags: tagsArray }))
+    history.push(`/note/${noteId}`)
+  }
 
   return (
     <div className="noteCreateForm__container">
@@ -51,11 +45,11 @@ const NoteEditForm: React.FC = () => {
         onChange={(e) => setTitle(e.target.value)}
       />
       <div>
-        {/* <QuillEditor
-          className="noteCreateForm__container-quillEditor"
+      <EditorJS
           value={editorValue}
+          readOnly={false}
           onChangeHandler={changeEditorHandler}
-        /> */}
+        />
       </div>
       <input
         className="noteCreateForm__container-title_input"

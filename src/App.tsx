@@ -26,7 +26,7 @@ function App() {
     if (user.isLogin) {
       dispatch(getAsyncGroup());
       dispatch(getAsyncNotes());
-
+      
       socketRef.emit("joinRoom", user.id!.toString());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
