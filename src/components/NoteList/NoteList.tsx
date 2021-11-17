@@ -27,7 +27,7 @@ const NoteList: FC = () => {
 						<i className={`fas fa-sort-down ${s.arrowRotate}`}></i>
 					</div>
 					<div className={s.list}>
-						{notes.map(note => <NoteListItem note={note} color="#d83030" />)}
+						{notes.map(note => <NoteListItem key={note.id} note={note} color="#d83030" />)}
 					</div>
 				</div>
 				<div
@@ -38,7 +38,7 @@ const NoteList: FC = () => {
 						<p>Pinned notes</p>
 						<i className={`fas fa-sort-down ${s.arrowRotate}`}></i>
 					</div>
-					{pinnedNotes && pinnedNotes.map(note => <NoteListItem note={note} color="#d83030" />)}
+					{pinnedNotes && pinnedNotes.map(note => <NoteListItem key={note.id} note={note} color="#d83030" />)}
 				</div>
 			</div>
 		</div>

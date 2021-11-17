@@ -4,8 +4,8 @@ import { Button } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { useTypeSelector } from "../hooks/useTypeSelector";
 import { createAsyncNote } from "../store/asyncActions/asyncNoteActions";
-import { OutputData } from '@editorjs/editorjs'
-import EditorJS from './Editor'
+import { OutputData } from "@editorjs/editorjs";
+import EditorJS from "./Editor";
 import "./styles/NoteCreateForm.scss";
 
 const NoteCreateForm: React.FC = () => {
@@ -37,7 +37,7 @@ const NoteCreateForm: React.FC = () => {
   const changeEditorHandler = (value: OutputData) => {
     setEditorValue(value);
   };
-  
+
   const isDisableBtnSave =
     title.length && editorValue?.blocks.length !== 0 && selectedGroup !== "All";
 

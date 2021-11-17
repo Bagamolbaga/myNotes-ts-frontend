@@ -1,8 +1,9 @@
 import React, { FC } from "react";
 import { INote } from "../../../types/state";
-import QuillEditor from "../../QuillEditor";
+import Editor from "../../Editor";
 import s from "./NoteListItem.module.scss";
 import "../../Quill.scss";
+import { OutputData } from "@editorjs/editorjs";
 
 interface NoteListItemProps {
   note: INote;
@@ -18,7 +19,10 @@ const NoteListItem: FC<NoteListItemProps> = ({
   const circleColor = {
     background: color,
   };
-  console.log(note.text);
+
+  const noteDataText = JSON.parse(note.text) as OutputData;
+  noteDataText.blocks = [noteDataText.blocks[0], noteDataText.blocks[1]];
+
   return (
     <div className={`${s.container} + ${selected && s.selected}`}>
       <div className={s.typeContainer}>
@@ -26,14 +30,7 @@ const NoteListItem: FC<NoteListItemProps> = ({
       </div>
       <div className={s.contentContainer}>
         <h4 className={s.title}>{note.title}</h4>
-        <p className={s.text}>
-          {
-            <QuillEditor
-              className="quillEditor__hideToolBar"
-              value={note.text}
-            />
-          }
-        </p>
+        <Editor id={note.id} readOnly={true} value={noteDataText} />
         <p className={s.tags}>{note.tags}</p>
       </div>
     </div>

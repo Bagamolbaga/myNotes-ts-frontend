@@ -1,5 +1,5 @@
 import React, { FC, useState } from 'react';
-import QuillEditor from '../QuillEditor';
+import Editor from '../Editor';
 import GroupItem from '../SideBar/GroupItem/GroupItem';
 import s from './Note.module.scss';
 import '../Quill.scss'
@@ -121,7 +121,7 @@ const Note: FC = () => {
 							<h1 className={s.noteTitle}>Title</h1>
 						</div>
 					</div>
-					<QuillEditor className="quillEditor__default" value='adad' />
+					<Editor readOnly={false} value={undefined} />
 				</div>
 			</div>
 		</>

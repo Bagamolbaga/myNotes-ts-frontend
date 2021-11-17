@@ -20,33 +20,30 @@ const EditorJS: FC<EditorJSProps> = ({
 
   initEditor();
 
-  const divId = id! + Math.random();
+  const divId = useRef<number>(id! + Math.random());
   useEffect(() => {
-    // if (value && editorRef.current === undefined) {
-    //   console.log(editorRef);
-      const editor = new Editor({
-        holder: `editor${divId}`,
-        data: value ? value : undefined,
-        readOnly: readOnly,
-        onReady: () => {
-          editorRef.current = editor;
-        },
-        onChange: () => {
-          editorRef.current
-            .save()
-            .then(
-              (data: OutputData) => onChangeHandler && onChangeHandler(data)
-            );
-        },
-        autofocus: true,
-        tools: modules,
-      });
-    // }
+    // divId.current = id! + Math.random();
+    const editor = new Editor({
+      holder: `editor${divId.current}`,
+      data: value ? value : undefined,
+      placeholder: 'Write content note',
+      readOnly: readOnly,
+      autofocus: false,
+      tools: modules,
+      onReady: () => {
+        editorRef.current = editor;
+      },
+      onChange: () => {
+        editorRef.current
+          .save()
+          .then((data: OutputData) => onChangeHandler && onChangeHandler(data));
+      },
+    });
   }, []);
 
   return (
     <>
-      <div id={`editor${divId}`}></div>
+      <div id={`editor${divId.current}`}></div>
     </>
   );
 };

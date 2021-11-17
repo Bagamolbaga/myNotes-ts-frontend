@@ -55,7 +55,7 @@ const SideBar: FC = () => {
 				</div>
 			</div>
 			<div className={s.groupItemsContainer}>
-				{groups && groups.map(group => <GroupItem showSideBar={showSideBar} color='#c42bc5' label={group.title} />)}
+				{groups && groups.map(group => <GroupItem key={group.id} showSideBar={showSideBar} color='#c42bc5' label={group.title} />)}
 			</div>
 			<div className={s.tagsTitleContainer}>
 				<div>
