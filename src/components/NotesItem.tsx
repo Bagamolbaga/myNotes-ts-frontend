@@ -7,7 +7,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { selectNote } from '../store/actions/noteActions'
 import { asyncDeleteNote, createAsyncNote, fixedNote, unFixedNote } from '../store/asyncActions/asyncNoteActions'
 import { INote } from '../types/state'
-import QuillEditor from './QuillEditor'
+import { OutputData } from '@editorjs/editorjs'
+import EditorJS from './Editor'
 import './styles/NotesItem.scss'
 
 interface NotesItemProps {
@@ -17,7 +18,7 @@ interface NotesItemProps {
 const NotesItem: React.FC<NotesItemProps> = ({ data }) => {
   const history = useHistory()
   const dispatch = useDispatch()
-  const { notes } = useTypeSelector((state) => state)
+  const { notes, loading } = useTypeSelector((state) => state)
 
   const selectHandler = (id: number) => {
     history.push(`/note/${data.id}`)
@@ -51,6 +52,9 @@ const NotesItem: React.FC<NotesItemProps> = ({ data }) => {
     }))
   }
 
+  const dataText = JSON.parse(data.text) as OutputData
+  // dataText.blocks = [dataText.blocks[0]]
+
   return (
     <div role="button" tabIndex={0} className="notesItem__container" data-node-type="parent" onClick={() => selectHandler(data.id)}>
       <div>
@@ -58,7 +62,7 @@ const NotesItem: React.FC<NotesItemProps> = ({ data }) => {
           <h4>{data.title}</h4>
         </div>
         <div className="notesItem__container-MD_container">
-          <QuillEditor className="notesItem__container__hideToolBar" value={data.text} />
+          <EditorJS id={data.id} value={dataText} readOnly={true} />
         </div>
       </div>
       <div>

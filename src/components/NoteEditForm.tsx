@@ -4,7 +4,8 @@ import { Button } from 'react-bootstrap'
 import { useDispatch } from 'react-redux'
 import { useTypeSelector } from '../hooks/useTypeSelector'
 import { editAsyncNotes } from '../store/asyncActions/asyncNoteActions'
-import QuillEditor from './QuillEditor'
+import { OutputData } from '@editorjs/editorjs'
+import EditorJS from './Editor'
 import './styles/NoteCreateForm.scss'
 
 interface IParams {
@@ -20,23 +21,18 @@ const NoteEditForm: React.FC = () => {
   const note = notes.filter((item) => item.id === Number(noteId))[0]
 
   const [title, setTitle] = useState(note ? note.title : '')
-  const [editorValue, setEditorValue] = useState(note ? note.text : '')
+  const [editorValue, setEditorValue] = useState<OutputData>(note && JSON.parse(note.text))
   const [tags, setTags] = useState((note && note.tags) ? note.tags.join(' ') : '')
 
   const isDisableBtnSave = title && editorValue && tags
 
-  const changeEditorHandler = (
-    value: string,
-    delta: any,
-    source: any,
-    editor: any
-  ) => {
+  const changeEditorHandler = (value: OutputData) => {
     setEditorValue(value);
   };
 
   const editHandler = () => {
     const tagsArray = tags && tags.trim().split(' ')
-    dispatch(editAsyncNotes({ title, text: editorValue, tags: tagsArray }))
+    dispatch(editAsyncNotes({ title, text: JSON.stringify(editorValue), tags: tagsArray }))
     history.push(`/note/${noteId}`)
   }
 
@@ -49,9 +45,9 @@ const NoteEditForm: React.FC = () => {
         onChange={(e) => setTitle(e.target.value)}
       />
       <div>
-      <QuillEditor
-          className="noteCreateForm__container-quillEditor"
+      <EditorJS
           value={editorValue}
+          readOnly={false}
           onChangeHandler={changeEditorHandler}
         />
       </div>

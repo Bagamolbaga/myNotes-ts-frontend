@@ -35,6 +35,8 @@
       }
     }
     &-MD_container {
+      max-height: 190px;
+      overflow: hidden;
       padding: 0 .625rem;
       text-overflow: ellipsis;
     }
