@@ -1,6 +1,7 @@
 import React, { FC, useEffect, useRef, useState } from "react";
 import Editor, { OutputData } from "@editorjs/editorjs";
 import { modules } from "./Editor-modules";
+import s from './styles/Editor.module.scss'
 
 interface EditorJSProps {
   id?: number;
@@ -16,17 +17,15 @@ const EditorJS: FC<EditorJSProps> = ({
   onChangeHandler,
 }) => {
   let editorRef = useRef<any>();
-  const initEditor = () => {};
-
-  initEditor();
 
   const divId = useRef<number>(id! + Math.random());
+
   useEffect(() => {
-    // divId.current = id! + Math.random();
+    console.log(value);
     const editor = new Editor({
       holder: `editor${divId.current}`,
       data: value ? value : undefined,
-      placeholder: 'Write content note',
+      placeholder: "Write content note",
       readOnly: readOnly,
       autofocus: false,
       tools: modules,
@@ -39,11 +38,11 @@ const EditorJS: FC<EditorJSProps> = ({
           .then((data: OutputData) => onChangeHandler && onChangeHandler(data));
       },
     });
-  }, []);
+  }, [id]);
 
   return (
     <>
-      <div id={`editor${divId.current}`}></div>
+      <div id={`editor${divId.current}`} className={s.editorContainer}></div>
     </>
   );
 };

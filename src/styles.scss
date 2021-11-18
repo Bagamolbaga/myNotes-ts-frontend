@@ -8,6 +8,11 @@ body {
   font-family: 'Inconsolata', 'Quicksand', monospace;
   text-align: center;
 }
+
+.ce-block__content {
+  margin: 0;
+  max-width: 100%;
+}
   
 .container {
   &__sidebar {

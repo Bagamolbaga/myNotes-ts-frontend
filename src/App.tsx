@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import { Switch, Route } from "react-router";
 import { Container } from "react-bootstrap";
 // import SideBar from "./components/SideBar";
 import MainContentWraper from "./components/MainContentWraper";
@@ -12,6 +13,7 @@ import { socketRef } from "./http/socket-io";
 import s from "./App.module.scss";
 import NoteList from "./components/NoteList/NoteList";
 import Note from "./components/Note/Note";
+import NoteWrapper from "./components/Note/NodeWrapper";
 import SideBar from "./components/SideBar/SideBar";
 
 function App() {
@@ -26,7 +28,7 @@ function App() {
     if (user.isLogin) {
       dispatch(getAsyncGroup());
       dispatch(getAsyncNotes());
-      
+
       socketRef.emit("joinRoom", user.id!.toString());
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -34,10 +36,18 @@ function App() {
 
   return (
     <div className={s.container}>
-			<SideBar />
-			<NoteList />
-			<Note />
-		</div>
+      <SideBar />
+      <Switch>
+        <Route path="/">
+          <NoteList />
+        </Route>
+      </Switch>
+      <Switch>
+        <Route exact path="/note/:noteId">
+          <Note />
+        </Route>
+      </Switch>
+    </div>
   );
 }
 
