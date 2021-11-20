@@ -14,7 +14,7 @@ interface IParams {
 const Note: FC = () => {
   const { noteId } = useParams<IParams>();
   const { notes, groups } = useTypeSelector((state) => state);
-  console.log('render note ', noteId)
+  console.log("render note ", noteId);
 
   const note = notes.filter((item) => item.id === Number(noteId))[0];
   const group = groups.find((group) => group.id === note.group_id);
@@ -50,6 +50,20 @@ const Note: FC = () => {
 
   return (
     <>
+      {showChangeModal && (
+        <div
+          className={s.changeGroupModalContainer}
+          onClick={closeChangeGroupModalHandler}
+        >
+          <div className={s.changeGroupModal} onClick={stopPropagationEvent}>
+            <p>Select new group</p>
+            <GroupItem showSideBar={false} color="#d83030" label="Game" />
+            <GroupItem showSideBar={false} color="#1ed116" label="IT" />
+            <GroupItem showSideBar={false} color="#2bc5d5" label="Anime" />
+            <GroupItem showSideBar={false} color="#c42bc5" label="Gachi" />
+          </div>
+        </div>
+      )}
       <div className={s.container} onClick={closeModalHandler}>
         {showOptions && (
           <div
@@ -106,7 +120,7 @@ const Note: FC = () => {
             </div>
             <div className={s.inputTagsContainer}>
               <i className="fas fa-hashtag"></i>
-              <input placeholder="Add tags" type="text" name="tags" id="" />
+              <input value={note.tags} placeholder="Add tags" type="text" name="tags" />
             </div>
           </div>
           <div className={s.optionsContainer} onClick={toggleModalHandler}>
@@ -126,7 +140,12 @@ const Note: FC = () => {
               <h1 className={s.noteTitle}>{note.title}</h1>
             </div>
           </div>
-          <Editor key={note.id} readOnly={false} id={note.id} value={dataText} />
+          <Editor
+            readOnly={false}
+            key={note.id}
+            id={note.id}
+            value={dataText}
+          />
         </div>
       </div>
     </>

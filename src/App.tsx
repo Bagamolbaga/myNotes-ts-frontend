@@ -12,7 +12,6 @@ import { socketRef } from "./http/socket-io";
 
 import s from "./App.module.scss";
 import NoteList from "./components/NoteList/NoteList";
-import Note from "./components/Note/Note";
 import NoteWrapper from "./components/Note/NodeWrapper";
 import SideBar from "./components/SideBar/SideBar";
 
@@ -44,7 +43,7 @@ function App() {
       </Switch>
       <Switch>
         <Route exact path="/note/:noteId">
-          <Note />
+          <NoteWrapper />
         </Route>
       </Switch>
     </div>
