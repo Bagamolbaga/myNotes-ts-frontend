@@ -21,24 +21,24 @@ const EditorJS: FC<EditorJSProps> = ({
   const divId = useRef<number>(id! + Math.random());
 
   useEffect(() => {
-    console.log(value);
     const editor = new Editor({
       holder: `editor${divId.current}`,
       data: value ? value : undefined,
       placeholder: "Write content note",
       readOnly: readOnly,
-      autofocus: false,
+      // autofocus: false,
       tools: modules,
       onReady: () => {
         editorRef.current = editor;
       },
       onChange: () => {
+        console.log('edit', id)
         editorRef.current
           .save()
           .then((data: OutputData) => onChangeHandler && onChangeHandler(data));
       },
     });
-  }, [id]);
+  }, []);
 
   return (
     <>

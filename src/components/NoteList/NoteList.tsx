@@ -1,48 +1,83 @@
-import React, { FC } from 'react';
-import { useTypeSelector } from '../../hooks/useTypeSelector';
-import NoteListItem from './NoteListItem/NoteListItem';
-import s from './NoteList.module.scss';
+import React, { FC, useState, useMemo, useRef } from "react";
+import { useTypeSelector } from "../../hooks/useTypeSelector";
+import NoteListItem from "./NoteListItem/NoteListItem";
+import SearchHeader from "./SearchHeader/SearchHeader";
+import s from "./NoteList.module.scss";
+import { INote } from "../../types/state";
+
+const List: FC<{ notes: INote[] }> = ({ notes }) => {
+  const { selectNoteId } = useTypeSelector((state) => state);
+
+  return (
+    <div className={s.list}>
+      {notes.map((note) => (
+        <NoteListItem
+          key={note.id}
+          note={note}
+          selected={note.id === selectNoteId ? true : false}
+          color="#d83030"
+        />
+      ))}
+    </div>
+  );
+};
 
 const NoteList: FC = () => {
-	const { notes } = useTypeSelector(state => state)
+  const { notes, selectNoteId } = useTypeSelector((state) => state);
+  const [searchValue, setSearchValue] = useState("");
 
-	const pinnedNotes = notes.filter(note => note.fixed)
+  const inputRef = useRef<any>(null)
 
-	return (
-		<div className={s.container}>
-			<div className={s.headerContainer}>
-				<div className={s.inputContainer}>
-					<i className="fas fa-search"></i>
-					<input placeholder="Search" type="text" name="search" id="" />
-				</div>
-				<button className={s.btnAdd}>
-					<i className="fas fa-plus"></i>
-				</button>
-			</div>
-			<div className={s.listAndPinnedListContainer}>
-				<div>
-					<div className={s.listTitle}>
-						<i className="fas fa-list-ul"></i>
-						<p>All notes</p>
-						<i className={`fas fa-sort-down ${s.arrowRotate}`}></i>
-					</div>
-					<div className={s.list}>
-						{notes.map(note => <NoteListItem key={note.id} note={note} color="#d83030" />)}
-					</div>
-				</div>
-				<div
-					className={s.pinnedList}
-					style={{ maxHeight: 3 * 125 + 61 + 'px' }}>
-					<div className={s.listTitle}>
-						<i className="fas fa-list-ul"></i>
-						<p>Pinned notes</p>
-						<i className={`fas fa-sort-down ${s.arrowRotate}`}></i>
-					</div>
-					{pinnedNotes && pinnedNotes.map(note => <NoteListItem key={note.id} note={note} color="#d83030" />)}
-				</div>
-			</div>
-		</div>
-	);
+  const pinnedNotes = useMemo(
+    () => notes.filter((note) => note.fixed),
+    [notes]
+  );
+
+  const allNotes =
+    searchValue === ""
+      ? notes
+      : notes.filter((note) =>
+          note.title && note.text && note.tags && searchValue !== null
+            ? note.title.toLowerCase().includes(searchValue) ||
+              note.text.toLowerCase().includes(searchValue) ||
+              note.tags.join(" ").toLowerCase().includes(searchValue)
+            : false
+        );
+
+  const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+  };
+
+  return (
+    <div className={s.container}>
+      <SearchHeader
+        key="inputs"
+        searchValue={searchValue}
+        searchHandler={searchHandler}
+      />
+      <div className={s.listAndPinnedListContainer}>
+        <div>
+          <div className={s.listTitle}>
+            <i className="fas fa-list-ul"></i>
+            <p>All notes</p>
+            <i className={`fas fa-sort-down ${s.arrowRotate}`}></i>
+          </div>
+            <List notes={allNotes} />
+        </div>
+        <div
+          className={s.pinnedList}
+          style={{ maxHeight: 3 * 125 + 61 + "px" }}
+        >
+          <div className={s.listTitle}>
+            <i className="fas fa-list-ul"></i>
+            <p>Pinned notes</p>
+            <i className={`fas fa-sort-down ${s.arrowRotate}`}></i>
+          </div>
+          {pinnedNotes && <List notes={pinnedNotes} />}
+        </div>
+      </div>
+    </div>
+  );
 };
 
 export default NoteList;

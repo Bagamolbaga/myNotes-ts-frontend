@@ -32,9 +32,9 @@ const NoteListItem: FC<NoteListItemProps> = ({
 
   const noteDataText = JSON.parse(note.text) as OutputData;
   noteDataText.blocks = [noteDataText.blocks[0], noteDataText.blocks[1]];
-
+  
   return (
-    <div className={`${s.container} + ${selected && s.selected}`} onClick={() => selectHandler(note.id)}>
+    <div className={`${s.container} ${selected === true && s.selected}`} onClick={() => selectHandler(note.id)}>
       <div className={s.typeContainer}>
         <div className={s.typeCircle} style={circleColor}></div>
       </div>

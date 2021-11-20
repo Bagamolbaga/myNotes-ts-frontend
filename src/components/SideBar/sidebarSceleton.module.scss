@@ -1,0 +1,68 @@
+.SideBarSceleton__container {
+    max-width: 230px;
+    width: 100%;
+    height: 100vh;
+    padding: 10px;
+    box-sizing: border-box;
+    background: #323232;
+    font-family: 'Inconsolata';
+}
+
+.SideBarSceleton__avatar_container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 40px;
+}
+
+.avatar_circle {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background: #424242;
+    animation: fadeOut 5s ease 0s infinite normal forwards;
+
+}
+
+.avatar_stroke {
+    width: 150px;
+    height: 10px;
+    border-radius: 5px;
+    background: #424242;
+    animation: fadeOut 5s ease 0s infinite normal forwards;
+
+}
+
+.nav_stroke {
+    width: 100%;
+    height: 40px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background: #424242;
+    animation: fadeOut 5s ease 0s infinite normal forwards;
+
+}
+
+.group_stroke {
+    width: 100%;
+    height: 30px;
+    margin-bottom: 10px;
+    border-radius: 5px;
+    background: #424242;
+    animation: fadeOut 5s ease 0s infinite normal forwards;
+
+}
+
+@keyframes fadeOut {
+
+    0%,
+    50%,
+    100% {
+        opacity: 1;
+    }
+
+    25%,
+    75% {
+        opacity: .5;
+    }
+}

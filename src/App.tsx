@@ -11,8 +11,9 @@ import { useDispatch } from "react-redux";
 import { socketRef } from "./http/socket-io";
 
 import s from "./App.module.scss";
-import NoteList from "./components/NoteList/NoteList";
 import NoteWrapper from "./components/Note/NodeWrapper";
+import SideBarWrapper from './components/SideBar/SideBarWrapper'
+import NoteList from "./components/NoteList/NoteList";
 import SideBar from "./components/SideBar/SideBar";
 
 function App() {
@@ -35,7 +36,7 @@ function App() {
 
   return (
     <div className={s.container}>
-      <SideBar />
+      <SideBarWrapper />
       <Switch>
         <Route path="/">
           <NoteList />

@@ -1,6 +1,8 @@
-import React, { FC, useState } from "react";
-import { useTypeSelector } from "../../hooks/useTypeSelector";
+import React, { FC, useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
+import { useTypeSelector } from "../../hooks/useTypeSelector";
+import { selectNote } from '../../store/actions/noteActions'
 import { IGroup, INote } from "../../types/state";
 import { OutputData } from "@editorjs/editorjs";
 import Editor from "../Editor";
@@ -12,9 +14,15 @@ interface IParams {
 }
 
 const Note: FC = () => {
+  const dispatch = useDispatch();
   const { noteId } = useParams<IParams>();
-  const { notes, groups } = useTypeSelector((state) => state);
-  console.log("render note ", noteId);
+  const { notes, groups, selectNoteId } = useTypeSelector((state) => state);
+
+  useEffect(() => {
+    if (noteId && typeof selectNoteId === 'boolean') {
+		dispatch(selectNote(Number(noteId)))
+    }
+  }, []);
 
   const note = notes.filter((item) => item.id === Number(noteId))[0];
   const group = groups.find((group) => group.id === note.group_id);
@@ -120,7 +128,12 @@ const Note: FC = () => {
             </div>
             <div className={s.inputTagsContainer}>
               <i className="fas fa-hashtag"></i>
-              <input value={note.tags} placeholder="Add tags" type="text" name="tags" />
+              <input
+                value={note.tags}
+                placeholder="Add tags"
+                type="text"
+                name="tags"
+              />
             </div>
           </div>
           <div className={s.optionsContainer} onClick={toggleModalHandler}>
