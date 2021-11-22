@@ -35,7 +35,7 @@ const GroupItem: FC<GroupItemProps> = ({
 						<span className={s.groupsItemCount}>7</span>
 					</p>
 				</div>
-				<div className={s.iconContainer}>
+				<div className={`${s.iconContainer} ${s.iconDeleteGroup}`}>
 					<i className="far fa-trash-alt"></i>
 				</div>
 			</div>
