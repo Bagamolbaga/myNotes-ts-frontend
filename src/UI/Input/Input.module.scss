@@ -1,0 +1,30 @@
+.inputContainer {
+    height: 40px;
+    width: 330px;
+    padding: 0 10px;
+    border-radius: 50px;
+    display: flex;
+    align-items: center;
+    background: #424242;
+    color: #a5a5a5;
+    transition: .1s;
+  
+    &:hover {
+      background: #5f5f5f;
+      color: #d4d4d4;
+    }
+  
+    &:hover input {
+      color: #d4d4d4;
+    }
+  
+    & input {
+      width: 100%;
+      background: none;
+      outline: none;
+      border: none;
+      margin-left: 10px;
+      color: #a5a5a5;
+      font-size: 18px;
+    }
+  }
