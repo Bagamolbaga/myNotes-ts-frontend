@@ -4,9 +4,9 @@ import SideBarSceleton from './SideBarSceleton';
 import SideBar from './SideBar'
 
 const SideBarWrapper = () => {
-  const { notes } = useTypeSelector((state) => state);
+  const { loading } = useTypeSelector((state) => state);
 
-    if(notes.length === 0){
+    if(loading){
         return <SideBarSceleton />
     }
 

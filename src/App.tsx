@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Switch, Route } from "react-router";
 import { Container } from "react-bootstrap";
-// import SideBar from "./components/SideBar";
 import MainContentWraper from "./components/MainContentWraper";
 import { useTypeSelector } from "./hooks/useTypeSelector";
 import { authCheck } from "./store/asyncActions/asyncUserActions";
@@ -14,7 +13,8 @@ import s from "./App.module.scss";
 import NoteWrapper from "./components/Note/NodeWrapper";
 import SideBarWrapper from './components/SideBar/SideBarWrapper'
 import NoteList from "./components/NoteList/NoteList";
-import SideBar from "./components/SideBar/SideBar";
+import Login from './components/Login/Login'
+import Registration from './components/Registration/Registration'
 
 function App() {
   const { user } = useTypeSelector((state) => state);
@@ -45,6 +45,12 @@ function App() {
       <Switch>
         <Route exact path="/note/:noteId">
           <NoteWrapper />
+        </Route>
+        <Route exact path="/login">
+          <Login />
+        </Route>
+        <Route exact path="/registration">
+          <Registration />
         </Route>
       </Switch>
     </div>
