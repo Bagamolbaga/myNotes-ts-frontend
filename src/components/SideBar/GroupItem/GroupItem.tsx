@@ -5,12 +5,16 @@ interface GroupItemProps {
 	showSideBar: boolean;
 	color: string;
 	label: string;
+	onClick: () => void
+	isSelected: boolean
 }
 
 const GroupItem: FC<GroupItemProps> = ({
 	showSideBar,
 	color = 'white',
-	label
+	label,
+	onClick,
+	isSelected
 }) => {
 	const [showPopUp, setShowPopUp] = useState(false);
 
@@ -19,13 +23,13 @@ const GroupItem: FC<GroupItemProps> = ({
 	};
 
 	return (
-		<div className={s.container}>
+		<div className={s.container} onClick={onClick}>
 			<div
 				onMouseEnter={() => setShowPopUp(true)}
 				onMouseLeave={() => setShowPopUp(false)}
 				className={`${s.groupsItem} + ${
 					showSideBar ? s.reverseTabOnlyIcon : s.reverseTabAllContent
-				}`}>
+				} + ${isSelected && s.selected}`}>
 				<div className={s.iconAndLabelContainer}>
 					<div className={s.iconContainer}>
 						<i className="far fa-folder" style={iconStyle}></i>

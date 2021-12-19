@@ -3,6 +3,10 @@
   max-height: 300px;
 }
 
+.selected {
+  background: #404040;
+}
+
 .groupsItem {
   display: flex;
   justify-content: space-between;
