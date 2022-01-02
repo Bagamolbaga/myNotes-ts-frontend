@@ -15,6 +15,7 @@ import SideBarWrapper from './components/SideBar/SideBarWrapper'
 import NoteList from "./components/NoteList/NoteList";
 import Login from './components/Login/Login'
 import Registration from './components/Registration/Registration'
+import CreateNote from './components/CreateNote/CreateNote'
 
 function App() {
   const { user } = useTypeSelector((state) => state);
@@ -43,6 +44,9 @@ function App() {
         </Route>
       </Switch>
       <Switch>
+        <Route exact path="/create-note">
+          <CreateNote />
+        </Route>
         <Route exact path="/note/:noteId">
           <NoteWrapper />
         </Route>

@@ -1,4 +1,4 @@
-import React, { FC, useState, useMemo, useRef } from "react";
+import React, { FC, useState, useMemo, useRef, useCallback } from "react";
 import { useTypeSelector } from "../../hooks/useTypeSelector";
 import NoteListItem from "./NoteListItem/NoteListItem";
 import SearchHeader from "./SearchHeader/SearchHeader";
@@ -23,7 +23,7 @@ const List: FC<{ notes: INote[] }> = ({ notes }) => {
 };
 
 const NoteList: FC = () => {
-  const { notes, selectNoteId } = useTypeSelector((state) => state);
+  const { notes, selectedGroup } = useTypeSelector((state) => state);
   const [searchValue, setSearchValue] = useState("");
 
   const inputRef = useRef<any>(null)
@@ -33,16 +33,25 @@ const NoteList: FC = () => {
     [notes]
   );
 
-  const allNotes =
+  const filteredNotesByGroup = useCallback(() => {
+    if (typeof selectedGroup === 'number') {
+      return notes.filter(note => note.group_id === selectedGroup)
+    }
+    
+    return notes
+  }, [notes, selectedGroup])
+
+  const allNotes = useMemo(() => (
     searchValue === ""
-      ? notes
+      ? filteredNotesByGroup()
       : notes.filter((note) =>
           note.title && note.text && note.tags && searchValue !== null
             ? note.title.toLowerCase().includes(searchValue) ||
               note.text.toLowerCase().includes(searchValue) ||
               note.tags.join(" ").toLowerCase().includes(searchValue)
             : false
-        );
+        )
+  ), [notes, searchValue, filteredNotesByGroup])
 
   const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
@@ -59,7 +68,7 @@ const NoteList: FC = () => {
         <div>
           <div className={s.listTitle}>
             <i className="fas fa-list-ul"></i>
-            <p>All notes</p>
+            <p>{searchValue ? 'Filtered notes' : 'All notes'}</p>
             <i className={`fas fa-sort-down ${s.arrowRotate}`}></i>
           </div>
             <List notes={allNotes} />

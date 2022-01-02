@@ -1,4 +1,5 @@
 import React, { FC } from "react";
+import { Link } from "react-router-dom";
 import s from "./searchHeader.module.scss";
 
 interface SearchHeaderProps {
@@ -22,9 +23,11 @@ const SearchHeader: FC<SearchHeaderProps> = ({
           type="text"
         />
       </div>
-      <button className={s.btnAdd}>
-        <i className="fas fa-plus"></i>
-      </button>
+      <Link to={'/create-note'}>
+        <button className={s.btnAdd}>
+          <i className="fas fa-plus"></i>
+        </button>
+      </Link>
     </div>
   );
 };

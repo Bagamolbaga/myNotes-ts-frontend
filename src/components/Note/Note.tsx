@@ -3,6 +3,7 @@ import { useDispatch } from "react-redux";
 import { useParams } from "react-router-dom";
 import { useTypeSelector } from "../../hooks/useTypeSelector";
 import { selectNote } from '../../store/actions/noteActions'
+import { createAsyncNote, fixedNote, unFixedNote, asyncDeleteNote } from '../../store/asyncActions/asyncNoteActions'
 import { IGroup, INote } from "../../types/state";
 import { OutputData } from "@editorjs/editorjs";
 import Editor from "../Editor";
@@ -56,6 +57,34 @@ const Note: FC = () => {
     e.stopPropagation();
   };
 
+  const pinnedNoteHandler = () => {
+    const fixedNotesLength = notes.filter((note) => note.fixed).length;
+
+    if (!note?.fixed && fixedNotesLength < 4) {
+      dispatch(fixedNote(selectNoteId as number))
+    }
+
+    if (note?.fixed) {
+      dispatch(unFixedNote(selectNoteId as number))
+    }
+
+  }
+
+  const copyNoteHandler = () => {
+    dispatch(
+      createAsyncNote({
+        title: note!.title,
+        text: note!.text,
+        tags: note!.tags,
+        groupId: note!.group_id,
+      })
+    );
+  }
+
+  const deleteNoteHandler = () => {
+    dispatch(asyncDeleteNote(selectNoteId as number))
+  }
+
   return (
     <>
       {showChangeModal && (
@@ -65,10 +94,10 @@ const Note: FC = () => {
         >
           <div className={s.changeGroupModal} onClick={stopPropagationEvent}>
             <p>Select new group</p>
-            <GroupItem showSideBar={false} color="#d83030" label="Game" />
-            <GroupItem showSideBar={false} color="#1ed116" label="IT" />
-            <GroupItem showSideBar={false} color="#2bc5d5" label="Anime" />
-            <GroupItem showSideBar={false} color="#c42bc5" label="Gachi" />
+            <GroupItem onClick={()=>null} isSelected={false} showSideBar={false} color="#d83030" label="Game" />
+            <GroupItem onClick={()=>null} isSelected={false} showSideBar={false} color="#1ed116" label="IT" />
+            <GroupItem onClick={()=>null} isSelected={false} showSideBar={false} color="#2bc5d5" label="Anime" />
+            <GroupItem onClick={()=>null} isSelected={false} showSideBar={false} color="#c42bc5" label="Gachi" />
           </div>
         </div>
       )}
@@ -84,11 +113,11 @@ const Note: FC = () => {
               </div>
               <p>Add to favorites</p>
             </div>
-            <div className={s.optionsItemContainer}>
+            <div className={s.optionsItemContainer} onClick={pinnedNoteHandler}>
               <div className={s.iconContainer}>
                 <i className="fas fa-thumbtack"></i>
               </div>
-              <p>Pin note</p>
+              <p>{note?.fixed ? 'Unpin note' : 'Pin note'}</p>
             </div>
             <div className={s.optionsItemContainer}>
               <div className={s.iconContainer}>
@@ -96,7 +125,7 @@ const Note: FC = () => {
               </div>
               <p>Edit note</p>
             </div>
-            <div className={s.optionsItemContainer}>
+            <div className={s.optionsItemContainer} onClick={copyNoteHandler}>
               <div className={s.iconContainer}>
                 <i className="far fa-copy"></i>
               </div>
@@ -111,7 +140,7 @@ const Note: FC = () => {
               </div>
               <p>Change group</p>
             </div>
-            <div className={s.optionsItemContainer}>
+            <div className={s.optionsItemContainer} onClick={deleteNoteHandler}>
               <div className={s.iconContainer}>
                 <i className="far fa-trash-alt"></i>
               </div>
@@ -128,12 +157,7 @@ const Note: FC = () => {
             </div>
             <div className={s.inputTagsContainer}>
               <i className="fas fa-hashtag"></i>
-              <input
-                value={note.tags}
-                placeholder="Add tags"
-                type="text"
-                name="tags"
-              />
+              <span>{note.tags.join(', ')}</span>
             </div>
           </div>
           <div className={s.optionsContainer} onClick={toggleModalHandler}>
@@ -154,7 +178,7 @@ const Note: FC = () => {
             </div>
           </div>
           <Editor
-            readOnly={false}
+            readOnly={true}
             key={note.id}
             id={note.id}
             value={dataText}

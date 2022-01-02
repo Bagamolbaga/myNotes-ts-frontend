@@ -7,7 +7,7 @@ import { socketRef } from '../../http/socket-io'
 
 export const createAsyncNote = (data: any) => async (dispatch: Dispatch<NoteActions>, getState: () => IState) => {
   const { user, selectedGroup } = getState()
-  const res = await API.note.createNote(data, user, Number(selectedGroup === 'All' ? data.group_id : selectedGroup))
+  const res = await API.note.createNote(data, user, data.groupId)
   if (res.status === 200) {
     dispatch(createNote(res.data))
     socketRef.emit('newNote', res.data)
