@@ -1,5 +1,5 @@
 import { io } from 'socket.io-client'
-import { createGroup } from '../store/actions/groupActions'
+import { createGroup, deleteGroup } from '../store/actions/groupActions'
 import { createNote, deleteNote, editNote, selectNote } from '../store/actions/noteActions'
 import { store } from '../store/store'
 import { IGroup, INote } from '../types/state'
@@ -15,7 +15,7 @@ socketRef.on('deleteNote', (id: number) => {
 })
 
 socketRef.on('editNote', (data: any) => {
-    store.dispatch(selectNote(data.selectNoteId))
+    // store.dispatch(selectNote(data.selectNoteId)) нужен для старой версии
     store.dispatch(editNote(data))
 })
 
@@ -29,4 +29,8 @@ socketRef.on('unFixedNote', (data: any) => {
 
 socketRef.on('newGroup', (data: IGroup) => {
     store.dispatch(createGroup(data))
+})
+
+socketRef.on('deleteGroup', (id: number) => {
+    store.dispatch(deleteGroup(id))
 })

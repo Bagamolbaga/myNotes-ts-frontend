@@ -26,7 +26,7 @@ const SideBar: React.FC = () => {
   const addNewGroup = () => {
     setShowAddGroupForm(false)
     setGroupVal('')
-    dispatch(createAsyncGroup(groupVal))
+    // dispatch(createAsyncGroup(groupVal, '#2d2d2d'))
   }
 
   const showGroupFormHandler = () => {

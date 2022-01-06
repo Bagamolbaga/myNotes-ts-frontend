@@ -1,37 +1,51 @@
-import React, { FC, useState, useEffect } from "react";
+import React, { FC, useState, useEffect, useRef } from "react";
+import isShallowEqual from "shallowequal";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useParams, useHistory } from "react-router-dom";
 import { useTypeSelector } from "../../hooks/useTypeSelector";
 import { selectNote } from "../../store/actions/noteActions";
+import { editAsyncNotes } from "../../store/asyncActions/asyncNoteActions";
 import { IGroup, INote, IState } from "../../types/state";
 import { OutputData } from "@editorjs/editorjs";
+import { notesInGroupCounter } from "../../utils/notesInGroupCounter";
 import Editor from "../Editor";
 import GroupItem from "../SideBar/GroupItem/GroupItem";
+import Button from "../../UI/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFolder } from "@fortawesome/free-regular-svg-icons";
-import { faSortDown, faHashtag } from "@fortawesome/free-solid-svg-icons";
-import s from "./CreateNote.module.scss";
-import Button from "../../UI/Button";
-import { createAsyncNote } from "../../store/asyncActions/asyncNoteActions";
-import { notesInGroupCounter } from "../../utils/notesInGroupCounter";
+import { faSortDown, faHashtag } from '@fortawesome/free-solid-svg-icons'
+import s from "./EditNote.module.scss";
+
+interface IParams {
+  noteId: string;
+}
 
 const getState = (state: IState) => state;
 
-const Note: FC = () => {
+const EditNote: FC = () => {
+  const history = useHistory();
+  const { noteId } = useParams<IParams>();
   const dispatch = useDispatch();
   const { groups, notes } = useTypeSelector(getState);
 
+  const note = notes.find((note) => note.id === Number(noteId));
+  const group = groups.find((group) => group.id === note?.group_id);
+
   const [showSelectGroupModal, setShowSelectGroupModal] = useState(false);
-  const [selectGroup, setSelectGroup] = useState<IGroup | null>(null);
-  const [tags, setTags] = useState("");
+  const [selectGroup, setSelectGroup] = useState<IGroup>(group!);
+  const [tags, setTags] = useState(note ? note.tags.join(", ") : "");
   const [showTitleInput, setShowTitleInput] = useState(false);
-  const [title, setTitle] = useState("Write title note");
-  const [editorValue, setEditorValue] = useState<OutputData>();
+  const [title, setTitle] = useState(note ? note.title : "");
+  const [editorValue, setEditorValue] = useState<OutputData>(
+    note ? JSON.parse(note.text) : ({} as OutputData)
+  );
 
   const [showOptions, setShowOptions] = useState(false);
   const [showChangeModal, setShowChangeModal] = useState(false);
 
-  useEffect(() => {}, []);
+  const [isTextChanges, setIsTextChanges] = useState(false);
+  const isTagsChanges = tags !== note?.tags.join(", ");
+  const isTitleChanges = title !== note?.title;
 
   const tagsChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) =>
     setTags(e.target.value);
@@ -84,25 +98,28 @@ const Note: FC = () => {
   };
 
   const editorOnChangeHandler = (value: OutputData) => {
+    setIsTextChanges(true);
     setEditorValue(value);
   };
 
-  const createNoteHandler = () => {
-    const tagsArray = tags.trim().split(" ");
+  const editNoteHandler = () => {
+    const tagsArray = tags && tags.trim().split(", ");
     dispatch(
-      createAsyncNote({
+      editAsyncNotes({
         title,
         text: JSON.stringify(editorValue),
         tags: tagsArray,
-        groupId: selectGroup!.id,
+        groupId: selectGroup.id,
       })
     );
+    history.push(`/note/${noteId}`);
   };
 
   const noteInGroupCounter = notesInGroupCounter(notes);
 
-  let showCreateNoteBtn =
-    tags && title && editorValue && selectGroup ? true : false;
+  let showEditNoteBtn = isTagsChanges || isTitleChanges || isTextChanges;
+
+  const folderStyle = { color: selectGroup.color };
 
   return (
     <>
@@ -117,8 +134,8 @@ const Note: FC = () => {
               isSelected={false}
               onClick={() => null}
               showSideBar={false}
-              color="#c42bc5"
-              label="Gachi"
+              color="#d83030"
+              label="Game"
             /> */}
           </div>
         </div>
@@ -185,14 +202,14 @@ const Note: FC = () => {
             ))}
           </div>
         )}
-        {showCreateNoteBtn && (
+        {showEditNoteBtn && (
           <div className={s.btnCreateNoteContainer}>
             <Button
               className={s.btnCreateNote}
               color="#39d695"
-              onClick={createNoteHandler}
+              onClick={editNoteHandler}
             >
-              Create
+              Edit
             </Button>
           </div>
         )}
@@ -203,23 +220,19 @@ const Note: FC = () => {
               onClick={toggleSelectGroupModalHandler}
             >
               <FontAwesomeIcon color={selectGroup?.color} icon={faFolder} />
+
               <p className="groupLabel">
                 {selectGroup ? selectGroup.title : "Unselect group"}
               </p>
-              <FontAwesomeIcon
-                className="mb-0.5"
-                transform={{ rotate: showSelectGroupModal ? 0 : -90 }}
-                icon={faSortDown}
-              />
+              <FontAwesomeIcon className="mb-0.5" transform={{ rotate: showSelectGroupModal ? 0 : -90 }} icon={faSortDown} />
+
             </div>
             <div className={s.inputTagsContainer}>
               <FontAwesomeIcon icon={faHashtag} />
-
               <input
                 value={tags}
-                placeholder="Add tags"
+                placeholder="tag1, tag2, tag3"
                 type="text"
-                name="tags"
                 onChange={tagsChangeHandler}
               />
             </div>
@@ -242,7 +255,7 @@ const Note: FC = () => {
             <div className={s.noteHeaderInfo} onClick={stopPropagationEvent}>
               <div
                 className={s.groupCircle}
-                style={{ background: selectGroup?.color }}
+                style={{ background: selectGroup.color }}
               ></div>
               {showTitleInput ? (
                 <input
@@ -272,4 +285,4 @@ const Note: FC = () => {
   );
 };
 
-export default Note;
+export default EditNote;

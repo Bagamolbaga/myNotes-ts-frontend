@@ -50,6 +50,7 @@ type editNoteObj = {
   title?: string;
   text?: string;
   tags?: string[];
+  groupId?: number;
   toFixed?: boolean;
   toUnFixed?: boolean;
   id?: number;

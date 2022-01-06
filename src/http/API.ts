@@ -11,14 +11,15 @@ type UserRes = {
     note: {
       createNote : (data: INote, user: IUser, selectedGroup: number) => Promise<AxiosResponse<INote>>
       getNotes : (user: IUser) => Promise<AxiosResponse<INote[]>>
-      editNote : (selectNoteId: number, data: {title: string, text: string, tags: string[]}) => Promise<AxiosResponse<any>>
+      editNote : (selectNoteId: number, data: {title: string, text: string, tags: string[], groupId: number}) => Promise<AxiosResponse<any>>
       fixedNote : (id: number) => Promise<AxiosResponse<any>>
       unFixedNote : (id: number) => Promise<AxiosResponse<any>>
       deleteNote : (id: number) => Promise<AxiosResponse<any>>
     },
     group: {
-      createGroup : (title: string, user: IUser) => Promise<AxiosResponse<IGroup>>
+      createGroup : (title: string, color: string, user: IUser) => Promise<AxiosResponse<IGroup>>
       getGroups : (user: IUser) => Promise<AxiosResponse<IGroup[]>>
+      deleteGroup : (id: number) => Promise<AxiosResponse<number>>
     },
     user: {
       registration : (name: string, email: string, password: string, img: string) => Promise<AxiosResponse<UserRes>>
@@ -49,12 +50,13 @@ type UserRes = {
         })
       },
   
-      editNote : async (selectNoteId: number, data: {title: string, text: string, tags: string[]}) => {
+      editNote : async (selectNoteId: number, data: {title: string, text: string, tags: string[], groupId: number}) => {
         return await API.put('api/note', {
           note_id: selectNoteId,
           newTitle: data.title,
           newText: data.text,
           newTags: data.tags,
+          newGroupId: data.groupId
         })
       },
   
@@ -85,10 +87,17 @@ type UserRes = {
         })
       },
   
-      createGroup : async (title: string, user: IUser) => {
+      createGroup : async (title: string, color: string, user: IUser) => {
         return await API.post('api/group', {
           title,
+          color,
           user_id: user.id,
+        })
+      },
+
+      deleteGroup : async (id: number) => {
+        return API.delete('api/group', {
+          params: { group_id: id }
         })
       }
     },

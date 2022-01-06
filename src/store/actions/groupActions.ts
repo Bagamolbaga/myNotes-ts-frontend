@@ -3,6 +3,7 @@ import { IGroup } from "../../types/state";
 export enum groupActionTypes {
   GET_GROUP = "GET_GROUP",
   CREATE_GROUP = "CREATE_GROUP",
+  DELETE_GROUP = "DELETE_GROUP",
   SELECT_ACTIVE_GROUP = "SELECT_ACTIVE_GROUP",
   SHOW_CREATE_NOTE_FORM = "SHOW_CREATE_NOTE_FORM",
   SHOW_ACTIVE_GROUP = "SHOW_ACTIVE_GROUP",
@@ -19,6 +20,11 @@ interface getGroupsAction {
 interface createGroupAction {
   type: groupActionTypes.CREATE_GROUP;
   payload: IGroup;
+}
+
+interface deleteGroupAction {
+  type: groupActionTypes.DELETE_GROUP;
+  payload: number
 }
 
 interface selectActiveGroupAction {
@@ -53,6 +59,11 @@ export const createGroup = (value: IGroup): createGroupAction => ({
   payload: value,
 });
 
+export const deleteGroup = (value: number): deleteGroupAction => ({
+  type: groupActionTypes.DELETE_GROUP,
+  payload: value
+})
+
 export const selectActiveGroup = (value: number | string): selectActiveGroupAction => ({
   type: groupActionTypes.SELECT_ACTIVE_GROUP,
   payload: value,
@@ -66,6 +77,7 @@ export const selectActiveGroup = (value: number | string): selectActiveGroupActi
 export type GroupActions =
   | getGroupsAction
   | createGroupAction
+  | deleteGroupAction
   | selectActiveGroupAction
   // | setLoadingAction
   | showAllNoteAction

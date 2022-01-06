@@ -15,7 +15,6 @@ const List: FC<{ notes: INote[] }> = ({ notes }) => {
           key={note.id}
           note={note}
           selected={note.id === selectNoteId ? true : false}
-          color="#d83030"
         />
       ))}
     </div>

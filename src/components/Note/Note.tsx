@@ -1,13 +1,20 @@
 import React, { FC, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import { useTypeSelector } from "../../hooks/useTypeSelector";
-import { selectNote } from '../../store/actions/noteActions'
-import { createAsyncNote, fixedNote, unFixedNote, asyncDeleteNote } from '../../store/asyncActions/asyncNoteActions'
+import { selectNote } from "../../store/actions/noteActions";
+import {
+  createAsyncNote,
+  fixedNote,
+  unFixedNote,
+  asyncDeleteNote,
+} from "../../store/asyncActions/asyncNoteActions";
 import { IGroup, INote } from "../../types/state";
 import { OutputData } from "@editorjs/editorjs";
 import Editor from "../Editor";
 import GroupItem from "../SideBar/GroupItem/GroupItem";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFolder } from '@fortawesome/free-regular-svg-icons'
 import s from "./Note.module.scss";
 
 interface IParams {
@@ -20,8 +27,8 @@ const Note: FC = () => {
   const { notes, groups, selectNoteId } = useTypeSelector((state) => state);
 
   useEffect(() => {
-    if (noteId && typeof selectNoteId === 'boolean') {
-		dispatch(selectNote(Number(noteId)))
+    if (noteId && typeof selectNoteId === "boolean") {
+      dispatch(selectNote(Number(noteId)));
     }
   }, []);
 
@@ -61,14 +68,13 @@ const Note: FC = () => {
     const fixedNotesLength = notes.filter((note) => note.fixed).length;
 
     if (!note?.fixed && fixedNotesLength < 4) {
-      dispatch(fixedNote(selectNoteId as number))
+      dispatch(fixedNote(selectNoteId as number));
     }
 
     if (note?.fixed) {
-      dispatch(unFixedNote(selectNoteId as number))
+      dispatch(unFixedNote(selectNoteId as number));
     }
-
-  }
+  };
 
   const copyNoteHandler = () => {
     dispatch(
@@ -79,11 +85,11 @@ const Note: FC = () => {
         groupId: note!.group_id,
       })
     );
-  }
+  };
 
   const deleteNoteHandler = () => {
-    dispatch(asyncDeleteNote(selectNoteId as number))
-  }
+    dispatch(asyncDeleteNote(selectNoteId as number));
+  };
 
   return (
     <>
@@ -94,10 +100,13 @@ const Note: FC = () => {
         >
           <div className={s.changeGroupModal} onClick={stopPropagationEvent}>
             <p>Select new group</p>
-            <GroupItem onClick={()=>null} isSelected={false} showSideBar={false} color="#d83030" label="Game" />
-            <GroupItem onClick={()=>null} isSelected={false} showSideBar={false} color="#1ed116" label="IT" />
-            <GroupItem onClick={()=>null} isSelected={false} showSideBar={false} color="#2bc5d5" label="Anime" />
-            <GroupItem onClick={()=>null} isSelected={false} showSideBar={false} color="#c42bc5" label="Gachi" />
+            {/* <GroupItem
+              onClick={() => null}
+              isSelected={false}
+              showSideBar={false}
+              color="#d83030"
+              label="Game"
+            /> */}
           </div>
         </div>
       )}
@@ -117,14 +126,16 @@ const Note: FC = () => {
               <div className={s.iconContainer}>
                 <i className="fas fa-thumbtack"></i>
               </div>
-              <p>{note?.fixed ? 'Unpin note' : 'Pin note'}</p>
+              <p>{note?.fixed ? "Unpin note" : "Pin note"}</p>
             </div>
-            <div className={s.optionsItemContainer}>
-              <div className={s.iconContainer}>
-                <i className="far fa-edit"></i>
+            <Link to={`/edit-note/${note.id}`}>
+              <div className={s.optionsItemContainer}>
+                <div className={s.iconContainer}>
+                  <i className="far fa-edit"></i>
+                </div>
+                <p>Edit note</p>
               </div>
-              <p>Edit note</p>
-            </div>
+            </Link>
             <div className={s.optionsItemContainer} onClick={copyNoteHandler}>
               <div className={s.iconContainer}>
                 <i className="far fa-copy"></i>
@@ -151,13 +162,12 @@ const Note: FC = () => {
         <div className={s.headerContainer}>
           <div className={s.selectAndInputTagsContainer}>
             <div className={s.selectGroup}>
-              <i className="far fa-folder" style={{ color: "red" }}></i>
+              <FontAwesomeIcon color={group?.color} icon={faFolder} />
               <p className="groupLabel">{group?.title}</p>
-              <i className={`fas fa-sort-down ${s.arrow}`}></i>
             </div>
             <div className={s.inputTagsContainer}>
               <i className="fas fa-hashtag"></i>
-              <span>{note.tags.join(', ')}</span>
+              <span>{note.tags.join(", ")}</span>
             </div>
           </div>
           <div className={s.optionsContainer} onClick={toggleModalHandler}>
@@ -173,16 +183,11 @@ const Note: FC = () => {
               alt=""
             />
             <div className={s.noteHeaderInfo}>
-              <div className={s.groupCircle}></div>
+              <div className={s.groupCircle} style={{background: group?.color}}></div>
               <h1 className={s.noteTitle}>{note.title}</h1>
             </div>
           </div>
-          <Editor
-            readOnly={true}
-            key={note.id}
-            id={note.id}
-            value={dataText}
-          />
+          <Editor readOnly={true} key={note.id} id={note.id} value={dataText} />
         </div>
       </div>
     </>

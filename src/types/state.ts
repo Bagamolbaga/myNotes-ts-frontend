@@ -20,6 +20,7 @@ export interface IUser {
 export interface IGroup {
     id: number
     title: string
+    color: string
     user_id: number
     createdAt: string
     updatedAt: string

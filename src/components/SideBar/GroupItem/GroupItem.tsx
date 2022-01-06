@@ -5,7 +5,9 @@ interface GroupItemProps {
   showSideBar: boolean;
   color: string;
   label: string;
+  notesCount: number;
   onClick: () => void;
+  deleteHandler?: () => void
   isSelected: boolean;
   withIcon?: boolean;
 }
@@ -14,7 +16,9 @@ const GroupItem: FC<GroupItemProps> = ({
   showSideBar,
   color = "white",
   label,
+  notesCount = 0,
   onClick,
+  deleteHandler,
   isSelected,
   withIcon = true,
 }) => {
@@ -39,11 +43,11 @@ const GroupItem: FC<GroupItemProps> = ({
           </div>
           <p>
             {label}
-            <span className={s.groupsItemCount}>7</span>
+            <span className={s.groupsItemCount}>{notesCount}</span>
           </p>
         </div>
         {withIcon && (
-          <div className={`${s.iconContainer} ${s.iconDeleteGroup}`}>
+          <div className={`${s.iconContainer} ${s.iconDeleteGroup}`} onClick={deleteHandler}>
             <i className="far fa-trash-alt"></i>
           </div>
         )}

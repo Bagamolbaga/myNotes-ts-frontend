@@ -1,10 +1,11 @@
 import React, { ChangeEvent, FC, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useTypeSelector } from "../../hooks/useTypeSelector";
-import { createAsyncGroup } from "../../store/asyncActions/asyncGroupActions";
+import { asyncDeleteGroup, createAsyncGroup } from "../../store/asyncActions/asyncGroupActions";
 import { selectActiveGroup } from "../../store/actions/groupActions";
 import { showAllNote } from "../../store/actions/noteActions";
 import { IGroup } from "../../types/state";
+import { notesInGroupCounter } from '../../utils/notesInGroupCounter'
 
 import GroupItem from "./GroupItem/GroupItem";
 import TagsItem from "./TagsItem/TagsItem";
@@ -13,24 +14,28 @@ import s from "./SideBar.module.scss";
 
 const SideBar: FC = () => {
   const dispatch = useDispatch();
-  const { user, groups, selectedGroup } = useTypeSelector((state) => state);
+  const { user, groups, notes, selectedGroup } = useTypeSelector((state) => state);
 
   const [showSideBar, setShowSideBar] = useState(false);
   const [showCreateGroupModal, setShowCreateGroupModal] = useState(false);
-  const [newGroupValue, setNewGroupValue] = useState("");
+  const [newGroupTitleValue, setNewGroupTitleValue] = useState("");
+  const [newGroupColorValue, setNewGroupColorValue] = useState("#c16dcb");
 
   const showCreateGroupModalHandler = () => setShowCreateGroupModal(true);
 
   const closeCreateGroupModalHandler = () => setShowCreateGroupModal(false);
 
-  const newGroupValueChangeHandler = (e: ChangeEvent<HTMLInputElement>) =>
-    setNewGroupValue(e.target.value);
+  const newGroupTitleValueChangeHandler = (e: ChangeEvent<HTMLInputElement>) =>
+    setNewGroupTitleValue(e.target.value);
+
+  const newGroupColorValueChangeHandler = (e: ChangeEvent<HTMLInputElement>) =>
+    setNewGroupColorValue(e.target.value);
 
   const createNewGroup = () => {
-    if (newGroupValue.length > 0) {
+    if (newGroupTitleValue.length > 0) {
       setShowCreateGroupModal(false);
-      setNewGroupValue("");
-      dispatch(createAsyncGroup(newGroupValue));
+      setNewGroupTitleValue("");
+      dispatch(createAsyncGroup(newGroupTitleValue, newGroupColorValue));
     }
   };
 
@@ -40,14 +45,22 @@ const SideBar: FC = () => {
       : dispatch(showAllNote());
   };
 
+  const deleteGroupHandler = (id: number) => {
+    dispatch(asyncDeleteGroup(id))
+  }
+
   const showAllNotesHandler = () => dispatch(showAllNote());
+
+  const noteInGroupCounter = notesInGroupCounter(notes)
 
   return (
     <>
       {showCreateGroupModal && (
         <CreateGroupModal
-          value={newGroupValue}
-          onChange={newGroupValueChangeHandler}
+          titleValue={newGroupTitleValue}
+          colorValue={newGroupColorValue}
+          onTitleChange={newGroupTitleValueChangeHandler}
+          onColorChange={newGroupColorValueChangeHandler}
           onClose={closeCreateGroupModalHandler}
           createGroup={createNewGroup}
         />
@@ -110,10 +123,12 @@ const SideBar: FC = () => {
               <GroupItem
                 key={group.id}
                 showSideBar={showSideBar}
-                color="#c42bc5"
+                color={group.color}
                 label={group.title}
+                notesCount={noteInGroupCounter[group.id]}
                 isSelected={selectedGroup === group.id ? true : false}
                 onClick={() => onClickGroupHandler(group)}
+                deleteHandler={() => deleteGroupHandler(group.id)}
               />
             ))}
         </div>

@@ -1,25 +1,26 @@
 import React, { FC } from "react";
 import { useHistory } from 'react-router-dom'
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { selectNote } from '../../../store/actions/noteActions'
-import { INote } from "../../../types/state";
+import { INote, IState } from "../../../types/state";
 import Editor from "../../Editor";
 import { OutputData } from "@editorjs/editorjs";
 import s from "./NoteListItem.module.scss";
 
 interface NoteListItemProps {
   note: INote;
-  color: string;
   selected?: boolean;
 }
 
+const getState = (state: IState) => state
+
 const NoteListItem: FC<NoteListItemProps> = ({
   note,
-  color = "white",
   selected,
 }) => {
   const history = useHistory()
   const dispatch = useDispatch()
+  const { groups } = useSelector(getState)
 
   const selectHandler = (id: number) => {
     history.push(`/note/${note.id}`);
@@ -27,7 +28,7 @@ const NoteListItem: FC<NoteListItemProps> = ({
   };
 
   const circleColor = {
-    background: color,
+    background: groups.find(group => group.id === note.group_id)?.color,
   };
 
   const noteDataText = JSON.parse(note.text) as OutputData;

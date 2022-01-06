@@ -4,16 +4,19 @@ import {Input} from '../../../UI/Input/Input'
 import Button from '../../../UI/Button'
 
 interface Props {
-    value: string
+    titleValue: string
+    colorValue: string
     createGroup: () => void
     onClose: () => void
-    onChange: (e: ChangeEvent<HTMLInputElement>) => void
+    onTitleChange: (e: ChangeEvent<HTMLInputElement>) => void
+    onColorChange: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
-const CreateGroupModal: FC<Props> = ({ value, createGroup, onClose, onChange}) => {
+const CreateGroupModal: FC<Props> = ({ titleValue, colorValue, createGroup, onClose, onTitleChange, onColorChange}) => {
     return (
         <Modal title='Create new Group' onClose={onClose}>
-            <Input className='m-0 mt-1 mb-1' value={value} placeholder='group name' onChange={onChange} />
+            <Input className='m-0 mt-1 mb-1' value={titleValue} placeholder='group name' onChange={onTitleChange} />
+            <Input className='m-0 mt-1 mb-1' type='color' value={colorValue} onChange={onColorChange} />
             <Button color='#5ec040' onClick={createGroup}>Create</Button>
         </Modal>
     )

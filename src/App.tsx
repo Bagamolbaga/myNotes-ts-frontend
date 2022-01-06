@@ -11,6 +11,7 @@ import { socketRef } from "./http/socket-io";
 
 import s from "./App.module.scss";
 import NoteWrapper from "./components/Note/NodeWrapper";
+import EditNodeWrapper from "./components/EditNote/EditNoteWrapper";
 import SideBarWrapper from './components/SideBar/SideBarWrapper'
 import NoteList from "./components/NoteList/NoteList";
 import Login from './components/Login/Login'
@@ -49,6 +50,9 @@ function App() {
         </Route>
         <Route exact path="/note/:noteId">
           <NoteWrapper />
+        </Route>
+        <Route exact path="/edit-note/:noteId">
+          <EditNodeWrapper />
         </Route>
         <Route exact path="/login">
           <Login />

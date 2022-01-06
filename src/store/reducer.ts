@@ -39,6 +39,12 @@ export const reducer = (state = initialState, action: IActions) : IState => {
         ...state,
         groups: [...state.groups, action.payload],
       }
+    case groupActionTypes.DELETE_GROUP:
+      let newGroups = state.groups.filter(group => group.id !== action.payload)
+      return {
+        ...state,
+        groups: [...newGroups]
+      }
     case noteActionTypes.SHOW_ALL_NOTES:
       return {
         ...state,
@@ -82,10 +88,11 @@ export const reducer = (state = initialState, action: IActions) : IState => {
             item.fixed = false
           }
         } else if (item.id === state.selectNoteId) {
-          if(action.payload.title && action.payload.text && action.payload.tags){
+          if(action.payload.title && action.payload.text && action.payload.tags && action.payload.groupId){
             item.title = action.payload.title
             item.text = action.payload.text
             item.tags = action.payload.tags
+            item.group_id = action.payload.groupId
           }
         }
         return note
