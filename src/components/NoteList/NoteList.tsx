@@ -5,11 +5,16 @@ import SearchHeader from "./SearchHeader/SearchHeader";
 import s from "./NoteList.module.scss";
 import { INote } from "../../types/state";
 
-const List: FC<{ notes: INote[] }> = ({ notes }) => {
+interface IList {
+  notes: INote[]
+  isPinned: boolean
+}
+
+const List: FC<IList> = ({ notes, isPinned }) => {
   const { selectNoteId } = useTypeSelector((state) => state);
 
   return (
-    <div className={s.list}>
+    <div className={`${s.list} ${isPinned && s.pinnedList}`}>
       {notes.map((note) => (
         <NoteListItem
           key={note.id}
@@ -40,7 +45,7 @@ const NoteList: FC = () => {
     return notes
   }, [notes, selectedGroup])
 
-  const allNotes = useMemo(() => (
+  const allNotes = (
     searchValue === ""
       ? filteredNotesByGroup()
       : notes.filter((note) =>
@@ -50,7 +55,7 @@ const NoteList: FC = () => {
               note.tags.join(" ").toLowerCase().includes(searchValue)
             : false
         )
-  ), [notes, searchValue, filteredNotesByGroup])
+  )
 
   const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
@@ -70,7 +75,7 @@ const NoteList: FC = () => {
             <p>{searchValue ? 'Filtered notes' : 'All notes'}</p>
             <i className={`fas fa-sort-down ${s.arrowRotate}`}></i>
           </div>
-            <List notes={allNotes} />
+            <List notes={allNotes} isPinned={false} />
         </div>
         <div
           className={s.pinnedList}
@@ -81,7 +86,7 @@ const NoteList: FC = () => {
             <p>Pinned notes</p>
             <i className={`fas fa-sort-down ${s.arrowRotate}`}></i>
           </div>
-          {pinnedNotes && <List notes={pinnedNotes} />}
+          {pinnedNotes && <List notes={pinnedNotes} isPinned />}
         </div>
       </div>
     </div>

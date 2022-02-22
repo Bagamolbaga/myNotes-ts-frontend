@@ -112,7 +112,7 @@ const EditNote: FC = () => {
         groupId: selectGroup.id,
       })
     );
-    history.push(`/note/${noteId}`);
+    // history.push(`/note/${noteId}`);
   };
 
   const noteInGroupCounter = notesInGroupCounter(notes);

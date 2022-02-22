@@ -34,6 +34,7 @@ type UserRes = {
     note: {
       createNote : async (data: INote, user: IUser, selectedGroup: number) => {
         return await API.post('api/note', {
+          headerImg: data.headerImg,
           title: data.title,
           text: data.text,
           tags: data.tags,

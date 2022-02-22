@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { Switch, Route } from "react-router";
+import React, { useEffect, useLayoutEffect, useRef } from "react";
+import { Switch, Route, useHistory } from "react-router";
 import { Container } from "react-bootstrap";
 import MainContentWraper from "./components/MainContentWraper";
 import { useTypeSelector } from "./hooks/useTypeSelector";
@@ -21,20 +21,35 @@ import CreateNote from './components/CreateNote/CreateNote'
 function App() {
   const { user } = useTypeSelector((state) => state);
   const dispatch = useDispatch();
+  const history = useHistory();
 
-  useEffect(() => {
+  const reloadCount = useRef(0)
+
+  useLayoutEffect(() => {
     dispatch(authCheck());
+    reloadCount.current++
   }, []);
 
   useEffect(() => {
+    reloadCount.current++
     if (user.isLogin) {
       dispatch(getAsyncGroup());
       dispatch(getAsyncNotes());
-
+      
       socketRef.emit("joinRoom", user.id!.toString());
+    } else if (!user.isLogin){
+      history.push('/login')
     }
+
+    if (reloadCount.current === 3){
+      history.goBack()
+      console.log('sdfs');
+    }
+
+    
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user.isLogin]);
+// console.log(user.isLogin, reloadCount.current);
 
   return (
     <div className={s.container}>

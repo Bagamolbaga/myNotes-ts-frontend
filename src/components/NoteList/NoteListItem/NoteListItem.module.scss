@@ -6,9 +6,10 @@
   border-radius: 5px;
   cursor: pointer;
   transition: .1s;
+  background: #303030;
 
   &:hover {
-    background: #323232;
+    background: #3d3d3d;
   }
 
   .contentContainer {

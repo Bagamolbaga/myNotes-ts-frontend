@@ -179,7 +179,7 @@ const Note: FC = () => {
         <div className={s.noteContainer}>
           <div className={s.noteHeader}>
             <img
-              src="https://i.pinimg.com/originals/c5/57/04/c55704fa7c9795fc439cb47246d30e27.jpg"
+              src={note.headerImg}
               alt=""
             />
             <div className={s.noteHeaderInfo}>

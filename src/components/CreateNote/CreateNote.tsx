@@ -8,12 +8,14 @@ import { OutputData } from "@editorjs/editorjs";
 import Editor from "../Editor";
 import GroupItem from "../SideBar/GroupItem/GroupItem";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFolder } from "@fortawesome/free-regular-svg-icons";
+import { faFolder, faImage } from "@fortawesome/free-regular-svg-icons";
 import { faSortDown, faHashtag } from "@fortawesome/free-solid-svg-icons";
 import s from "./CreateNote.module.scss";
 import Button from "../../UI/Button";
 import { createAsyncNote } from "../../store/asyncActions/asyncNoteActions";
 import { notesInGroupCounter } from "../../utils/notesInGroupCounter";
+import { Input } from "../../UI/Input/Input";
+import Modal from "../../UI/Modal";
 
 const getState = (state: IState) => state;
 
@@ -23,6 +25,8 @@ const Note: FC = () => {
 
   const [showSelectGroupModal, setShowSelectGroupModal] = useState(false);
   const [selectGroup, setSelectGroup] = useState<IGroup | null>(null);
+  const [showImageUrlInput, setShowImageUrlInput] = useState(false);
+  const [imageUrl, setImageUrl] = useState("");
   const [tags, setTags] = useState("");
   const [showTitleInput, setShowTitleInput] = useState(false);
   const [title, setTitle] = useState("Write title note");
@@ -38,6 +42,20 @@ const Note: FC = () => {
 
   const titleChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) =>
     setTitle(e.target.value);
+
+  const showImageUrlInputHandler = () => {
+    setShowImageUrlInput(true);
+  };
+
+  const closeModalImageUrlHandler = () => {
+    setShowImageUrlInput(false);
+  };
+
+  const ImageUrlInputChangeHandler = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    setImageUrl(e.target.value);
+  };
 
   const showTitleInputHandler = (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -91,6 +109,7 @@ const Note: FC = () => {
     const tagsArray = tags.trim().split(" ");
     dispatch(
       createAsyncNote({
+        headerImg: imageUrl,
         title,
         text: JSON.stringify(editorValue),
         tags: tagsArray,
@@ -122,6 +141,22 @@ const Note: FC = () => {
             /> */}
           </div>
         </div>
+      )}
+      {showImageUrlInput && (
+        <Modal title="Paste URL image" onClose={closeModalImageUrlHandler}>
+          <Input
+            className={s.imageUrlInput}
+            value={imageUrl}
+            onChange={ImageUrlInputChangeHandler}
+          />
+          <Button
+            className="mt-2"
+            color="#39d695"
+            onClick={closeModalImageUrlHandler}
+          >
+            OK
+          </Button>
+        </Modal>
       )}
       <div className={s.container} onClick={closeOptionsModalHandler}>
         {showOptions && (
@@ -235,10 +270,13 @@ const Note: FC = () => {
         </div>
         <div className={s.noteContainer}>
           <div className={s.noteHeader} onClick={closeTitleInputHandler}>
-            <img
-              src="https://i.pinimg.com/originals/c5/57/04/c55704fa7c9795fc439cb47246d30e27.jpg"
-              alt=""
+            <FontAwesomeIcon
+              size={"5x"}
+              icon={faImage}
+              onClick={showImageUrlInputHandler}
             />
+            {imageUrl.length > 0 && <img src={imageUrl} alt="" />}
+
             <div className={s.noteHeaderInfo} onClick={stopPropagationEvent}>
               <div
                 className={s.groupCircle}

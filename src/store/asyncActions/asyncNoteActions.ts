@@ -6,7 +6,7 @@ import API from '../../http/API'
 import { socketRef } from '../../http/socket-io'
 
 export const createAsyncNote = (data: any) => async (dispatch: Dispatch<NoteActions>, getState: () => IState) => {
-  const { user, selectedGroup } = getState()
+  const { user } = getState()
   const res = await API.note.createNote(data, user, data.groupId)
   if (res.status === 200) {
     dispatch(createNote(res.data))

@@ -95,11 +95,11 @@ export const reducer = (state = initialState, action: IActions) : IState => {
             item.group_id = action.payload.groupId
           }
         }
-        return note
+        return item
       })
       return {
         ...state,
-        notes: [...notes],
+        notes,
         showEditNoteForm: false,
       }
     case noteActionTypes.DELETE_NOTE:

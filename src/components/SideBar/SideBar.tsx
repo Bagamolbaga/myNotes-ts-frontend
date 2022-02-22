@@ -1,11 +1,14 @@
 import React, { ChangeEvent, FC, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useTypeSelector } from "../../hooks/useTypeSelector";
-import { asyncDeleteGroup, createAsyncGroup } from "../../store/asyncActions/asyncGroupActions";
+import {
+  asyncDeleteGroup,
+  createAsyncGroup,
+} from "../../store/asyncActions/asyncGroupActions";
 import { selectActiveGroup } from "../../store/actions/groupActions";
 import { showAllNote } from "../../store/actions/noteActions";
 import { IGroup } from "../../types/state";
-import { notesInGroupCounter } from '../../utils/notesInGroupCounter'
+import { notesInGroupCounter } from "../../utils/notesInGroupCounter";
 
 import GroupItem from "./GroupItem/GroupItem";
 import TagsItem from "./TagsItem/TagsItem";
@@ -14,12 +17,15 @@ import s from "./SideBar.module.scss";
 
 const SideBar: FC = () => {
   const dispatch = useDispatch();
-  const { user, groups, notes, selectedGroup } = useTypeSelector((state) => state);
+  const { user, groups, notes, selectedGroup } = useTypeSelector(
+    (state) => state
+  );
 
   const [showSideBar, setShowSideBar] = useState(false);
   const [showCreateGroupModal, setShowCreateGroupModal] = useState(false);
   const [newGroupTitleValue, setNewGroupTitleValue] = useState("");
   const [newGroupColorValue, setNewGroupColorValue] = useState("#c16dcb");
+  const [reverseGroupList, setReverseGroupList] = useState(false);
 
   const showCreateGroupModalHandler = () => setShowCreateGroupModal(true);
 
@@ -46,12 +52,16 @@ const SideBar: FC = () => {
   };
 
   const deleteGroupHandler = (id: number) => {
-    dispatch(asyncDeleteGroup(id))
-  }
+    dispatch(asyncDeleteGroup(id));
+  };
+
+  const reverseGroupListHandler = () => setReverseGroupList(!reverseGroupList)
 
   const showAllNotesHandler = () => dispatch(showAllNote());
 
-  const noteInGroupCounter = notesInGroupCounter(notes)
+  const noteInGroupCounter = notesInGroupCounter(notes);
+
+  const groupList = reverseGroupList === true ? [...groups].reverse() : groups
 
   return (
     <>
@@ -111,15 +121,17 @@ const SideBar: FC = () => {
             <p className={s.headTabTitle}>Groups</p>
           </div>
           <div className={s.groupsIconsContainer}>
-            <i className="fas fa-sort-alpha-down"></i>
+            <div onClick={reverseGroupListHandler}>
+              <i className={`fas ${reverseGroupList ? 'fa-sort-alpha-up' : 'fa-sort-alpha-down'}`}></i>
+            </div>
             <div onClick={showCreateGroupModalHandler}>
               <i className="fas fa-plus"></i>
             </div>
           </div>
         </div>
         <div className={s.groupItemsContainer}>
-          {groups &&
-            groups.map((group) => (
+          {groupList &&
+            groupList.map((group) => (
               <GroupItem
                 key={group.id}
                 showSideBar={showSideBar}
