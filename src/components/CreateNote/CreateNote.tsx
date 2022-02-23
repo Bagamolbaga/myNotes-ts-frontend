@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import { useTypeSelector } from "../../hooks/useTypeSelector";
 import { IGroup, IState } from "../../types/state";
 import { OutputData } from "@editorjs/editorjs";
-import Editor from "../Editor";
+import Editor from "../Editor/Editor";
 import GroupItem from "../SideBar/GroupItem/GroupItem";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFolder, faImage } from "@fortawesome/free-regular-svg-icons";

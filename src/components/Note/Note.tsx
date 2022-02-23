@@ -10,7 +10,7 @@ import {
   asyncDeleteNote,
 } from "../../store/asyncActions/asyncNoteActions";
 import { OutputData } from "@editorjs/editorjs";
-import Editor from "../Editor";
+import Editor from "../Editor/Editor";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFolder } from '@fortawesome/free-regular-svg-icons'
 import s from "./Note.module.scss";

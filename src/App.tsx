@@ -1,7 +1,5 @@
 import React, { useEffect, useLayoutEffect, useRef } from "react";
 import { Switch, Route, useHistory } from "react-router";
-import { Container } from "react-bootstrap";
-import MainContentWraper from "./components/MainContentWraper";
 import { useTypeSelector } from "./hooks/useTypeSelector";
 import { authCheck } from "./store/asyncActions/asyncUserActions";
 import { getAsyncGroup } from "./store/asyncActions/asyncGroupActions";

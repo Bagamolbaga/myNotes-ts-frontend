@@ -6,7 +6,7 @@ import { editAsyncNotes } from "../../store/asyncActions/asyncNoteActions";
 import { IGroup, IState } from "../../types/state";
 import { OutputData } from "@editorjs/editorjs";
 import { notesInGroupCounter } from "../../utils/notesInGroupCounter";
-import Editor from "../Editor";
+import Editor from "../Editor/Editor";
 import GroupItem from "../SideBar/GroupItem/GroupItem";
 import Button from "../../UI/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";

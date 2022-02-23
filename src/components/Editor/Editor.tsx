@@ -1,7 +1,7 @@
-import React, { FC, useEffect, useRef, useState } from "react";
+import React, { FC, useEffect, useRef } from "react";
 import Editor, { OutputData } from "@editorjs/editorjs";
 import { modules } from "./Editor-modules";
-import s from './styles/Editor.module.scss'
+import s from './Editor.module.scss'
 
 interface EditorJSProps {
   id?: number;

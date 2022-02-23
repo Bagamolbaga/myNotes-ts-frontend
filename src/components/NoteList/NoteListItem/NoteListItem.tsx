@@ -3,7 +3,7 @@ import { useHistory } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux'
 import { selectNote } from '../../../store/actions/noteActions'
 import { INote, IState } from "../../../types/state";
-import Editor from "../../Editor";
+import Editor from "../../Editor/Editor";
 import { OutputData } from "@editorjs/editorjs";
 import s from "./NoteListItem.module.scss";
 
