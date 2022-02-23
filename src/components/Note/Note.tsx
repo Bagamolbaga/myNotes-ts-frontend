@@ -1,6 +1,6 @@
 import React, { FC, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { Link, useParams } from "react-router-dom";
+import { Link, useParams, useHistory } from "react-router-dom";
 import { useTypeSelector } from "../../hooks/useTypeSelector";
 import { selectNote } from "../../store/actions/noteActions";
 import {
@@ -9,10 +9,8 @@ import {
   unFixedNote,
   asyncDeleteNote,
 } from "../../store/asyncActions/asyncNoteActions";
-import { IGroup, INote } from "../../types/state";
 import { OutputData } from "@editorjs/editorjs";
 import Editor from "../Editor";
-import GroupItem from "../SideBar/GroupItem/GroupItem";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFolder } from '@fortawesome/free-regular-svg-icons'
 import s from "./Note.module.scss";
@@ -23,6 +21,7 @@ interface IParams {
 
 const Note: FC = () => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const { noteId } = useParams<IParams>();
   const { notes, groups, selectNoteId } = useTypeSelector((state) => state);
 
@@ -79,6 +78,7 @@ const Note: FC = () => {
   const copyNoteHandler = () => {
     dispatch(
       createAsyncNote({
+        headerImg: note!.headerImg,
         title: note!.title,
         text: note!.text,
         tags: note!.tags,
@@ -89,6 +89,7 @@ const Note: FC = () => {
 
   const deleteNoteHandler = () => {
     dispatch(asyncDeleteNote(selectNoteId as number));
+    history.push('/')
   };
 
   return (

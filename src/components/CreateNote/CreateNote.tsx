@@ -1,9 +1,7 @@
 import React, { FC, useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { useParams } from "react-router-dom";
 import { useTypeSelector } from "../../hooks/useTypeSelector";
-import { selectNote } from "../../store/actions/noteActions";
-import { IGroup, INote, IState } from "../../types/state";
+import { IGroup, IState } from "../../types/state";
 import { OutputData } from "@editorjs/editorjs";
 import Editor from "../Editor";
 import GroupItem from "../SideBar/GroupItem/GroupItem";

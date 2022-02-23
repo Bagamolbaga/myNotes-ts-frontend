@@ -1,4 +1,4 @@
-import React, { FC, useState, useMemo, useRef, useCallback } from "react";
+import React, { FC, useState, useMemo, useCallback } from "react";
 import { useTypeSelector } from "../../hooks/useTypeSelector";
 import NoteListItem from "./NoteListItem/NoteListItem";
 import SearchHeader from "./SearchHeader/SearchHeader";
@@ -29,8 +29,6 @@ const List: FC<IList> = ({ notes, isPinned }) => {
 const NoteList: FC = () => {
   const { notes, selectedGroup } = useTypeSelector((state) => state);
   const [searchValue, setSearchValue] = useState("");
-
-  const inputRef = useRef<any>(null)
 
   const pinnedNotes = useMemo(
     () => notes.filter((note) => note.fixed),

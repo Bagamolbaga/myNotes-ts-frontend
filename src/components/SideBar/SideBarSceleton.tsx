@@ -1,5 +1,5 @@
 import React from "react";
-import s from "./sidebarSceleton.module.scss";
+import s from "./SideBarSceleton.module.scss";
 
 const SideBarSceleton = () => {
   return (

@@ -1,11 +1,9 @@
-import React, { FC, useState, useEffect, useRef } from "react";
-import isShallowEqual from "shallowequal";
+import React, { FC, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
 import { useTypeSelector } from "../../hooks/useTypeSelector";
-import { selectNote } from "../../store/actions/noteActions";
 import { editAsyncNotes } from "../../store/asyncActions/asyncNoteActions";
-import { IGroup, INote, IState } from "../../types/state";
+import { IGroup, IState } from "../../types/state";
 import { OutputData } from "@editorjs/editorjs";
 import { notesInGroupCounter } from "../../utils/notesInGroupCounter";
 import Editor from "../Editor";
@@ -119,7 +117,7 @@ const EditNote: FC = () => {
 
   let showEditNoteBtn = isTagsChanges || isTitleChanges || isTextChanges;
 
-  const folderStyle = { color: selectGroup.color };
+  // const folderStyle = { color: selectGroup.color };
 
   return (
     <>
