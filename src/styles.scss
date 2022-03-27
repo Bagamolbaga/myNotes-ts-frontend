@@ -6,6 +6,7 @@ body {
   margin: 0;
   color: #e7e7e7;
   background: $grey-1;
+  font-family: 'Inconsolata', 'Quicksand', monospace;
 }
 
 a {
@@ -14,7 +15,6 @@ a {
 }
 
 .App {
-  font-family: 'Inconsolata', 'Quicksand', monospace;
   text-align: center;
 }
 
