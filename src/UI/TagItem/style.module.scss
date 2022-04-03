@@ -1,0 +1,25 @@
+@import "styles/_constants.scss";
+
+.container {
+    display: flex;
+    align-items: center;
+    padding: 2px 4px;
+    margin-right: 4px;
+    border-radius: 4px;
+    background: $grey-2;
+
+    .iconHashtag {
+        color: $grey-5;
+    }
+
+    .iconDelete {
+        margin-left: 5px;
+        color: $red-2;
+        cursor: pointer;
+        transition: all .1s ease-in-out;
+
+        &:hover {
+            color: $red-1;
+        }
+    }
+}

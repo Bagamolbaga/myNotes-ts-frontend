@@ -10,9 +10,13 @@ import {
   asyncDeleteNote,
 } from "../../store/asyncActions/asyncNoteActions";
 import { OutputData } from "@editorjs/editorjs";
-import Editor from "../Editor/Editor";
+
+import Editor from "components/Editor/Editor";
+import TagsInput from "UI/TagsInput";
+
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFolder } from '@fortawesome/free-regular-svg-icons'
+
 import s from "./Note.module.scss";
 
 interface IParams {
@@ -33,6 +37,7 @@ const Note: FC = () => {
 
   const note = notes.filter((item) => item.id === Number(noteId))[0];
   const group = groups.find((group) => group.id === note.group_id);
+  const tags = note.tags
 
   const dataText = JSON.parse(note.text) as OutputData;
 
@@ -167,8 +172,7 @@ const Note: FC = () => {
               <p className="groupLabel">{group?.title}</p>
             </div>
             <div className={s.inputTagsContainer}>
-              <i className="fas fa-hashtag"></i>
-              <span>{note.tags.join(", ")}</span>
+              <TagsInput tags={tags} onlyView />
             </div>
           </div>
           <div className={s.optionsContainer} onClick={toggleModalHandler}>

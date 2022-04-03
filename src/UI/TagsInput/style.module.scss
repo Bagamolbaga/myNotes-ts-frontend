@@ -1,0 +1,19 @@
+@import "styles/_constants.scss";
+
+.container {
+    display: flex;
+
+    .tagItemsContainer {
+        display: flex;
+    }
+
+    .tagsInput {
+        outline: none;
+        padding: 2px 6px;
+        border-radius: 4px;
+        background: $grey-3;
+        border: 2px solid $grey-2;
+        color: $text-grey-1;
+        font-size: 16px;
+    }
+}

@@ -6,12 +6,16 @@ import { editAsyncNotes } from "../../store/asyncActions/asyncNoteActions";
 import { IGroup, IState } from "../../types/state";
 import { OutputData } from "@editorjs/editorjs";
 import { notesInGroupCounter } from "../../utils/notesInGroupCounter";
+
 import Editor from "../Editor/Editor";
 import GroupItem from "../SideBar/GroupItem/GroupItem";
 import Button from "../../UI/Button";
+import TagsInput from "UI/TagsInput";
+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFolder } from "@fortawesome/free-regular-svg-icons";
 import { faSortDown, faHashtag } from '@fortawesome/free-solid-svg-icons'
+
 import s from "./EditNote.module.scss";
 
 interface IParams {
@@ -31,7 +35,7 @@ const EditNote: FC = () => {
 
   const [showSelectGroupModal, setShowSelectGroupModal] = useState(false);
   const [selectGroup, setSelectGroup] = useState<IGroup>(group!);
-  const [tags, setTags] = useState(note ? note.tags.join(", ") : "");
+  const [tags, setTags] = useState(note ? note.tags : []);
   const [showTitleInput, setShowTitleInput] = useState(false);
   const [title, setTitle] = useState(note ? note.title : "");
   const [editorValue, setEditorValue] = useState<OutputData>(
@@ -42,11 +46,15 @@ const EditNote: FC = () => {
   const [showChangeModal, setShowChangeModal] = useState(false);
 
   const [isTextChanges, setIsTextChanges] = useState(false);
-  const isTagsChanges = tags !== note?.tags.join(", ");
+  // const isTagsChanges = tags !== note?.tags.join(", ");
+  const isTagsChanges = tags.length !== note?.tags.length;
   const isTitleChanges = title !== note?.title;
 
-  const tagsChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setTags(e.target.value);
+  const tagsAddHandler = (newTag: string) =>
+    setTags(tags => [...tags, newTag]);
+
+  const tagsDeleteHandler = (deleteTag: string) =>
+    setTags(tags => tags.filter(tag => tag !== deleteTag))
 
   const titleChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) =>
     setTitle(e.target.value);
@@ -101,12 +109,13 @@ const EditNote: FC = () => {
   };
 
   const editNoteHandler = () => {
-    const tagsArray = tags && tags.trim().split(", ");
+    const tagsArray = tags && tags.join(' ');
+    
     dispatch(
       editAsyncNotes({
         title,
         text: JSON.stringify(editorValue),
-        tags: tagsArray,
+        tags: tags,
         groupId: selectGroup.id,
       })
     );
@@ -226,13 +235,14 @@ const EditNote: FC = () => {
 
             </div>
             <div className={s.inputTagsContainer}>
-              <FontAwesomeIcon icon={faHashtag} />
+              {/* <FontAwesomeIcon icon={faHashtag} />
               <input
                 value={tags}
                 placeholder="tag1, tag2, tag3"
                 type="text"
                 onChange={tagsChangeHandler}
-              />
+              /> */}
+              <TagsInput tags={tags} tagsAddHandler={tagsAddHandler} tagsDeleteHandler={tagsDeleteHandler} />
             </div>
           </div>
           <div
