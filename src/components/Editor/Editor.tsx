@@ -8,6 +8,7 @@ interface EditorJSProps {
   value: OutputData | undefined;
   readOnly: boolean;
   onChangeHandler?: (value: OutputData) => void;
+  onEditorReadyAfterHandler?: () => void
 }
 
 const EditorJS: FC<EditorJSProps> = ({
@@ -15,6 +16,7 @@ const EditorJS: FC<EditorJSProps> = ({
   value,
   readOnly,
   onChangeHandler,
+  onEditorReadyAfterHandler
 }) => {
   let editorRef = useRef<any>();
 
@@ -26,10 +28,11 @@ const EditorJS: FC<EditorJSProps> = ({
       data: value ? value : undefined,
       placeholder: "Write content note",
       readOnly: readOnly,
-      // autofocus: false,
+      autofocus: false,
       tools: modules,
       onReady: () => {
         editorRef.current = editor;
+        onEditorReadyAfterHandler && onEditorReadyAfterHandler()
       },
       onChange: () => {
         console.log('edit', id)

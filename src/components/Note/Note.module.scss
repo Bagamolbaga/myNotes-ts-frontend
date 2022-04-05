@@ -1,7 +1,9 @@
+@import "styles/_constants.scss";
+
 .container {
   width: 100%;
   padding: 0 30px 10px 30px;
-  background: #323232;
+  background: $grey-1;
   font-family: 'Inconsolata';
   overflow-y: auto;
 
@@ -11,17 +13,17 @@
   }
 
   &::-webkit-scrollbar-track {
-    background-color: #424242;
+    background-color: $grey-2;
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: #585858;
+    background-color: $grey-3;
   }
 }
 
 .headerContainer {
   height: 50px;
-  background: #323232;
+  background: $grey-1;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -63,16 +65,7 @@
     .inputTagsContainer {
       svg {
         margin-right: 5px;
-        color: #a5a5a5;
-      }
-
-      input {
-        width: 400px;
-        background: none;
-        border: none;
-        outline: none;
-        color: #a5a5a5;
-        font-size: 16px;
+        color: $grey-5;
       }
     }
   }
@@ -88,12 +81,12 @@
       height: 35px;
       width: 35px;
       border-radius: 20px;
-      background: #424242;
+      background: $grey-2;
       cursor: pointer;
       transition: .1s;
 
       &:hover {
-        background: #585858;
+        background: $grey-3;
       }
 
       svg {
@@ -129,12 +122,11 @@
         height: 15px;
         margin-right: 10px;
         border-radius: 20px;
-        background: red;
       }
 
       .noteTitle {
         margin: 0;
-        color: white;
+        color: $text-grey-1;
       }
     }
   }
@@ -158,7 +150,7 @@
   overflow: hidden;
   border-radius: 10px;
   box-shadow: 0px 0px 39px 1px #282828;
-  background: #3b3b3b;
+  background: $grey-2;
 
   .optionsItemContainer {
     display: flex;
@@ -168,7 +160,7 @@
     transition: .1s;
 
     &:hover {
-      background: #4d4d4d
+      background: $grey-3
     }
 
     .iconContainer {
@@ -203,7 +195,7 @@
     margin-top: 200px;
     padding: 20px;
     border-radius: 10px;
-    background: #4d4d4d;
+    background: $grey-2;
     cursor: default;
 
     p:nth-child(1) {

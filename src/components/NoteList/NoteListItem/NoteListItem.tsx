@@ -10,6 +10,7 @@ import s from "./NoteListItem.module.scss";
 interface NoteListItemProps {
   note: INote;
   selected?: boolean;
+  inputFocusHandler?: () => void
 }
 
 const getState = (state: IState) => state
@@ -17,6 +18,7 @@ const getState = (state: IState) => state
 const NoteListItem: FC<NoteListItemProps> = ({
   note,
   selected,
+  inputFocusHandler
 }) => {
   const history = useHistory()
   const dispatch = useDispatch()
@@ -41,7 +43,7 @@ const NoteListItem: FC<NoteListItemProps> = ({
       </div>
       <div className={s.contentContainer}>
         <h4 className={s.title}>{note.title}</h4>
-        <Editor id={note.id} readOnly={true} value={noteDataText} />
+        <Editor id={note.id} readOnly={true} value={noteDataText} onEditorReadyAfterHandler={inputFocusHandler} />
         <p className={s.tags}>{note.tags}</p>
       </div>
     </div>

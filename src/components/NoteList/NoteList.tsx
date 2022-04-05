@@ -1,4 +1,4 @@
-import React, { FC, useState, useMemo, useCallback } from "react";
+import React, { FC, useState, useMemo, useCallback, memo, useRef } from "react";
 import { useTypeSelector } from "../../hooks/useTypeSelector";
 import NoteListItem from "./NoteListItem/NoteListItem";
 import SearchHeader from "./SearchHeader/SearchHeader";
@@ -8,9 +8,10 @@ import { INote } from "../../types/state";
 interface IList {
   notes: INote[]
   isPinned: boolean
+  inputFocusHandler?: () => void
 }
 
-const List: FC<IList> = ({ notes, isPinned }) => {
+const List: FC<IList> = memo(({ notes, isPinned, inputFocusHandler }) => {
   const { selectNoteId } = useTypeSelector((state) => state);
 
   return (
@@ -20,30 +21,38 @@ const List: FC<IList> = ({ notes, isPinned }) => {
           key={note.id}
           note={note}
           selected={note.id === selectNoteId ? true : false}
+          inputFocusHandler={!isPinned ? inputFocusHandler : undefined}
         />
       ))}
     </div>
   );
-};
+})
 
 const NoteList: FC = () => {
   const { notes, selectedGroup } = useTypeSelector((state) => state);
   const [searchValue, setSearchValue] = useState("");
+
+  const inputRef = useRef<HTMLInputElement>({} as HTMLInputElement)
+
+  const inputFocusHandler = () => {             //  focus() not working.
+    inputRef.current.value = ''                 //  Needed reset value then set value,
+    inputRef.current.value = searchValue        //  because html optimaized the same value. !!!
+  }
 
   const pinnedNotes = useMemo(
     () => notes.filter((note) => note.fixed),
     [notes]
   );
 
-  const filteredNotesByGroup = useCallback(() => {
+  const filteredNotesByGroup = () => {
     if (typeof selectedGroup === 'number') {
       return notes.filter(note => note.group_id === selectedGroup)
     }
     
     return notes
-  }, [notes, selectedGroup])
+  }
 
-  const allNotes = (
+  const allNotes = useMemo(() =>
     searchValue === ""
       ? filteredNotesByGroup()
       : notes.filter((note) =>
@@ -53,7 +62,7 @@ const NoteList: FC = () => {
               note.tags.join(" ").toLowerCase().includes(searchValue)
             : false
         )
-  )
+  , [notes, searchValue])
 
   const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
@@ -62,7 +71,7 @@ const NoteList: FC = () => {
   return (
     <div className={s.container}>
       <SearchHeader
-        key="inputs"
+        inputRef={inputRef}
         searchValue={searchValue}
         searchHandler={searchHandler}
       />
@@ -73,7 +82,7 @@ const NoteList: FC = () => {
             <p>{searchValue ? 'Filtered notes' : 'All notes'}</p>
             <i className={`fas fa-sort-down ${s.arrowRotate}`}></i>
           </div>
-            <List notes={allNotes} isPinned={false} />
+            {!!allNotes.length && <List notes={allNotes} isPinned={false} inputFocusHandler={inputFocusHandler} />}
         </div>
         <div
           className={s.pinnedList}

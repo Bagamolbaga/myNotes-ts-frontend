@@ -1,7 +1,9 @@
+@import "styles/_constants.scss";
+
 .NoteSceleton__container {
     width: 100%;
     padding: 10px 30px 10px 30px;
-    background: #323232;
+    background: $grey-1;
     font-family: 'Inconsolata';
     overflow: hidden;
 }
@@ -9,7 +11,7 @@
 .NoteSceleton__header {
     height: 40px;
     border-radius: 50px;
-    background: #424242;
+    background: $grey-2;
     animation: fadeOut 5s ease 0s infinite normal forwards;
 }
 
@@ -17,7 +19,7 @@
     margin-top: 30px;
     margin-bottom: 30px;
     height: 200px;
-    background: #424242;
+    background: $grey-2;
     border-radius: 30px;
     animation: fadeOut 5s ease 0s infinite normal forwards;
 }
@@ -25,7 +27,7 @@
 .NoteSceleton__content-text_row {
     margin-bottom: 10px;
     height: 20px;
-    background: #424242;
+    background: $grey-2;
     border-radius: 5px;
     animation: fadeOut 5s ease 0s infinite normal forwards;
 }

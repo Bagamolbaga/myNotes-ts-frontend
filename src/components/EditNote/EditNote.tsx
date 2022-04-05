@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useCallback, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
 import { useTypeSelector } from "../../hooks/useTypeSelector";
@@ -53,8 +53,8 @@ const EditNote: FC = () => {
   const tagsAddHandler = (newTag: string) =>
     setTags(tags => [...tags, newTag]);
 
-  const tagsDeleteHandler = (deleteTag: string) =>
-    setTags(tags => tags.filter(tag => tag !== deleteTag))
+  const tagsDeleteHandler = useCallback((deleteTag: string) =>
+    setTags(tags => tags.filter(tag => tag !== deleteTag)), [])
 
   const titleChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) =>
     setTitle(e.target.value);

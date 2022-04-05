@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { FC, memo } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import s from "./style.module.scss";
 
@@ -8,7 +8,7 @@ interface ITagItem {
   tagsDeleteHandler?: (dleteTag: string) => void;
 }
 
-const TagItem: FC<ITagItem> = ({ tag, onlyView, tagsDeleteHandler }) => {
+const TagItem: FC<ITagItem> = memo(({ tag, onlyView, tagsDeleteHandler }) => {
   return (
     <div className={s.container}>
       <FontAwesomeIcon className={s.iconHashtag} icon="hashtag" />
@@ -22,6 +22,6 @@ const TagItem: FC<ITagItem> = ({ tag, onlyView, tagsDeleteHandler }) => {
       )}
     </div>
   );
-};
+});
 
 export default TagItem;

@@ -5,21 +5,23 @@ import s from "./searchHeader.module.scss";
 interface SearchHeaderProps {
   searchValue: string;
   searchHandler: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  inputRef: React.MutableRefObject<HTMLInputElement>
 }
 
 const SearchHeader: FC<SearchHeaderProps> = ({
   searchValue,
   searchHandler,
+  inputRef
 }) => {
   return (
     <div className={s.headerContainer}>
       <div className={s.inputContainer}>
         <i className="fas fa-search"></i>
         <input
-          key="searchInput"
+          ref={inputRef}
           value={searchValue}
           onChange={searchHandler}
-          placeholder="search..."
+          placeholder="search atributes..."
           type="text"
         />
       </div>
