@@ -62,7 +62,7 @@ const NoteList: FC = () => {
               note.tags.join(" ").toLowerCase().includes(searchValue)
             : false
         )
-  , [notes, searchValue])
+  , [notes, searchValue, selectedGroup])
 
   const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);

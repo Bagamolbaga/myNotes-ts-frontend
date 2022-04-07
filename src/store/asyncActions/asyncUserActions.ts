@@ -31,9 +31,7 @@ export const login = (name: string, password: string) => async (dispatch: Dispat
 
 export const authCheck = () => async (dispatch: Dispatch<UserActions>) => {
   const res = await API.user.auth()
-  if (!res.data.token) {
-    return false
-  }
+  if (!res.data.token) return false
 
   if (res.data.token) {
     dispatch(setUser(jwtDecode(res.data.token)))
