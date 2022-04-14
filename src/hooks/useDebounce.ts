@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
-import { OutputData } from '@editorjs/editorjs';
 
-export const useDebounce = (value: OutputData, delay: number) => {
+export function useDebounce<T>(value: T, delay: number): T {
     const [debouncedValue, setDebouncedValue] = useState(value)
 
     useEffect(() => {

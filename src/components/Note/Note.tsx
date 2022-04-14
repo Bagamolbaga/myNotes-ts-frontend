@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from "react";
+import React, { FC, useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useParams, useHistory } from "react-router-dom";
 import { useTypeSelector } from "../../hooks/useTypeSelector";
@@ -18,6 +18,8 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faFolder } from '@fortawesome/free-regular-svg-icons'
 
 import s from "./Note.module.scss";
+import { useDebounce } from "hooks/useDebounce";
+import { useOnClickOnside } from "hooks/useOnClickOnside";
 
 interface IParams {
   noteId: string;
@@ -41,8 +43,16 @@ const Note: FC = () => {
 
   const dataText = JSON.parse(note.text) as OutputData;
 
+  const containerRef = useRef<HTMLDivElement>(null)
+
   const [showOptions, setShowOptions] = useState(false);
   const [showChangeModal, setShowChangeModal] = useState(false);
+
+  const onsideClickHandler = () => {
+    history.push(`/edit-note/${noteId}`)
+  }
+
+  useOnClickOnside(containerRef, onsideClickHandler)
 
   const closeModalHandler = (e: React.MouseEvent) => {
     showOptions && setShowOptions(false);
@@ -116,7 +126,7 @@ const Note: FC = () => {
           </div>
         </div>
       )}
-      <div className={s.container} onClick={closeModalHandler}>
+      <div ref={containerRef} className={s.container} onClick={closeModalHandler}>
         {showOptions && (
           <div
             className={s.optionsModalContainer}

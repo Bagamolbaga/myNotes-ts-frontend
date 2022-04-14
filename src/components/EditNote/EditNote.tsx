@@ -1,4 +1,4 @@
-import React, { FC, useCallback, useState } from "react";
+import React, { FC, useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
 import { useTypeSelector } from "../../hooks/useTypeSelector";
@@ -17,6 +17,8 @@ import { faFolder } from "@fortawesome/free-regular-svg-icons";
 import { faSortDown, faHashtag } from '@fortawesome/free-solid-svg-icons'
 
 import s from "./EditNote.module.scss";
+import { useOnClickOutside } from "hooks/useOnClickOutside";
+import { useDebounce } from "hooks/useDebounce";
 
 interface IParams {
   noteId: string;
@@ -29,9 +31,18 @@ const EditNote: FC = () => {
   const { noteId } = useParams<IParams>();
   const dispatch = useDispatch();
   const { groups, notes } = useTypeSelector(getState);
+  const firstRender = useRef(false)
+
+  useEffect(() => {
+    firstRender.current = true
+  }, [])
+  
 
   const note = notes.find((note) => note.id === Number(noteId));
   const group = groups.find((group) => group.id === note?.group_id);
+
+  const containerRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLInputElement>(null)
 
   const [showSelectGroupModal, setShowSelectGroupModal] = useState(false);
   const [selectGroup, setSelectGroup] = useState<IGroup>(group!);
@@ -49,6 +60,43 @@ const EditNote: FC = () => {
   // const isTagsChanges = tags !== note?.tags.join(", ");
   const isTagsChanges = tags.length !== note?.tags.length;
   const isTitleChanges = title !== note?.title;
+
+  const debouncedDataText = useDebounce<OutputData>(editorValue, 2000)
+  const debouncedTitle = useDebounce<string>(title, 2000)
+  const debouncedTags = useDebounce<string[]>(tags, 2000)
+
+  useEffect(() => {
+    if (firstRender.current) {
+      editNoteHandler()
+      console.log('saved EDITOR');
+    }
+  }, [debouncedDataText])
+
+  useEffect(() => {
+    if (firstRender.current) {
+      editNoteHandler()
+      console.log('saved TITLE');
+    }
+  }, [debouncedTitle])
+
+  useEffect(() => {
+    if (firstRender.current) {
+      editNoteHandler()
+      console.log('saved TAGS');
+    }
+  }, [debouncedTags])
+
+  const outsideClickHandler = () => {
+    history.push(`/note/${noteId}`)
+  }
+
+  const outsideInputClickHandler = () => {
+    setShowTitleInput(false)
+  }
+
+  useOnClickOutside(containerRef, outsideClickHandler)
+  useOnClickOutside(inputRef, outsideInputClickHandler)
+
 
   const tagsAddHandler = (newTag: string) =>
     setTags(tags => [...tags, newTag]);
@@ -109,8 +157,6 @@ const EditNote: FC = () => {
   };
 
   const editNoteHandler = () => {
-    const tagsArray = tags && tags.join(' ');
-    
     dispatch(
       editAsyncNotes({
         title,
@@ -147,7 +193,7 @@ const EditNote: FC = () => {
           </div>
         </div>
       )}
-      <div className={s.container} onClick={closeOptionsModalHandler}>
+      <div ref={containerRef} className={s.container} onClick={closeOptionsModalHandler}>
         {showOptions && (
           <div
             className={s.optionsModalContainer}
@@ -267,6 +313,7 @@ const EditNote: FC = () => {
               ></div>
               {showTitleInput ? (
                 <input
+                  ref={inputRef}
                   className={s.titleInput}
                   type="text"
                   placeholder="Note title"
