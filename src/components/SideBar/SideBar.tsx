@@ -1,19 +1,25 @@
 import React, { ChangeEvent, FC, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useTypeSelector } from "../../hooks/useTypeSelector";
+
 import {
   asyncDeleteGroup,
   createAsyncGroup,
 } from "../../store/asyncActions/asyncGroupActions";
 import { selectActiveGroup } from "../../store/actions/groupActions";
 import { showAllNote } from "../../store/actions/noteActions";
+
 import { IGroup } from "../../types/state";
+
 import { notesInGroupCounter } from "../../utils/notesInGroupCounter";
+import { notifications } from "utils/snowNotifications";
 
 import GroupItem from "./GroupItem/GroupItem";
 import TagsItem from "./TagsItem/TagsItem";
 import CreateGroupModal from "./CreateGroupModal";
+
 import s from "./SideBar.module.scss";
+import { logout } from "store/asyncActions/asyncUserActions";
 
 const SideBar: FC = () => {
   const dispatch = useDispatch();
@@ -42,6 +48,7 @@ const SideBar: FC = () => {
       setShowCreateGroupModal(false);
       setNewGroupTitleValue("");
       dispatch(createAsyncGroup(newGroupTitleValue, newGroupColorValue));
+      notifications.success('New group created!')
     }
   };
 
@@ -54,6 +61,10 @@ const SideBar: FC = () => {
   const deleteGroupHandler = (id: number) => {
     dispatch(asyncDeleteGroup(id));
   };
+
+  const logoutHandler = () => {
+    dispatch(logout())
+  }
 
   const reverseGroupListHandler = () => setReverseGroupList(!reverseGroupList)
 
@@ -78,7 +89,7 @@ const SideBar: FC = () => {
       <div className={`${s.container} + ${showSideBar ? s.hide : s.show}`}>
         <div className={s.header}>
           <div className={s.personContainer}>
-            <div className={s.avatar}>
+            <div className={s.avatar} onClick={logoutHandler}>
               <img src={user.avatar} alt="" />
             </div>
             <p className={s.name}>{user.name}</p>

@@ -7,6 +7,9 @@ import { IGroup, IState } from "../../types/state";
 import { OutputData } from "@editorjs/editorjs";
 import { notesInGroupCounter } from "../../utils/notesInGroupCounter";
 
+import { toast } from 'react-toastify'
+import { notifications } from "utils/snowNotifications";
+
 import Editor from "../Editor/Editor";
 import GroupItem from "../SideBar/GroupItem/GroupItem";
 import Button from "../../UI/Button";
@@ -14,7 +17,7 @@ import TagsInput from "UI/TagsInput";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFolder } from "@fortawesome/free-regular-svg-icons";
-import { faSortDown, faHashtag } from '@fortawesome/free-solid-svg-icons'
+import { faSortDown } from '@fortawesome/free-solid-svg-icons'
 
 import s from "./EditNote.module.scss";
 import { useOnClickOutside } from "hooks/useOnClickOutside";
@@ -33,11 +36,8 @@ const EditNote: FC = () => {
   const { groups, notes } = useTypeSelector(getState);
   const firstRender = useRef(false)
 
-  useEffect(() => {
-    firstRender.current = true
-  }, [])
   
-
+  
   const note = notes.find((note) => note.id === Number(noteId));
   const group = groups.find((group) => group.id === note?.group_id);
 
@@ -61,13 +61,14 @@ const EditNote: FC = () => {
   const isTagsChanges = tags.length !== note?.tags.length;
   const isTitleChanges = title !== note?.title;
 
-  const debouncedDataText = useDebounce<OutputData>(editorValue, 2000)
+  const debouncedDataText = useDebounce<OutputData>(editorValue, 10000)
   const debouncedTitle = useDebounce<string>(title, 2000)
   const debouncedTags = useDebounce<string[]>(tags, 2000)
 
   useEffect(() => {
     if (firstRender.current) {
       editNoteHandler()
+      notifications.success('Editor saved!')
       console.log('saved EDITOR');
     }
   }, [debouncedDataText])
@@ -75,6 +76,7 @@ const EditNote: FC = () => {
   useEffect(() => {
     if (firstRender.current) {
       editNoteHandler()
+      notifications.success('Title saved!')
       console.log('saved TITLE');
     }
   }, [debouncedTitle])
@@ -82,9 +84,24 @@ const EditNote: FC = () => {
   useEffect(() => {
     if (firstRender.current) {
       editNoteHandler()
+      notifications.success('Tags saved!')
       console.log('saved TAGS');
     }
   }, [debouncedTags])
+
+  useEffect(() => {
+    if (firstRender.current) {
+      editNoteHandler()
+      notifications.success('Select group saved!')
+      console.log('saved GROUP');
+    }
+  }, [selectGroup])
+  
+  useEffect(() => {
+    console.log('render');
+    
+    firstRender.current = true
+  }, [])
 
   const outsideClickHandler = () => {
     history.push(`/note/${noteId}`)

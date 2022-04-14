@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useRef } from "react";
+import React, { useEffect, useLayoutEffect, useMemo, useRef } from "react";
 import { Switch, Route, useHistory } from "react-router";
 import { useTypeSelector } from "./hooks/useTypeSelector";
 import { authCheck } from "./store/asyncActions/asyncUserActions";
@@ -6,6 +6,8 @@ import { getAsyncGroup } from "./store/asyncActions/asyncGroupActions";
 import { getAsyncNotes } from "./store/asyncActions/asyncNoteActions";
 import { useDispatch } from "react-redux";
 import { socketRef } from "./http/socket-io";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 import s from "./App.module.scss";
 import NoteWrapper from "./components/Note/NodeWrapper";
@@ -15,6 +17,8 @@ import NoteList from "./components/NoteList/NoteList";
 import Login from "./components/Login/Login";
 import Registration from "./components/Registration/Registration";
 import CreateNote from "./components/CreateNote/CreateNote";
+
+// const toastId = toast.loading("Loading data...");
 
 function App() {
   const { user } = useTypeSelector((state) => state);
@@ -34,12 +38,22 @@ function App() {
 
     // reloadCount.current++;
     if (user.isLogin) {
+      const toastId = toast.loading("Loading data...");
+
       dispatch(getAsyncGroup());
       dispatch(getAsyncNotes());
 
+      toast.update(toastId, {
+        render: "Data loaded!",
+        position: "bottom-center",
+        type: "success",
+        autoClose: 2000,
+        isLoading: false
+      });
+
       socketRef.emit("joinRoom", user.id!.toString());
     }
-
+    
     if (reloadCount.current === 1 && !user.isLogin) {
       history.push("/login");
     }
@@ -50,15 +64,26 @@ function App() {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user.isLogin]);
-  // console.log(user.isLogin, reloadCount.current);
+  console.log(user.isLogin, reloadCount.current);
 
   useEffect(() => {
     reloadCount.current += 1;
   }, []);
 
-
   return (
     <div className={s.container}>
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop={false}
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="dark"
+      />
       <SideBarWrapper />
       <NoteList />
       <Switch>
