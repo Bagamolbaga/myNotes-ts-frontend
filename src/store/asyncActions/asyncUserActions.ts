@@ -18,23 +18,21 @@ export const registration = (name: string, email: string, password: string, img:
 
 export const login = (name: string, password: string) => async (dispatch: Dispatch<UserActions>) => {
   const res = await API.user.login(name, password)
-  if (!res.data.token && res.data.message) {
-    return dispatch(setAuthError(res.data.message))
-  }
+  if (!res.data.token && res.data.message) dispatch(setUser({isLogin: false}))
 
   if (res.data.token) {
     localStorage.setItem('my-notes-token', res.data.token)
-    dispatch(setUser(jwtDecode(res.data.token)))
+    dispatch(setUser({...jwtDecode(res.data.token), isLogin: true}))
     dispatch(setAuthError(''))
   }
 }
 
 export const authCheck = () => async (dispatch: Dispatch<UserActions>) => {
   const res = await API.user.auth()
-  if (!res.data.token) return false
+  if (!res.data.token) dispatch(setUser({isLogin: false}))
 
   if (res.data.token) {
-    dispatch(setUser(jwtDecode(res.data.token)))
+    dispatch(setUser({...jwtDecode(res.data.token), isLogin: true}))
     localStorage.setItem('my-notes-token', res.data.token)
   }
 }

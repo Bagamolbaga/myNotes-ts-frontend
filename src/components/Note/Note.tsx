@@ -20,6 +20,8 @@ import { faFolder } from '@fortawesome/free-regular-svg-icons'
 import s from "./Note.module.scss";
 import { useDebounce } from "hooks/useDebounce";
 import { useOnClickOnside } from "hooks/useOnClickOnside";
+import { dateCreatedParse } from "utils/dateCreatedParse";
+import { useTitle } from "hooks/useTitle";
 
 interface IParams {
   noteId: string;
@@ -36,10 +38,12 @@ const Note: FC = () => {
       dispatch(selectNote(Number(noteId)));
     }
   }, []);
-
+  
   const note = notes.filter((item) => item.id === Number(noteId))[0];
   const group = groups.find((group) => group.id === note.group_id);
   const tags = note.tags
+  
+  useTitle(note.title)
 
   const dataText = JSON.parse(note.text) as OutputData;
 

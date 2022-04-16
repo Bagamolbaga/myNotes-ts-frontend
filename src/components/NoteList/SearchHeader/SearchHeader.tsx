@@ -1,18 +1,28 @@
 import React, { FC } from "react";
-import { Link } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { showCreateNoteForm } from "store/actions/noteActions";
 import s from "./searchHeader.module.scss";
 
 interface SearchHeaderProps {
   searchValue: string;
   searchHandler: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  inputRef: React.MutableRefObject<HTMLInputElement>
+  inputRef: React.MutableRefObject<HTMLInputElement>;
 }
 
 const SearchHeader: FC<SearchHeaderProps> = ({
   searchValue,
   searchHandler,
-  inputRef
+  inputRef,
 }) => {
+  const history = useHistory();
+  const dispatch = useDispatch();
+
+  const createNoteRedirectHandler = () => {
+    dispatch(showCreateNoteForm());
+    history.push("/create-note");
+  };
+  
   return (
     <div className={s.headerContainer}>
       <div className={s.inputContainer}>
@@ -25,11 +35,9 @@ const SearchHeader: FC<SearchHeaderProps> = ({
           type="text"
         />
       </div>
-      <Link to={'/create-note'}>
-        <button className={s.btnAdd}>
-          <i className="fas fa-plus"></i>
-        </button>
-      </Link>
+      <button className={s.btnAdd} onClick={createNoteRedirectHandler}>
+        <i className="fas fa-plus"></i>
+      </button>
     </div>
   );
 };

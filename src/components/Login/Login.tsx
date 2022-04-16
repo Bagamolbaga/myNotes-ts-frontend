@@ -1,5 +1,5 @@
-import React, { ChangeEvent, useState } from 'react'
-import { Link } from 'react-router-dom'
+import React, { ChangeEvent, useEffect, useState } from 'react'
+import { Link, useHistory } from 'react-router-dom'
 import { useDispatch } from 'react-redux'
 import { useTypeSelector } from '../../hooks/useTypeSelector'
 import { login } from '../../store/asyncActions/asyncUserActions'
@@ -8,9 +8,14 @@ import s from './Login.module.scss'
 
 const Login = () => {
     const dispatch = useDispatch()
+    const history = useHistory();
     const { authError, user } = useTypeSelector((state) => state)
     const [loginOrEmail, setLoginOrEmail] = useState('')
     const [password, setPassword] = useState('')
+
+    useEffect(() => {
+        if (user.isLogin) history.push('/')
+    }, [user])
 
     const loginInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setLoginOrEmail(e.target.value)

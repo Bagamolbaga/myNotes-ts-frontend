@@ -56,6 +56,7 @@ export const reducer = (state = initialState, action: IActions) : IState => {
     case noteActionTypes.SHOW_CREATE_NOTE_FORM:
       return {
         ...state,
+        selectNoteId: false,
         showCeateNoteForm: true,
         selectedGroup: 'All',
       }
@@ -115,7 +116,7 @@ export const reducer = (state = initialState, action: IActions) : IState => {
           id: action.payload.id,
           name: action.payload.name,
           avatar: action.payload.avatar,
-          isLogin: true,
+          isLogin: action.payload.isLogin,
         },
       }
     case userActionTypes.LOGOUT:

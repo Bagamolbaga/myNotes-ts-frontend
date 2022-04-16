@@ -7,7 +7,7 @@ import {
   createAsyncGroup,
 } from "../../store/asyncActions/asyncGroupActions";
 import { selectActiveGroup } from "../../store/actions/groupActions";
-import { showAllNote } from "../../store/actions/noteActions";
+import { selectNote, showAllNote } from "../../store/actions/noteActions";
 
 import { IGroup } from "../../types/state";
 
@@ -20,8 +20,10 @@ import CreateGroupModal from "./CreateGroupModal";
 
 import s from "./SideBar.module.scss";
 import { logout } from "store/asyncActions/asyncUserActions";
+import { useHistory } from "react-router-dom";
 
 const SideBar: FC = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const { user, groups, notes, selectedGroup } = useTypeSelector(
     (state) => state
@@ -32,6 +34,8 @@ const SideBar: FC = () => {
   const [newGroupTitleValue, setNewGroupTitleValue] = useState("");
   const [newGroupColorValue, setNewGroupColorValue] = useState("#c16dcb");
   const [reverseGroupList, setReverseGroupList] = useState(false);
+
+  const firstNote = notes[0]
 
   const showCreateGroupModalHandler = () => setShowCreateGroupModal(true);
 
@@ -48,7 +52,7 @@ const SideBar: FC = () => {
       setShowCreateGroupModal(false);
       setNewGroupTitleValue("");
       dispatch(createAsyncGroup(newGroupTitleValue, newGroupColorValue));
-      notifications.success('New group created!')
+      notifications.success("New group created!");
     }
   };
 
@@ -63,16 +67,20 @@ const SideBar: FC = () => {
   };
 
   const logoutHandler = () => {
-    dispatch(logout())
-  }
+    dispatch(logout());
+  };
 
-  const reverseGroupListHandler = () => setReverseGroupList(!reverseGroupList)
+  const reverseGroupListHandler = () => setReverseGroupList(!reverseGroupList);
 
-  const showAllNotesHandler = () => dispatch(showAllNote());
+  const showAllNotesHandler = () => {
+    dispatch(selectActiveGroup('All'))
+    dispatch(selectNote(firstNote.id));
+    history.push(`/note/${firstNote.id}`);
+  };
 
   const noteInGroupCounter = notesInGroupCounter(notes);
 
-  const groupList = reverseGroupList === true ? [...groups].reverse() : groups
+  const groupList = reverseGroupList === true ? [...groups].reverse() : groups;
 
   return (
     <>
@@ -109,7 +117,7 @@ const SideBar: FC = () => {
           onClick={showAllNotesHandler}
         >
           <i className="far fa-sticky-note"></i>
-          <p className={s.tabTitle}>All notes</p>
+          <p className={s.tabTitle}>Notes</p>
         </div>
         <div
           className={`${s.TabContainer} + ${
@@ -133,7 +141,11 @@ const SideBar: FC = () => {
           </div>
           <div className={s.groupsIconsContainer}>
             <div onClick={reverseGroupListHandler}>
-              <i className={`fas ${reverseGroupList ? 'fa-sort-alpha-up' : 'fa-sort-alpha-down'}`}></i>
+              <i
+                className={`fas ${
+                  reverseGroupList ? "fa-sort-alpha-up" : "fa-sort-alpha-down"
+                }`}
+              ></i>
             </div>
             <div onClick={showCreateGroupModalHandler}>
               <i className="fas fa-plus"></i>

@@ -22,6 +22,7 @@ import { faSortDown } from '@fortawesome/free-solid-svg-icons'
 import s from "./EditNote.module.scss";
 import { useOnClickOutside } from "hooks/useOnClickOutside";
 import { useDebounce } from "hooks/useDebounce";
+import { useTitle } from "hooks/useTitle";
 
 interface IParams {
   noteId: string;
@@ -40,6 +41,8 @@ const EditNote: FC = () => {
   
   const note = notes.find((note) => note.id === Number(noteId));
   const group = groups.find((group) => group.id === note?.group_id);
+
+  useTitle(`Edit | ${note?.title}`)
 
   const containerRef = useRef<HTMLDivElement>(null)
   const inputRef = useRef<HTMLInputElement>(null)
@@ -92,7 +95,7 @@ const EditNote: FC = () => {
   useEffect(() => {
     if (firstRender.current) {
       editNoteHandler()
-      notifications.success('Select group saved!')
+      notifications.success('Group changed!')
       console.log('saved GROUP');
     }
   }, [selectGroup])

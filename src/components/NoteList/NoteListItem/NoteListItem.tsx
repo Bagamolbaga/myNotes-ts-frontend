@@ -6,6 +6,8 @@ import { INote, IState } from "../../../types/state";
 import Editor from "../../Editor/Editor";
 import { OutputData } from "@editorjs/editorjs";
 import s from "./NoteListItem.module.scss";
+import { dateCreatedParse } from "utils/dateCreatedParse";
+import TagItem from "UI/TagItem";
 
 interface NoteListItemProps {
   note: INote;
@@ -43,8 +45,11 @@ const NoteListItem: FC<NoteListItemProps> = ({
       </div>
       <div className={s.contentContainer}>
         <h4 className={s.title}>{note.title}</h4>
-        <Editor id={note.id} readOnly={true} value={noteDataText} onEditorReadyAfterHandler={inputFocusHandler} />
-        <p className={s.tags}>{note.tags}</p>
+        {/* <Editor id={note.id} readOnly={true} value={noteDataText} onEditorReadyAfterHandler={inputFocusHandler} /> */}
+        <div className={s.tags}>
+          {note.tags.map(tag => <TagItem key={tag} tag={tag} onlyView />)}
+        </div>
+        <p >Created: {dateCreatedParse(note.createdAt as string)}</p>
       </div>
     </div>
   );

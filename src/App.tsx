@@ -27,16 +27,13 @@ function App() {
 
   const reloadCount = useRef(0);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     dispatch(authCheck());
-    // reloadCount.current++;
   }, []);
 
   useEffect(() => {
-    console.log("effect", user);
-    console.log(reloadCount);
+    console.log("effect");
 
-    // reloadCount.current++;
     if (user.isLogin) {
       const toastId = toast.loading("Loading data...");
 
@@ -48,28 +45,58 @@ function App() {
         position: "bottom-center",
         type: "success",
         autoClose: 2000,
-        isLoading: false
+        isLoading: false,
       });
-
-      socketRef.emit("joinRoom", user.id!.toString());
     }
-    
-    if (reloadCount.current === 1 && !user.isLogin) {
+
+    if (!user.isLogin && reloadCount.current > 0) {
       history.push("/login");
     }
+  }, [user]);
 
-    // if (reloadCount.current === 3) {
-    //   history.goBack();
-    // }
+  // useLayoutEffect(() => {
+  //   dispatch(authCheck());
+  //   // reloadCount.current++;
+  // }, []);
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [user.isLogin]);
-  console.log(user.isLogin, reloadCount.current);
+  // useEffect(() => {
+  //   console.log("effect", user);
+  //   console.log(reloadCount);
+
+  //   // reloadCount.current++;
+  //   if (user.isLogin) {
+  //     const toastId = toast.loading("Loading data...");
+
+  //     dispatch(getAsyncGroup());
+  //     dispatch(getAsyncNotes());
+
+  //     toast.update(toastId, {
+  //       render: "Data loaded!",
+  //       position: "bottom-center",
+  //       type: "success",
+  //       autoClose: 2000,
+  //       isLoading: false
+  //     });
+
+  //     socketRef.emit("joinRoom", user.id!.toString());
+  //   }
+
+  //   if (reloadCount.current === 1 && !user.isLogin) {
+  //     history.push("/login");
+  //   }
+
+  //   // if (reloadCount.current === 3) {
+  //   //   history.goBack();
+  //   // }
+
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [user.isLogin]);
 
   useEffect(() => {
     reloadCount.current += 1;
   }, []);
 
+  console.log(user, reloadCount.current);
   return (
     <div className={s.container}>
       <ToastContainer
@@ -85,15 +112,21 @@ function App() {
         theme="dark"
       />
       <SideBarWrapper />
-      <NoteList />
+      {/* <NoteList /> */}
       <Switch>
         <Route exact path="/create-note">
+          <NoteList />
+
           <CreateNote />
         </Route>
         <Route exact path="/note/:noteId">
+          <NoteList />
+
           <NoteWrapper />
         </Route>
         <Route exact path="/edit-note/:noteId">
+          <NoteList />
+
           <EditNodeWrapper />
         </Route>
         <Route exact path="/login">
