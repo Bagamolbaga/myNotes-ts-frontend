@@ -1,11 +1,15 @@
 import React, { ChangeEvent, FC, useState } from "react";
 import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
 import { useTypeSelector } from "../../hooks/useTypeSelector";
 
 import {
   asyncDeleteGroup,
   createAsyncGroup,
 } from "../../store/asyncActions/asyncGroupActions";
+import { logout } from "store/asyncActions/asyncUserActions";
 import { selectActiveGroup } from "../../store/actions/groupActions";
 import { selectNote, showAllNote } from "../../store/actions/noteActions";
 
@@ -19,8 +23,6 @@ import TagsItem from "./TagsItem/TagsItem";
 import CreateGroupModal from "./CreateGroupModal";
 
 import s from "./SideBar.module.scss";
-import { logout } from "store/asyncActions/asyncUserActions";
-import { useHistory } from "react-router-dom";
 
 const SideBar: FC = () => {
   const history = useHistory();
@@ -35,7 +37,9 @@ const SideBar: FC = () => {
   const [newGroupColorValue, setNewGroupColorValue] = useState("#c16dcb");
   const [reverseGroupList, setReverseGroupList] = useState(false);
 
-  const firstNote = notes[0]
+  const firstNote = notes[0];
+
+  const goHomeHandler = () => history.push("/");
 
   const showCreateGroupModalHandler = () => setShowCreateGroupModal(true);
 
@@ -73,7 +77,7 @@ const SideBar: FC = () => {
   const reverseGroupListHandler = () => setReverseGroupList(!reverseGroupList);
 
   const showAllNotesHandler = () => {
-    dispatch(selectActiveGroup('All'))
+    dispatch(selectActiveGroup("All"));
     dispatch(selectNote(firstNote.id));
     history.push(`/note/${firstNote.id}`);
   };
@@ -114,9 +118,18 @@ const SideBar: FC = () => {
           className={`${s.TabContainer} + ${
             showSideBar ? s.reverseTabOnlyIcon : s.reverseTabAllContent
           }`}
+          onClick={goHomeHandler}
+        >
+          <FontAwesomeIcon icon="house" />
+          <p className={s.tabTitle}>Home</p>
+        </div>
+        <div
+          className={`${s.TabContainer} + ${
+            showSideBar ? s.reverseTabOnlyIcon : s.reverseTabAllContent
+          }`}
           onClick={showAllNotesHandler}
         >
-          <i className="far fa-sticky-note"></i>
+          <FontAwesomeIcon icon="receipt" />
           <p className={s.tabTitle}>Notes</p>
         </div>
         <div
@@ -124,7 +137,7 @@ const SideBar: FC = () => {
             showSideBar ? s.reverseTabOnlyIcon : s.reverseTabAllContent
           }`}
         >
-          <i className="far fa-heart"></i>
+          <FontAwesomeIcon icon="heart" />
           <p className={s.tabTitle}>Favorites</p>
         </div>
         <div

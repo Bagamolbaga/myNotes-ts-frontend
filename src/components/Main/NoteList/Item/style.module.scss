@@ -1,0 +1,38 @@
+@import 'styles/_constants.scss';
+
+.item {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 200px;
+    height: 300px;
+    margin-right: 10px;
+    padding: 10px 10px;
+    border-radius: 15px;
+    box-sizing: border-box;
+    background: $grey-2;
+    cursor: pointer;
+    transition: all .2s ease-in-out;
+    box-shadow: 0px 0px 20px -10px black;
+
+    &:hover {
+        transform: scale(1.025);
+    }
+
+    .item__header {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+
+        .circle {
+            width: 14px;
+            height: 14px;
+            border-radius: 24px;
+        }
+
+        h6 {
+            font-size: 16px;
+            margin: 0;
+        }
+    }
+}
