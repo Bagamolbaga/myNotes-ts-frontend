@@ -1,4 +1,4 @@
-import React, { useEffect, useLayoutEffect, useMemo, useRef } from "react";
+import React, { useEffect, useRef } from "react";
 import { Switch, Route, useHistory } from "react-router";
 import { useTypeSelector } from "./hooks/useTypeSelector";
 import { authCheck } from "./store/asyncActions/asyncUserActions";
@@ -17,7 +17,6 @@ import NoteList from "./components/NoteList/NoteList";
 import Login from "./components/Login/Login";
 import Registration from "./components/Registration/Registration";
 import CreateNote from "./components/CreateNote/CreateNote";
-import Main from "components/Main/Main";
 import MainWrapper from "components/Main/MainWrapper";
 
 // const toastId = toast.loading("Loading data...");
@@ -49,6 +48,8 @@ function App() {
         autoClose: 2000,
         isLoading: false,
       });
+
+      socketRef.emit("joinRoom", user.id!.toString());
     }
 
     if (!user.isLogin && reloadCount.current > 0) {

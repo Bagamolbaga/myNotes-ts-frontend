@@ -58,3 +58,17 @@ export const sendEmailResetPassword = (nameOrEmail: string) => async (dispatch: 
 export const resetPassword = (tokenId: string, newPass: string) => async (dispatch: Dispatch<UserActions>) => {
   await API.user.resetPassword(tokenId, newPass)
 }
+
+export const authGoogle = (name: string, email: string, avatar: string) =>async (dispatch:Dispatch<UserActions>) => {
+  const res = await API.user.authGoogle(name, email, avatar)
+
+  if (!res.data.token && res.data.message) {
+    return dispatch(setAuthError(res.data.message))
+  }
+
+  if (res.data.token) {
+    localStorage.setItem('my-notes-token', res.data.token)
+    dispatch(setUser({...jwtDecode(res.data.token), isLogin: true}))
+    dispatch(setAuthError(''))
+  }
+}

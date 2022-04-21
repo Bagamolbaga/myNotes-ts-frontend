@@ -1,3 +1,4 @@
+import { authGoogle } from './../store/asyncActions/asyncUserActions';
 import { IGroup } from './../types/state';
 import { AxiosResponse } from "axios"
 import { INote, IUser } from "../types/state"
@@ -27,6 +28,7 @@ type UserRes = {
       auth : () => Promise<AxiosResponse<UserRes>>
       sendEmailResetPassword : (nameOrEmail: string) => Promise<AxiosResponse<UserRes>>
       resetPassword : (tokenId: string, newPass: string) => Promise<AxiosResponse<UserRes>>
+      authGoogle : (name: string, email: string, avatar: string) => Promise<AxiosResponse<UserRes>>
     }
   }
   
@@ -129,6 +131,13 @@ type UserRes = {
         return await API.post('api/user/reset-password', {
           tokenId,
           newPass
+        })
+      },
+      authGoogle:async (name: string, email: string, avatar: string) => {
+        return API.post('api/user/google-auth', {
+          name,
+          email,
+          avatar,
         })
       }
     }
