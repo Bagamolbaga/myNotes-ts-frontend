@@ -17,7 +17,8 @@ import NoteList from "./components/NoteList/NoteList";
 import Login from "./components/Login/Login";
 import Registration from "./components/Registration/Registration";
 import CreateNote from "./components/CreateNote/CreateNote";
-import Main from "components/Main";
+import Main from "components/Main/Main";
+import MainWrapper from "components/Main/MainWrapper";
 
 // const toastId = toast.loading("Loading data...");
 
@@ -116,21 +117,18 @@ function App() {
       {/* <NoteList /> */}
       <Switch>
         <Route exact path="/">
-          <Main />
+          <MainWrapper />
         </Route>
         <Route exact path="/create-note">
           <NoteList />
-
           <CreateNote />
         </Route>
         <Route exact path="/note/:noteId">
           <NoteList />
-
           <NoteWrapper />
         </Route>
         <Route exact path="/edit-note/:noteId">
           <NoteList />
-
           <EditNodeWrapper />
         </Route>
         <Route exact path="/login">

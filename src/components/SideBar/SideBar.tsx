@@ -102,7 +102,7 @@ const SideBar: FC = () => {
         <div className={s.header}>
           <div className={s.personContainer}>
             <div className={s.avatar} onClick={logoutHandler}>
-              <img src={user.avatar} alt="" />
+              { user.isLogin && <img src={user.avatar} alt="Avatar" />}
             </div>
             <p className={s.name}>{user.name}</p>
           </div>
