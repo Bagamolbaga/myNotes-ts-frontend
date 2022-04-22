@@ -1,4 +1,3 @@
-import { authGoogle } from './../store/asyncActions/asyncUserActions';
 import { IGroup } from './../types/state';
 import { AxiosResponse } from "axios"
 import { INote, IUser } from "../types/state"

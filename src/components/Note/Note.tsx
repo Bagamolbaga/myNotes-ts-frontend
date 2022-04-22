@@ -162,15 +162,6 @@ const Note: FC = () => {
               </div>
               <p>Copy note</p>
             </div>
-            <div
-              className={s.optionsItemContainer}
-              onClick={openChangeGroupModalHandler}
-            >
-              <div className={s.iconContainer}>
-                <i className="far fa-folder"></i>
-              </div>
-              <p>Change group</p>
-            </div>
             <div className={s.optionsItemContainer} onClick={deleteNoteHandler}>
               <div className={s.iconContainer}>
                 <i className="far fa-trash-alt"></i>

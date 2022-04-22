@@ -3,8 +3,11 @@ import NoteList from "./NoteList";
 import TodoList from "./TodoList";
 
 import s from "./style.module.scss";
+import { useTitle } from "hooks/useTitle";
 
 const Main = () => {
+  useTitle('myNotes')
+
   return (
     <div className={s.container}>
       <div className={s.image__container}>

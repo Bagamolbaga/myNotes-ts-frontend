@@ -8,13 +8,17 @@ import googleIcon from "assets/google-color.svg";
 import s from "./Login.module.scss";
 
 import firebase from "http/firebase";
+import { useTitle } from "hooks/useTitle";
 
 const Login = () => {
   const dispatch = useDispatch();
   const history = useHistory();
   const { authError, user } = useTypeSelector((state) => state);
+
   const [loginOrEmail, setLoginOrEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  useTitle('Login')
 
   useEffect(() => {
     if (user.isLogin) history.push("/");
@@ -38,7 +42,7 @@ const Login = () => {
     firebase
       .auth()
       .signInWithPopup(googleProvider)
-      .then((res) => {
+      .then((res: any) => {
         const userInfo = res.additionalUserInfo?.profile as any;
         user = {
           name: userInfo.name,
@@ -48,7 +52,7 @@ const Login = () => {
         console.log(user);
         dispatch(authGoogle(user.name, user.email, user.avatar));
       })
-      .catch((err) => console.log(err));
+      .catch((err: any) => console.log(err));
   };
 
   return (

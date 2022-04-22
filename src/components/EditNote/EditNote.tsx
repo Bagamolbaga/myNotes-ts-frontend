@@ -2,7 +2,7 @@ import React, { FC, useCallback, useEffect, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
 import { useTypeSelector } from "../../hooks/useTypeSelector";
-import { editAsyncNotes } from "../../store/asyncActions/asyncNoteActions";
+import { asyncDeleteNote, createAsyncNote, editAsyncNotes, fixedNote, unFixedNote } from "../../store/asyncActions/asyncNoteActions";
 import { IGroup, IState } from "../../types/state";
 import { OutputData } from "@editorjs/editorjs";
 import { notesInGroupCounter } from "../../utils/notesInGroupCounter";
@@ -23,6 +23,7 @@ import s from "./EditNote.module.scss";
 import { useOnClickOutside } from "hooks/useOnClickOutside";
 import { useDebounce } from "hooks/useDebounce";
 import { useTitle } from "hooks/useTitle";
+import { selectNote } from "store/actions/noteActions";
 
 interface IParams {
   noteId: string;
@@ -34,11 +35,9 @@ const EditNote: FC = () => {
   const history = useHistory();
   const { noteId } = useParams<IParams>();
   const dispatch = useDispatch();
-  const { groups, notes } = useTypeSelector(getState);
+  const { groups, notes, selectNoteId } = useTypeSelector(getState);
   const firstRender = useRef(false)
 
-  
-  
   const note = notes.find((note) => note.id === Number(noteId));
   const group = groups.find((group) => group.id === note?.group_id);
 
@@ -176,6 +175,40 @@ const EditNote: FC = () => {
     setEditorValue(value);
   };
 
+  const pinnedNoteHandler = () => {
+    const fixedNotesLength = notes.filter((note) => note.fixed).length;
+
+    if (!note?.fixed && fixedNotesLength < 4) {
+      dispatch(fixedNote(selectNoteId as number));
+    }
+
+    if (note?.fixed) {
+      dispatch(unFixedNote(selectNoteId as number));
+    }
+  };
+
+  const copyNoteHandler = () => {
+    dispatch(
+      createAsyncNote({
+        headerImg: note!.headerImg,
+        title: note!.title,
+        text: note!.text,
+        tags: note!.tags,
+        groupId: note!.group_id,
+      })
+    );
+  };
+
+  const deleteNoteHandler = () => {
+    dispatch(asyncDeleteNote(selectNoteId as number));
+    if (notes.length !== 0) {
+      dispatch(selectNote(notes[0].id));
+      history.push(`/note/${notes[0].id}`);
+    } else {
+      history.push('/');
+    }
+  };
+
   const editNoteHandler = () => {
     dispatch(
       editAsyncNotes({
@@ -225,11 +258,11 @@ const EditNote: FC = () => {
               </div>
               <p>Add to favorites</p>
             </div>
-            <div className={s.optionsItemContainer}>
+            <div className={s.optionsItemContainer} onClick={pinnedNoteHandler}>
               <div className={s.iconContainer}>
                 <i className="fas fa-thumbtack"></i>
               </div>
-              <p>Pin note</p>
+              <p>{note?.fixed ? "Unpin note" : "Pin note"}</p>
             </div>
             <div className={s.optionsItemContainer}>
               <div className={s.iconContainer}>
@@ -237,22 +270,13 @@ const EditNote: FC = () => {
               </div>
               <p>Edit note</p>
             </div>
-            <div className={s.optionsItemContainer}>
+            <div className={s.optionsItemContainer} onClick={copyNoteHandler}>
               <div className={s.iconContainer}>
                 <i className="far fa-copy"></i>
               </div>
               <p>Copy note</p>
             </div>
-            <div
-              className={s.optionsItemContainer}
-              onClick={openChangeGroupModalHandler}
-            >
-              <div className={s.iconContainer}>
-                <i className="far fa-folder"></i>
-              </div>
-              <p>Change group</p>
-            </div>
-            <div className={s.optionsItemContainer}>
+            <div className={s.optionsItemContainer} onClick={deleteNoteHandler}>
               <div className={s.iconContainer}>
                 <i className="far fa-trash-alt"></i>
               </div>

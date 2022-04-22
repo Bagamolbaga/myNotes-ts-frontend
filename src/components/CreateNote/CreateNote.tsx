@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from "react";
+import React, { FC, useState, useEffect, useCallback, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { useTypeSelector } from "../../hooks/useTypeSelector";
 import { IGroup, IState } from "../../types/state";
@@ -14,18 +14,23 @@ import { createAsyncNote } from "../../store/asyncActions/asyncNoteActions";
 import { notesInGroupCounter } from "../../utils/notesInGroupCounter";
 import { Input } from "../../UI/Input/Input";
 import Modal from "../../UI/Modal";
+import TagsInput from "UI/TagsInput";
+import { useOnClickOutside } from "hooks/useOnClickOutside";
+import { useHistory } from "react-router-dom";
+import { useTitle } from "hooks/useTitle";
 
 const getState = (state: IState) => state;
 
 const Note: FC = () => {
+  const history = useHistory()
   const dispatch = useDispatch();
-  const { groups, notes } = useTypeSelector(getState);
+  const { groups, notes, selectNoteId } = useTypeSelector(getState);
 
   const [showSelectGroupModal, setShowSelectGroupModal] = useState(false);
   const [selectGroup, setSelectGroup] = useState<IGroup | null>(null);
   const [showImageUrlInput, setShowImageUrlInput] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
-  const [tags, setTags] = useState("");
+  const [tags, setTags] = useState<string[]>([]);
   const [showTitleInput, setShowTitleInput] = useState(false);
   const [title, setTitle] = useState("Write title note");
   const [editorValue, setEditorValue] = useState<OutputData>();
@@ -33,10 +38,21 @@ const Note: FC = () => {
   const [showOptions, setShowOptions] = useState(false);
   const [showChangeModal, setShowChangeModal] = useState(false);
 
-  useEffect(() => {}, []);
+  const inputRef = useRef<HTMLInputElement>(null)
+  
+  useTitle('Create note')
 
-  const tagsChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) =>
-    setTags(e.target.value);
+  // const tagsChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) =>
+  //   setTags(e.target.value);
+
+  const tagsAddHandler = (newTag: string) =>
+    setTags((tags) => [...tags, newTag]);
+
+  const tagsDeleteHandler = useCallback(
+    (deleteTag: string) =>
+      setTags((tags) => tags.filter((tag) => tag !== deleteTag)),
+    []
+  );
 
   const titleChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) =>
     setTitle(e.target.value);
@@ -55,6 +71,15 @@ const Note: FC = () => {
     setImageUrl(e.target.value);
   };
 
+  const outsideInputClickHandler = () => {
+    if (title === '') {
+      setTitle('Write title note')
+    }
+    setShowTitleInput(false);
+  };
+
+  useOnClickOutside(inputRef, outsideInputClickHandler);
+
   const showTitleInputHandler = (e: React.MouseEvent) => {
     e.stopPropagation();
     title === "Write title note" && setTitle("");
@@ -63,6 +88,9 @@ const Note: FC = () => {
 
   const closeTitleInputHandler = (e: React.MouseEvent) => {
     e.stopPropagation();
+    if (title === "") {
+      setTitle("Write title note");
+    }
     setShowTitleInput(false);
     console.log("hide");
   };
@@ -104,17 +132,20 @@ const Note: FC = () => {
   };
 
   const createNoteHandler = () => {
-    const tagsArray = tags.trim().split(" ");
     dispatch(
       createAsyncNote({
         headerImg: imageUrl,
         title,
         text: JSON.stringify(editorValue),
-        tags: tagsArray,
+        tags: tags,
         groupId: selectGroup!.id,
       })
     );
   };
+
+  useEffect(() => {
+    if (typeof selectNoteId === 'number') history.push(`/note/${selectNoteId}`)
+  }, [selectNoteId])
 
   const noteInGroupCounter = notesInGroupCounter(notes);
 
@@ -245,7 +276,7 @@ const Note: FC = () => {
                 icon={faSortDown}
               />
             </div>
-            <div className={s.inputTagsContainer}>
+            {/* <div className={s.inputTagsContainer}>
               <FontAwesomeIcon icon={faHashtag} />
 
               <input
@@ -255,7 +286,12 @@ const Note: FC = () => {
                 name="tags"
                 onChange={tagsChangeHandler}
               />
-            </div>
+            </div> */}
+            <TagsInput
+              tags={tags}
+              tagsAddHandler={tagsAddHandler}
+              tagsDeleteHandler={tagsDeleteHandler}
+            />
           </div>
           <div
             className={s.optionsContainer}
@@ -282,6 +318,7 @@ const Note: FC = () => {
               ></div>
               {showTitleInput ? (
                 <input
+                  ref={inputRef}
                   className={s.titleInput}
                   type="text"
                   placeholder="Note title"

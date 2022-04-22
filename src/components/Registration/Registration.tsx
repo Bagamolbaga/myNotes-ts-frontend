@@ -11,6 +11,7 @@ import firebase from "http/firebase";
 import googleIcon from "assets/google-color.svg";
 
 import s from "./Registration.module.scss";
+import { useTitle } from "hooks/useTitle";
 
 interface AuthorizationProps {
   isReg?: boolean;
@@ -35,6 +36,8 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
   const [fileUrl, setFileUrl] = useState<IFileUrl>();
 
   const [validError, setValidError] = useState("");
+
+  useTitle('Registration')
 
   useEffect(() => {
     user.isLogin && history.push("/");

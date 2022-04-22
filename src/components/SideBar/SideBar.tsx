@@ -77,9 +77,13 @@ const SideBar: FC = () => {
   const reverseGroupListHandler = () => setReverseGroupList(!reverseGroupList);
 
   const showAllNotesHandler = () => {
-    dispatch(selectActiveGroup("All"));
-    dispatch(selectNote(firstNote.id));
-    history.push(`/note/${firstNote.id}`);
+    if (notes.length !== 0) {
+      dispatch(selectActiveGroup("All"));
+      dispatch(selectNote(firstNote.id));
+      history.push(`/note/${firstNote.id}`);
+    } else {
+      history.push('/create-note');
+    }
   };
 
   const noteInGroupCounter = notesInGroupCounter(notes);
