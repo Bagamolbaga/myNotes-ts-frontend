@@ -2,16 +2,21 @@ import React, { useState, useEffect } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { Row } from "react-bootstrap";
-import { Input } from "../../UI/Input/Input";
-import { useTypeSelector } from "../../hooks/useTypeSelector";
-import { registration, authGoogle } from "../../store/asyncActions/asyncUserActions";
-import { uploadPhoto } from "../../http/firebase";
-import firebase from "http/firebase";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
+import { useTitle } from "hooks/useTitle";
+import { useTypeSelector } from "hooks/useTypeSelector";
+import { registration, authGoogle } from "store/asyncActions/asyncUserActions";
+import firebase, { uploadPhoto } from "http/firebase";
+
+import { Input } from "UI/Input/Input";
 import googleIcon from "assets/google-color.svg";
 
 import s from "./Registration.module.scss";
-import { useTitle } from "hooks/useTitle";
+
+const MIN_LENGTH = 6;
+
+const emailRegExp = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/
 
 interface AuthorizationProps {
   isReg?: boolean;
@@ -29,19 +34,60 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
-
   const [password, setPassword] = useState("");
-
+  
   const [file, setFile] = useState<File>();
   const [fileUrl, setFileUrl] = useState<IFileUrl>();
+  
+  const [nameIsValid, setNameIsValid] = useState(true);
+  const [emailIsValid, setEmailIsValid] = useState(true);
+  const [passwordIsValid, setPasswordIsValid] = useState(true);
 
   const [validError, setValidError] = useState("");
-
+  
   useTitle('Registration')
 
+  // useEffect(() => {
+  //   user.isLogin && history.push("/");
+  // }, [history, user.isLogin]);
+
   useEffect(() => {
-    user.isLogin && history.push("/");
-  }, [history, user.isLogin]);
+    if (name.length !== 0) {
+      if (name.length < MIN_LENGTH) setNameIsValid(false);
+      if (name.length >= MIN_LENGTH) setNameIsValid(true);
+    }
+
+    if (name.length === 0) setNameIsValid(true);
+
+  }, [name]);
+
+  useEffect(() => {
+    if (email.length !== 0) {
+      if (email.length < MIN_LENGTH) setEmailIsValid(false);
+      if (email.length >= MIN_LENGTH) setEmailIsValid(true);
+
+      if (email.match(emailRegExp)) {
+        setEmailIsValid(true);
+      } else {
+        setEmailIsValid(false);
+      } 
+    }
+
+    if (email.length === 0) setEmailIsValid(true);
+
+
+  }, [email]);
+
+  useEffect(() => {
+    if (password.length !== 0) {
+      if (password.length < MIN_LENGTH) setPasswordIsValid(false);
+      if (password.length >= MIN_LENGTH) setPasswordIsValid(true);
+    }
+
+    if (password.length === 0) setPasswordIsValid(true);
+
+  }, [password]);
+
 
   const fileInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f: any = e.target.files !== null && e.target.files[0];
@@ -55,8 +101,16 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
   };
 
   const registrHandler = async () => {
-    const url = await uploadPhoto(file);
-    dispatch(registration(name, email, password, url));
+    if (name.length === 0 && email.length === 0 && password.length === 0) {
+      setNameIsValid(false)
+      setEmailIsValid(false)
+      setPasswordIsValid(false)
+    }
+
+    if (nameIsValid && name.length !== 0 && emailIsValid && email.length !== 0 && passwordIsValid && password.length !== 0) {
+      const url = await uploadPhoto(file);
+      dispatch(registration(name, email, password, url));
+    }
   };
 
   const loginWithGoogleHandler = () => {
@@ -80,56 +134,44 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
       .catch((err) => console.log(err));
   };
 
-  useEffect(() => {
-    name.length < 6 && setValidError("Nickname min length 5");
-    !email.includes("@") && setValidError("Not valid Email");
-    password.length < 6 && setValidError("Password min length 5");
-    password.length >= 6 &&
-      name.length >= 6 &&
-      email.includes("@") &&
-      setValidError("");
-  }, [name, email, password]);
-
   return (
     <Row className={s.container}>
-      <h2 className="authorization__container-title">Authorization</h2>
-      <label className="authorization__container-label" htmlFor="login">
-        Login
-      </label>
+      <h2 className="authorization__container-title">Registration</h2>
+      
       <Input
-        className={`${s.input} mt-1`}
         placeholder="Login"
         type="text"
         value={name}
+        isValid={nameIsValid}
+        icon={<FontAwesomeIcon icon="user" />}
         onChange={(e) => setName(e.target.value)}
       />
-      <label className="authorization__container-label" htmlFor="login">
-        Email
-      </label>
+      
       <Input
-        className={`${s.input} mt-1`}
+        classNameForContainer={`${s.input} mt-1`}
         placeholder="Email"
         type="text"
         value={email}
+        isValid={emailIsValid}
+        icon={<FontAwesomeIcon icon="at" />}
         onChange={(e) => setEmail(e.target.value)}
       />
-      <label className="authorization__container-label" htmlFor="password">
-        Password
-      </label>
+      
       <Input
-        className={`${s.input} mt-1`}
+        classNameForContainer={`${s.input} mt-1`}
         placeholder="Password"
         type="password"
         value={password}
+        isValid={passwordIsValid}
+        icon={<FontAwesomeIcon icon="lock" />}
         onChange={(e) => setPassword(e.target.value)}
       />
-      <label className="authorization__container-label" htmlFor="password">
-        Avatar
-      </label>
+      
       <Input
-        className={`${s.input} mt-1`}
+        classNameForContainer={`${s.input} mt-1`}
         placeholder="Avatar"
         type="file"
+        icon={<FontAwesomeIcon icon="image" />}
         onChange={fileInputHandler}
       />
       {fileUrl ? (

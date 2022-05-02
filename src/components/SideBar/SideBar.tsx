@@ -184,23 +184,6 @@ const SideBar: FC = () => {
               />
             ))}
         </div>
-        <div className={s.tagsTitleContainer}>
-          <div>
-            <p className={s.headTabTitle}>Groups</p>
-          </div>
-          <div className={s.tagsIconsContainer}>
-            <i className="fas fa-plus"></i>
-          </div>
-        </div>
-        <div className={s.tagItemsContainer}>
-          <TagsItem label="searchbytag" />
-          <TagsItem label="searchbytag" />
-          <TagsItem label="searchbytag" />
-          <TagsItem label="searchbytag" />
-          <TagsItem label="searchbytag" />
-          <TagsItem label="searchbytag" />
-          <TagsItem label="searchbytag" />
-        </div>
       </div>
     </>
   );

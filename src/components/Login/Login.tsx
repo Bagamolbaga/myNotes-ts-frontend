@@ -1,14 +1,19 @@
 import React, { ChangeEvent, useEffect, useState } from "react";
 import { Link, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import firebase from "http/firebase";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+
+import { useTitle } from "hooks/useTitle";
 import { useTypeSelector } from "../../hooks/useTypeSelector";
 import { login, authGoogle } from "../../store/asyncActions/asyncUserActions";
+
 import { Input } from "../../UI/Input/Input";
 import googleIcon from "assets/google-color.svg";
+
 import s from "./Login.module.scss";
 
-import firebase from "http/firebase";
-import { useTitle } from "hooks/useTitle";
+const MIN_LENGTH = 6;
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -18,11 +23,34 @@ const Login = () => {
   const [loginOrEmail, setLoginOrEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const [loginIsValid, setLoginIsValid] = useState(true);
+  const [passwordIsValid, setPasswordIsValid] = useState(true);
+
   useTitle('Login')
 
   useEffect(() => {
     if (user.isLogin) history.push("/");
   }, [user]);
+
+  useEffect(() => {
+    if (loginOrEmail.length !== 0) {
+      if (loginOrEmail.length < MIN_LENGTH) setLoginIsValid(false);
+      if (loginOrEmail.length >= MIN_LENGTH) setLoginIsValid(true);
+    }
+
+    if (loginOrEmail.length === 0) setLoginIsValid(true);
+
+  }, [loginOrEmail]);
+
+  useEffect(() => {
+    if (password.length !== 0) {
+      if (password.length < MIN_LENGTH) setPasswordIsValid(false);
+      if (password.length >= MIN_LENGTH) setPasswordIsValid(true);
+    }
+
+    if (loginOrEmail.length === 0) setPasswordIsValid(true);
+
+  }, [password]);
 
   const loginInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setLoginOrEmail(e.target.value);
@@ -32,7 +60,16 @@ const Login = () => {
     setPassword(e.target.value);
   };
 
-  const loginHandler = () => dispatch(login(loginOrEmail, password));
+  const loginHandler = () => {
+    if (loginOrEmail.length === 0 && password.length === 0) {
+      setLoginIsValid(false)
+      setPasswordIsValid(false)
+    }
+
+    if (loginIsValid && loginOrEmail.length !== 0 && passwordIsValid && password.length !== 0) {
+      dispatch(login(loginOrEmail, password));
+    }
+  } 
 
   const loginWithGoogleHandler = () => {
     let user = { name: "", email: "", avatar: "" };
@@ -55,22 +92,24 @@ const Login = () => {
       .catch((err: any) => console.log(err));
   };
 
+
   return (
     <div className={`${s.container}`}>
       <h2 className="authorization__container-title">Login</h2>
       <Input
-        className={s.input}
         value={loginOrEmail}
+        isValid={loginIsValid}
         placeholder="Login or Email"
         onChange={loginInputHandler}
-        icon={<i className="fas fa-search"></i>}
+        icon={<FontAwesomeIcon icon="user" />}
       />
       <Input
-        className={`${s.input} mt-1`}
+        classNameForContainer="mt-1"
         value={password}
+        isValid={passwordIsValid}
         placeholder="Password"
         onChange={passwordInputHandler}
-        icon={<i className="fas fa-search"></i>}
+        icon={<FontAwesomeIcon icon="lock" />}
       />
       <p className="m-0">
         You have account?
@@ -78,7 +117,7 @@ const Login = () => {
           <span className={`${s.registrRedirect} ml-1`}>Registration</span>
         </Link>
       </p>
-      <div className="pt-1 pb-1">
+      <div className={`pt-1 pb-1 ${s.authError}`}>
         <p>{authError}</p>
       </div>
       <button className={`${s.button} mt-1`} onClick={loginHandler}>

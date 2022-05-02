@@ -25,7 +25,15 @@
 }
 
 .input {
-    margin-bottom: 20px;
+    // margin-bottom: 20px;
+}
+
+.authError {
+    height: 40px;
+
+    p {
+        font-size: 20px;
+    }
 }
 
 .button {

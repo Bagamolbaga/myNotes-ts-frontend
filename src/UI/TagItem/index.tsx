@@ -5,12 +5,13 @@ import s from "./style.module.scss";
 interface ITagItem {
   tag: string;
   onlyView: boolean;
+  className?: string;
   tagsDeleteHandler?: (dleteTag: string) => void;
 }
 
-const TagItem: FC<ITagItem> = memo(({ tag, onlyView, tagsDeleteHandler }) => {
+const TagItem: FC<ITagItem> = memo(({ tag, onlyView, className, tagsDeleteHandler }) => {
   return (
-    <div className={s.container}>
+    <div className={`${s.container} ${className}`}>
       <FontAwesomeIcon className={s.iconHashtag} icon="hashtag" />
       {tag}
       {!onlyView && (

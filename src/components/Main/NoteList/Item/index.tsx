@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { CSSProperties, FC } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { useTypeSelector } from "hooks/useTypeSelector";
@@ -29,15 +29,21 @@ const Item: FC<IItem> = ({ note }) => {
     border: `1px solid ${groups.find((group) => group.id === note.group_id)?.color}`,
   };
 
+  const bgImage: CSSProperties = {
+    backgroundImage: `url(${note.headerImg})`,
+    backgroundSize: 'cover',
+    backgroundPosition: 'center'
+  }
+
   return (
-    <div className={s.item} onClick={itemSelectHandler}>
+    <div className={s.item} style={bgImage} onClick={itemSelectHandler}>
       <div className={s.item__header}>
         <div className={`${s.circle}`} style={circleColor}></div>
         <h6>{note.title}</h6>
       </div>
       <div className="item__tags">
         {note.tags?.map((tag) => (
-          <TagItem key={tag} tag={tag} onlyView />
+          <TagItem className="mt-05" key={tag} tag={tag} onlyView />
         ))}
         <span>{dateCreatedParse(note.createdAt!)}</span>
       </div>

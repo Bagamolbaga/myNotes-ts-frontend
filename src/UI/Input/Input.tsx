@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, ReactNode } from "react";
+import React, { ChangeEvent, FC, InputHTMLAttributes, ReactNode } from "react";
 import s from "./Input.module.scss";
 
 interface InputProps {
@@ -6,20 +6,20 @@ interface InputProps {
   value?: string
   type?: string
   icon?: FC | ReactNode
-  className?: string
+  isValid?: boolean
+  classNameForContainer?: string
   onChange: (e: ChangeEvent<HTMLInputElement>) => void
 }
 
-export const Input: FC<InputProps> = ({icon, type, value, placeholder, className, onChange}) => {
+export const Input: FC<InputProps & InputHTMLAttributes<HTMLInputElement>> = (props) => {
+  const { icon, classNameForContainer, isValid = true } = props
   return (
-    <div className={`${s.inputContainer} ${className}`}>
+    <div className={`${s.inputContainer} ${classNameForContainer} ${!isValid && s.error}`}>
       {icon && (icon)}
       <input
+        className="m-0"
         key="searchInput"
-        value={value}
-        onChange={onChange}
-        placeholder={placeholder}
-        type={type}
+        {...props}
       />
     </div>
   );
