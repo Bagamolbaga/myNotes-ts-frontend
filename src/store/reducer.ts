@@ -20,7 +20,7 @@ export const reducer = (state = initialState, action: IActions) : IState => {
         case noteActionTypes.GET_NOTES:
       return {
         ...state,
-        notes: [...action.payload],
+        notes: [...action.payload.sort((a, b) => a.id - b.id)],
       }
     case noteActionTypes.CREATE_NOTE:
       return {
