@@ -1,4 +1,4 @@
-import React, { ChangeEvent, FC, useState } from "react";
+import React, { ChangeEvent, MouseEvent, FC, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -13,7 +13,7 @@ import { logout } from "store/asyncActions/asyncUserActions";
 import { selectActiveGroup } from "../../store/actions/groupActions";
 import { selectNote, showAllNote } from "../../store/actions/noteActions";
 
-import { IGroup } from "../../types/state";
+import { IGroup, INote } from "../../types/state";
 
 import { notesInGroupCounter } from "../../utils/notesInGroupCounter";
 import { notifications } from "utils/snowNotifications";
@@ -23,16 +23,21 @@ import TagsItem from "./TagsItem/TagsItem";
 import CreateGroupModal from "./CreateGroupModal";
 
 import s from "./SideBar.module.scss";
+import DeleteGroupYesNoModal from "./DeleteGroupYesNoModal";
 
 const SideBar: FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { user, groups, notes, selectedGroup } = useTypeSelector(
+  const { user, groups, notes, selectedGroup, selectNoteId } = useTypeSelector(
     (state) => state
   );
 
   const [showSideBar, setShowSideBar] = useState(false);
   const [showCreateGroupModal, setShowCreateGroupModal] = useState(false);
+
+  const [showDeleteGroupModal, setShowDeleteGroupModal] = useState(false);
+  const [selectGroupForDelete, setSelectGroupForDelete] = useState<null | IGroup>(null)
+
   const [newGroupTitleValue, setNewGroupTitleValue] = useState("");
   const [newGroupColorValue, setNewGroupColorValue] = useState("#c16dcb");
   const [reverseGroupList, setReverseGroupList] = useState(false);
@@ -42,8 +47,14 @@ const SideBar: FC = () => {
   const goHomeHandler = () => history.push("/");
 
   const showCreateGroupModalHandler = () => setShowCreateGroupModal(true);
-
   const closeCreateGroupModalHandler = () => setShowCreateGroupModal(false);
+
+  const showDeleteGroupModalHandler = (e: MouseEvent, group: IGroup) => {
+    e.stopPropagation()
+    setSelectGroupForDelete(group)
+    setShowDeleteGroupModal(true)
+  }
+  const closeDeleteGroupModalHandler = () => setShowDeleteGroupModal(false)
 
   const newGroupTitleValueChangeHandler = (e: ChangeEvent<HTMLInputElement>) =>
     setNewGroupTitleValue(e.target.value);
@@ -67,7 +78,20 @@ const SideBar: FC = () => {
   };
 
   const deleteGroupHandler = (id: number) => {
-    dispatch(asyncDeleteGroup(id));
+    setShowDeleteGroupModal(false)
+
+    const noteWithAnotherGroup = notes.find(note => note.group_id !== id)
+
+    if (noteWithAnotherGroup !== undefined) {
+      dispatch(selectNote(noteWithAnotherGroup.id))
+      dispatch(asyncDeleteGroup(id));
+      history.push(`/note/${noteWithAnotherGroup.id}`)
+    } else {
+      dispatch(showAllNote())
+      dispatch(asyncDeleteGroup(id));
+      history.push(`/`)
+    }
+
   };
 
   const logoutHandler = () => {
@@ -100,6 +124,15 @@ const SideBar: FC = () => {
           onColorChange={newGroupColorValueChangeHandler}
           onClose={closeCreateGroupModalHandler}
           createGroup={createNewGroup}
+        />
+      )}
+
+      {showDeleteGroupModal && (
+        <DeleteGroupYesNoModal
+          group={selectGroupForDelete as IGroup}
+          noHandler={closeDeleteGroupModalHandler}
+          yesHandler={deleteGroupHandler}
+          onClose={closeDeleteGroupModalHandler}
         />
       )}
       <div className={`${s.container} + ${showSideBar ? s.hide : s.show}`}>
@@ -180,7 +213,7 @@ const SideBar: FC = () => {
                 notesCount={noteInGroupCounter[group.id]}
                 isSelected={selectedGroup === group.id ? true : false}
                 onClick={() => onClickGroupHandler(group)}
-                deleteHandler={() => deleteGroupHandler(group.id)}
+                deleteHandler={(e: MouseEvent<HTMLDivElement>) => showDeleteGroupModalHandler(e, group)}
               />
             ))}
         </div>

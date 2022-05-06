@@ -1,0 +1,23 @@
+@import "styles/_constants.scss";
+
+.container {
+  max-width: 500px;
+}
+
+.btnYes {
+  background: $red-1;
+  transition: all .1s ease-in-out;
+
+  &:hover {
+    background: $red-3;
+  }
+}
+
+.btnNo {
+  background: $grey-4;
+  transition: all .1s ease-in-out;
+
+  &:hover {
+    background: $grey-5;
+  }
+}

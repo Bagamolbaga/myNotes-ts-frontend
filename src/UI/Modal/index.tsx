@@ -4,10 +4,11 @@ import s from './style.module.scss'
 interface Props {
     title: string
     children: React.ReactChild | React.ReactNode
+    className?: string
     onClose: () => void
 }
 
-const Modal: FC<Props> = ({title, children, onClose}) => {
+const Modal: FC<Props> = ({title, children, className, onClose}) => {
 
     const stopPropaginationEvent = (e: React.MouseEvent) => e.stopPropagation()
 
@@ -16,7 +17,7 @@ const Modal: FC<Props> = ({title, children, onClose}) => {
       className={s.container}
       onClick={onClose}
     >
-      <div className={s.modal}
+      <div className={`${s.modal} ${className}`}
         onClick={stopPropaginationEvent}
       >
         <p>{title}</p>

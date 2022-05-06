@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, MouseEvent, useState } from "react";
 import s from "./GroupItem.module.scss";
 
 interface GroupItemProps {
@@ -7,7 +7,7 @@ interface GroupItemProps {
   label: string;
   notesCount: number;
   onClick: () => void;
-  deleteHandler?: () => void
+  deleteHandler: (e: MouseEvent<HTMLDivElement>) => void
   isSelected: boolean;
   withIcon?: boolean;
 }
@@ -47,7 +47,7 @@ const GroupItem: FC<GroupItemProps> = ({
           </p>
         </div>
         {withIcon && (
-          <div className={`${s.iconContainer} ${s.iconDeleteGroup}`} onClick={deleteHandler}>
+          <div className={`${s.iconContainer} ${s.iconDeleteGroup}`} onClick={(e: MouseEvent<HTMLDivElement>) => deleteHandler(e)}>
             <i className="far fa-trash-alt"></i>
           </div>
         )}

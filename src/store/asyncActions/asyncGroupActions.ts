@@ -1,5 +1,6 @@
 import { Dispatch } from "redux";
 import { GroupActions, createGroup, getGroups, deleteGroup } from "../actions/groupActions";
+import { deleteNote, NoteActions } from 'store/actions/noteActions'
 import { OtherActions, setLoading } from "../actions/otherActions";
 import { IState } from "../../types/state";
 import { socketRef } from "../../http/socket-io";
@@ -28,10 +29,26 @@ export const getAsyncGroup =
     }
   };
 
-  export const asyncDeleteGroup = (id: number) => async (dispatch: Dispatch<GroupActions>) => {
+  export const asyncDeleteGroup = (id: number) => async (dispatch: Dispatch<GroupActions | NoteActions>, getState: () => IState) => {
+    const { notes } = getState();
+
     const res = await API.group.deleteGroup(id)
+
     if (res.data) {
       dispatch(deleteGroup(id))
       socketRef.emit('deleteGroup', id)
+
+      notes.forEach( async ( note ) => {
+        if (note.group_id === id) {
+          const res = await API.note.deleteNote(note.id)
+          
+          if (res.data) {
+            dispatch(deleteNote(note.id))
+            socketRef.emit('deleteNote', id)
+          }
+        } 
+      })
+    
+
     }
   }

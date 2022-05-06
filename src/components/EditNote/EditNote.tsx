@@ -289,6 +289,7 @@ const EditNote: FC = () => {
             {groups.map((group) => (
               <GroupItem
                 onClick={() => selectGroupHandler(group)}
+                deleteHandler={() => {}}
                 isSelected={group.id === selectGroup?.id ? true : false}
                 showSideBar={false}
                 color={group.color}

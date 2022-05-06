@@ -1,12 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+
+import { showAllNote } from "store/actions/noteActions";
+import { useTitle } from "hooks/useTitle";
+
 import NoteList from "./NoteList";
 import TodoList from "./TodoList";
 
 import s from "./style.module.scss";
-import { useTitle } from "hooks/useTitle";
 
 const Main = () => {
   useTitle('myNotes')
+  const dispatch = useDispatch()
+
+  useEffect(() => {
+    dispatch(showAllNote())
+  }, [])
+  
 
   const [bgImage, setBgImage] = useState('https://www.comunicaffe.com/wp-content/uploads/2020/08/drink-864958_1280.jpg')
 

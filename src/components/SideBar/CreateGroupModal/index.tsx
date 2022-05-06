@@ -15,8 +15,8 @@ interface Props {
 const CreateGroupModal: FC<Props> = ({ titleValue, colorValue, createGroup, onClose, onTitleChange, onColorChange}) => {
     return (
         <Modal title='Create new Group' onClose={onClose}>
-            <Input className='m-0 mt-1 mb-1' value={titleValue} placeholder='group name' onChange={onTitleChange} />
-            <Input className='m-0 mt-1 mb-1' type='color' value={colorValue} onChange={onColorChange} />
+            <Input classNameForContainer='m-0 mt-1' value={titleValue} placeholder='group name' onChange={onTitleChange} />
+            <Input classNameForContainer='m-0 mt-1 mb-1' type='color' value={colorValue} onChange={onColorChange} />
             <Button color='#5ec040' onClick={createGroup}>Create</Button>
         </Modal>
     )
