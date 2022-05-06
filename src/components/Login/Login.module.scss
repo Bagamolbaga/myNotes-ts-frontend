@@ -24,10 +24,6 @@
     }
 }
 
-.input {
-    // margin-bottom: 20px;
-}
-
 .authError {
     height: 40px;
 
@@ -101,4 +97,8 @@
     span {
         font-size: 18px;
     }
+}
+
+.inputContainer {
+    width: 400px;
 }

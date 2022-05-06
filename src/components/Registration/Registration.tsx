@@ -47,9 +47,9 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
   
   useTitle('Registration')
 
-  // useEffect(() => {
-  //   user.isLogin && history.push("/");
-  // }, [history, user.isLogin]);
+  useEffect(() => {
+    if (user.isLogin) history.push("/");
+  }, [user]);
 
   useEffect(() => {
     if (name.length !== 0) {
@@ -139,6 +139,7 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
       <h2 className="authorization__container-title">Registration</h2>
       
       <Input
+        classNameForContainer={`${s.inputContainer}`}
         placeholder="Login"
         type="text"
         value={name}
@@ -148,7 +149,7 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
       />
       
       <Input
-        classNameForContainer={`${s.input} mt-1`}
+        classNameForContainer={`${s.inputContainer} mt-1`}
         placeholder="Email"
         type="text"
         value={email}
@@ -158,7 +159,7 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
       />
       
       <Input
-        classNameForContainer={`${s.input} mt-1`}
+        classNameForContainer={`${s.inputContainer} mt-1`}
         placeholder="Password"
         type="password"
         value={password}
@@ -168,7 +169,7 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
       />
       
       <Input
-        classNameForContainer={`${s.input} mt-1`}
+        classNameForContainer={`${s.inputContainer} mt-1`}
         placeholder="Avatar"
         type="file"
         icon={<FontAwesomeIcon icon="image" />}

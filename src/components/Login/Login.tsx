@@ -97,6 +97,7 @@ const Login = () => {
     <div className={`${s.container}`}>
       <h2 className="authorization__container-title">Login</h2>
       <Input
+        classNameForContainer={`${s.inputContainer}`}
         value={loginOrEmail}
         isValid={loginIsValid}
         placeholder="Login or Email"
@@ -104,7 +105,7 @@ const Login = () => {
         icon={<FontAwesomeIcon icon="user" />}
       />
       <Input
-        classNameForContainer="mt-1"
+        classNameForContainer={`${s.inputContainer} mt-1 mb-1`}
         value={password}
         isValid={passwordIsValid}
         placeholder="Password"

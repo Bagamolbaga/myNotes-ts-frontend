@@ -6,12 +6,13 @@ import API from '../../http/API'
 export const registration = (name: string, email: string, password: string, img: string) => async (dispatch: Dispatch<UserActions>) => {
   const res = await API.user.registration(name, email, password, img)
   if (!res.data.token && res.data.message) {
-    return dispatch(setAuthError(res.data.message))
+    dispatch(setUser({isLogin: false}))
+    dispatch(setAuthError(res.data.message))
   }
 
   if (res.data.token) {
     localStorage.setItem('my-notes-token', res.data.token)
-    dispatch(setUser(jwtDecode(res.data.token)))
+    dispatch(setUser({...jwtDecode(res.data.token), isLogin: true}))
     dispatch(setAuthError(''))
   }
 }
