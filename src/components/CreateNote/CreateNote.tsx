@@ -27,7 +27,7 @@ const Note: FC = () => {
   const { groups, notes, selectNoteId } = useTypeSelector(getState);
 
   const [showSelectGroupModal, setShowSelectGroupModal] = useState(false);
-  const [selectGroup, setSelectGroup] = useState<IGroup | null>(null);
+  const [selectGroup, setSelectGroup] = useState<IGroup | null>(!groups.length ? null : groups[0]);
   const [showImageUrlInput, setShowImageUrlInput] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
   const [tags, setTags] = useState<string[]>([]);
@@ -250,17 +250,7 @@ const Note: FC = () => {
             ))}
           </div>
         )}
-        {showCreateNoteBtn && (
-          <div className={s.btnCreateNoteContainer}>
-            <Button
-              className={s.btnCreateNote}
-              color="#39d695"
-              onClick={createNoteHandler}
-            >
-              Create
-            </Button>
-          </div>
-        )}
+        
         <div className={s.headerContainer}>
           <div className={s.selectAndInputTagsContainer}>
             <div
@@ -341,6 +331,17 @@ const Note: FC = () => {
             onChangeHandler={editorOnChangeHandler}
           />
         </div>
+        {showCreateNoteBtn && (
+          <div className={s.btnCreateNoteContainer}>
+            <Button
+              className={s.btnCreateNote}
+              color="#39d695"
+              onClick={createNoteHandler}
+            >
+              Create
+            </Button>
+          </div>
+        )}
       </div>
     </>
   );

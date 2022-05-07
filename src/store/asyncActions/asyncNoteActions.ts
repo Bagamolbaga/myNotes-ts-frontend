@@ -27,8 +27,8 @@ export const editAsyncNotes = (data: any) => async (dispatch: Dispatch<NoteActio
   const { selectNoteId } = getState()
   const res = await API.note.editNote(Number(selectNoteId), data)
   if (res.status === 200) {
-    dispatch(editNote({ title: data.title, text: data.text, tags: data.tags, groupId: data.groupId }))
-    socketRef.emit('editNote', { title: data.title, text: data.text, tags: data.tags, groupId: data.groupId, selectNoteId })
+    dispatch(editNote({ title: data.title, text: data.text, tags: data.tags, groupId: data.groupId, headerImg: data.headerImg }))
+    socketRef.emit('editNote', { title: data.title, text: data.text, tags: data.tags, groupId: data.groupId, headerImg: data.headerImg, selectNoteId })
   }
 }
 export const fixedNote = (id: number) => async (dispatch: Dispatch<NoteActions>) => {

@@ -89,11 +89,12 @@ export const reducer = (state = initialState, action: IActions) : IState => {
             item.fixed = false
           }
         } else if (item.id === state.selectNoteId) {
-          if(action.payload.title && action.payload.text && action.payload.tags && action.payload.groupId){
+          if(action.payload.title && action.payload.text && action.payload.tags && action.payload.groupId && action.payload.headerImg){
             item.title = action.payload.title
             item.text = action.payload.text
             item.tags = action.payload.tags
             item.group_id = action.payload.groupId
+            item.headerImg = action.payload.headerImg
           }
         }
         return item

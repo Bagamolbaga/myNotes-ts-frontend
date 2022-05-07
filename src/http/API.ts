@@ -11,7 +11,7 @@ type UserRes = {
     note: {
       createNote : (data: INote, user: IUser, selectedGroup: number) => Promise<AxiosResponse<INote>>
       getNotes : (user: IUser) => Promise<AxiosResponse<INote[]>>
-      editNote : (selectNoteId: number, data: {title: string, text: string, tags: string[], groupId: number}) => Promise<AxiosResponse<any>>
+      editNote : (selectNoteId: number, data: {title: string, text: string, tags: string[], groupId: number, headerImg: string}) => Promise<AxiosResponse<any>>
       fixedNote : (id: number) => Promise<AxiosResponse<any>>
       unFixedNote : (id: number) => Promise<AxiosResponse<any>>
       deleteNote : (id: number) => Promise<AxiosResponse<any>>
@@ -52,13 +52,14 @@ type UserRes = {
         })
       },
   
-      editNote : async (selectNoteId: number, data: {title: string, text: string, tags: string[], groupId: number}) => {
+      editNote : async (selectNoteId, data) => {
         return await API.put('api/note', {
           note_id: selectNoteId,
           newTitle: data.title,
           newText: data.text,
           newTags: data.tags,
-          newGroupId: data.groupId
+          newGroupId: data.groupId,
+          newHeaderImg: data.headerImg,
         })
       },
   

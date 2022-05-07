@@ -13,22 +13,21 @@ import { logout } from "store/asyncActions/asyncUserActions";
 import { selectActiveGroup } from "../../store/actions/groupActions";
 import { selectNote, showAllNote } from "../../store/actions/noteActions";
 
-import { IGroup, INote } from "../../types/state";
+import { IGroup } from "../../types/state";
 
 import { notesInGroupCounter } from "../../utils/notesInGroupCounter";
 import { notifications } from "utils/snowNotifications";
 
 import GroupItem from "./GroupItem/GroupItem";
-import TagsItem from "./TagsItem/TagsItem";
 import CreateGroupModal from "./CreateGroupModal";
+import DeleteGroupYesNoModal from "./DeleteGroupYesNoModal";
 
 import s from "./SideBar.module.scss";
-import DeleteGroupYesNoModal from "./DeleteGroupYesNoModal";
 
 const SideBar: FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { user, groups, notes, selectedGroup, selectNoteId } = useTypeSelector(
+  const { user, groups, notes, selectedGroup } = useTypeSelector(
     (state) => state
   );
 

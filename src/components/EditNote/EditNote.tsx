@@ -1,29 +1,44 @@
-import React, { FC, useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  ChangeEvent,
+  FC,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { useDispatch } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
-import { useTypeSelector } from "../../hooks/useTypeSelector";
-import { asyncDeleteNote, createAsyncNote, editAsyncNotes, fixedNote, unFixedNote } from "../../store/asyncActions/asyncNoteActions";
-import { IGroup, IState } from "../../types/state";
+import { toast } from "react-toastify";
 import { OutputData } from "@editorjs/editorjs";
-import { notesInGroupCounter } from "../../utils/notesInGroupCounter";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFolder } from "@fortawesome/free-regular-svg-icons";
+import { faSortDown } from "@fortawesome/free-solid-svg-icons";
 
-import { toast } from 'react-toastify'
+import { useTypeSelector } from "../../hooks/useTypeSelector";
+import { useOnClickOutside } from "hooks/useOnClickOutside";
+import { useDebounce } from "hooks/useDebounce";
+import { useTitle } from "hooks/useTitle";
+
+import { selectNote } from "store/actions/noteActions";
+import {
+  asyncDeleteNote,
+  createAsyncNote,
+  editAsyncNotes,
+  fixedNote,
+  unFixedNote,
+} from "../../store/asyncActions/asyncNoteActions";
+import { IGroup, IState } from "../../types/state";
+import { notesInGroupCounter } from "../../utils/notesInGroupCounter";
 import { notifications } from "utils/snowNotifications";
 
 import Editor from "../Editor/Editor";
 import GroupItem from "../SideBar/GroupItem/GroupItem";
 import Button from "../../UI/Button";
 import TagsInput from "UI/TagsInput";
-
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFolder } from "@fortawesome/free-regular-svg-icons";
-import { faSortDown } from '@fortawesome/free-solid-svg-icons'
+import { Input } from "UI/Input/Input";
+import Modal from 'UI/Modal'
 
 import s from "./EditNote.module.scss";
-import { useOnClickOutside } from "hooks/useOnClickOutside";
-import { useDebounce } from "hooks/useDebounce";
-import { useTitle } from "hooks/useTitle";
-import { selectNote } from "store/actions/noteActions";
 
 interface IParams {
   noteId: string;
@@ -36,21 +51,27 @@ const EditNote: FC = () => {
   const { noteId } = useParams<IParams>();
   const dispatch = useDispatch();
   const { groups, notes, selectNoteId } = useTypeSelector(getState);
-  const firstRender = useRef(false)
+  const firstRender = useRef(false);
 
   const note = notes.find((note) => note.id === Number(noteId));
   const group = groups.find((group) => group.id === note?.group_id);
 
-  useTitle(`Edit | ${note?.title}`)
+  useTitle(`Edit | ${note?.title}`);
 
-  const containerRef = useRef<HTMLDivElement>(null)
-  const inputRef = useRef<HTMLInputElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
   const [showSelectGroupModal, setShowSelectGroupModal] = useState(false);
   const [selectGroup, setSelectGroup] = useState<IGroup>(group!);
+
   const [tags, setTags] = useState(note ? note.tags : []);
+
+  const [showImageUrlInput, setShowImageUrlInput] = useState(false);
+  const [imageUrl, setImageUrl] = useState(note ? note.headerImg : "");
+
   const [showTitleInput, setShowTitleInput] = useState(false);
   const [title, setTitle] = useState(note ? note.title : "");
+
   const [editorValue, setEditorValue] = useState<OutputData>(
     note ? JSON.parse(note.text) : ({} as OutputData)
   );
@@ -63,65 +84,82 @@ const EditNote: FC = () => {
   const isTagsChanges = tags.length !== note?.tags.length;
   const isTitleChanges = title !== note?.title;
 
-  const debouncedDataText = useDebounce<OutputData>(editorValue, 10000)
-  const debouncedTitle = useDebounce<string>(title, 2000)
-  const debouncedTags = useDebounce<string[]>(tags, 2000)
+  const debouncedDataText = useDebounce<OutputData>(editorValue, 10000);
+  const debouncedTitle = useDebounce<string>(title, 2000);
+  const debouncedTags = useDebounce<string[]>(tags, 2000);
 
   useEffect(() => {
     if (firstRender.current) {
-      editNoteHandler()
-      notifications.success('Editor saved!')
-      console.log('saved EDITOR');
+      editNoteHandler();
+      notifications.success("Editor saved!");
+      console.log("saved EDITOR");
     }
-  }, [debouncedDataText])
+  }, [debouncedDataText]);
 
   useEffect(() => {
     if (firstRender.current) {
-      editNoteHandler()
-      notifications.success('Title saved!')
-      console.log('saved TITLE');
+      editNoteHandler();
+      notifications.success("Title saved!");
+      console.log("saved TITLE");
     }
-  }, [debouncedTitle])
+  }, [debouncedTitle]);
 
   useEffect(() => {
     if (firstRender.current) {
-      editNoteHandler()
-      notifications.success('Tags saved!')
-      console.log('saved TAGS');
+      editNoteHandler();
+      notifications.success("Tags saved!");
+      console.log("saved TAGS");
     }
-  }, [debouncedTags])
+  }, [debouncedTags]);
 
   useEffect(() => {
     if (firstRender.current) {
-      editNoteHandler()
-      notifications.success('Group changed!')
-      console.log('saved GROUP');
+      editNoteHandler();
+      notifications.success("Group changed!");
+      console.log("saved GROUP");
     }
-  }, [selectGroup])
-  
+  }, [selectGroup]);
+
+  const saveNewHeaderImg = () => {
+    editNoteHandler();
+    closeImageUrlModal()
+    notifications.success("Header image changed!");
+    console.log("saved HEADER IMAGE");
+  }
+
   useEffect(() => {
-    console.log('render');
-    
-    firstRender.current = true
-  }, [])
+    console.log("render");
+
+    firstRender.current = true;
+  }, []);
 
   const outsideClickHandler = () => {
-    history.push(`/note/${noteId}`)
-  }
+    !showImageUrlInput && history.push(`/note/${noteId}`);
+  };
 
   const outsideInputClickHandler = () => {
-    setShowTitleInput(false)
-  }
+    setShowTitleInput(false);
+  };
 
-  useOnClickOutside(containerRef, outsideClickHandler)
-  useOnClickOutside(inputRef, outsideInputClickHandler)
-
+  useOnClickOutside(containerRef, outsideClickHandler);
+  useOnClickOutside(inputRef, outsideInputClickHandler);
 
   const tagsAddHandler = (newTag: string) =>
-    setTags(tags => [...tags, newTag]);
+    setTags((tags) => [...tags, newTag]);
 
-  const tagsDeleteHandler = useCallback((deleteTag: string) =>
-    setTags(tags => tags.filter(tag => tag !== deleteTag)), [])
+  const tagsDeleteHandler = useCallback(
+    (deleteTag: string) =>
+      setTags((tags) => tags.filter((tag) => tag !== deleteTag)),
+    []
+  );
+
+  const showImageUrlModal = () => setShowImageUrlInput(true);
+  const closeImageUrlModal = () => setShowImageUrlInput(false);
+
+  const imageUrlChangeHandler = (e: ChangeEvent<HTMLInputElement>) =>
+    setImageUrl(e.target.value);
+
+  console.log(showImageUrlInput);
 
   const titleChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) =>
     setTitle(e.target.value);
@@ -205,7 +243,7 @@ const EditNote: FC = () => {
       dispatch(selectNote(notes[0].id));
       history.push(`/note/${notes[0].id}`);
     } else {
-      history.push('/');
+      history.push("/");
     }
   };
 
@@ -216,6 +254,7 @@ const EditNote: FC = () => {
         text: JSON.stringify(editorValue),
         tags: tags,
         groupId: selectGroup.id,
+        headerImg: imageUrl,
       })
     );
     // history.push(`/note/${noteId}`);
@@ -246,7 +285,23 @@ const EditNote: FC = () => {
           </div>
         </div>
       )}
-      <div ref={containerRef} className={s.container} onClick={closeOptionsModalHandler}>
+
+      {showImageUrlInput && (
+        <Modal title="Paste new URL image" onClose={closeImageUrlModal}>
+          <Input
+            onChange={imageUrlChangeHandler}
+          />
+          <Button className="mt-2" color="#39d695" onClick={saveNewHeaderImg}>
+            OK
+          </Button>
+        </Modal>
+      )}
+
+      <div
+        ref={containerRef}
+        className={s.container}
+        onClick={closeOptionsModalHandler}
+      >
         {showOptions && (
           <div
             className={s.optionsModalContainer}
@@ -300,17 +355,7 @@ const EditNote: FC = () => {
             ))}
           </div>
         )}
-        {showEditNoteBtn && (
-          <div className={s.btnCreateNoteContainer}>
-            <Button
-              className={s.btnCreateNote}
-              color="#39d695"
-              onClick={editNoteHandler}
-            >
-              Edit
-            </Button>
-          </div>
-        )}
+
         <div className={s.headerContainer}>
           <div className={s.selectAndInputTagsContainer}>
             <div
@@ -322,8 +367,11 @@ const EditNote: FC = () => {
               <p className="groupLabel">
                 {selectGroup ? selectGroup.title : "Unselect group"}
               </p>
-              <FontAwesomeIcon className="mb-0.5" transform={{ rotate: showSelectGroupModal ? 0 : -90 }} icon={faSortDown} />
-
+              <FontAwesomeIcon
+                className="mb-0.5"
+                transform={{ rotate: showSelectGroupModal ? 0 : -90 }}
+                icon={faSortDown}
+              />
             </div>
             <div className={s.inputTagsContainer}>
               {/* <FontAwesomeIcon icon={faHashtag} />
@@ -333,7 +381,11 @@ const EditNote: FC = () => {
                 type="text"
                 onChange={tagsChangeHandler}
               /> */}
-              <TagsInput tags={tags} tagsAddHandler={tagsAddHandler} tagsDeleteHandler={tagsDeleteHandler} />
+              <TagsInput
+                tags={tags}
+                tagsAddHandler={tagsAddHandler}
+                tagsDeleteHandler={tagsDeleteHandler}
+              />
             </div>
           </div>
           <div
@@ -347,14 +399,14 @@ const EditNote: FC = () => {
         </div>
         <div className={s.noteContainer}>
           <div className={s.noteHeader} onClick={closeTitleInputHandler}>
-            <img
-              src={note?.headerImg}
-              alt=""
-            />
+            <img src={imageUrl} alt="" />
+            <div className={s.changeImgIcon} onClick={showImageUrlModal}>
+              <FontAwesomeIcon icon="folder" />
+            </div>
             <div className={s.noteHeaderInfo} onClick={stopPropagationEvent}>
               <div
                 className={s.groupCircle}
-                style={{ background: selectGroup ? selectGroup.color : '#fff' }}
+                style={{ background: selectGroup ? selectGroup.color : "#fff" }}
               ></div>
               {showTitleInput ? (
                 <input
@@ -380,6 +432,17 @@ const EditNote: FC = () => {
             onChangeHandler={editorOnChangeHandler}
           />
         </div>
+        {showEditNoteBtn && (
+          <div className={s.btnCreateNoteContainer}>
+            <Button
+              className={s.btnCreateNote}
+              color="#39d695"
+              onClick={editNoteHandler}
+            >
+              Edit
+            </Button>
+          </div>
+        )}
       </div>
     </>
   );
