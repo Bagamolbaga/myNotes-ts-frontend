@@ -4,9 +4,9 @@ import SideBarSceleton from './SideBarSceleton';
 import SideBar from './SideBar'
 
 const SideBarWrapper = () => {
-  const { loading } = useTypeSelector((state) => state);
+  const { user } = useTypeSelector((state) => state);
 
-    if(loading){
+    if(!user.isLogin){
         return <SideBarSceleton />
     }
 
