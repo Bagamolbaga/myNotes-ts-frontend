@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { useTypeSelector } from "hooks/useTypeSelector";
+import { useHorizontalScroll } from "hooks/useHorizontalScroll";
 import { selectActiveGroup } from "store/actions/groupActions";
 import { selectNote } from "store/actions/noteActions";
 
@@ -15,6 +16,10 @@ const NoteList = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { notes } = useTypeSelector((state) => state);
+
+  const noteListRef = useRef<HTMLDivElement>(null)
+
+  useHorizontalScroll(noteListRef)
 
   const goToNotesListHandler = () => {
     if (notes.length !== 0) {
@@ -35,7 +40,7 @@ const NoteList = () => {
       <div className={s.title} onClick={goToNotesListHandler}>
         Notes <FontAwesomeIcon icon="angle-right" />
       </div>
-      <div className={s.list__container}>
+      <div className={s.list__container} ref={noteListRef} >
         <div className={s.icon__container} onClick={createNoteHandler}>
           <div className={s.icon}>
             <FontAwesomeIcon icon="file-circle-plus" />
