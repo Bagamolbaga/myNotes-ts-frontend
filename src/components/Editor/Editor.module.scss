@@ -1,4 +1,11 @@
+@import "styles/_constants.scss";
+
 .editorContainer > .codex-editor > .codex-editor__redactor > .ce-block > .ce-block__content {
     margin: 0;
     width: 100%;
+}
+
+.editorContainer .codex-editor .ce-inline-toolbar {
+    background: $grey-4 !important;
+    color: $text-white-1;
 }

@@ -15,17 +15,17 @@ import SimpleImage from '@editorjs/simple-image'
 
 export const modules = {
   embed: Embed,
+  header: Header,
   table: Table,
-  marker: Marker,
   list: List,
-  warning: Warning,
-  code: Code,
+  checklist: CheckList,
+  marker: Marker,
   linkTool: LinkTool,
   image: SimpleImage,
   raw: Raw,
-  header: Header,
+  warning: Warning,
   quote: Quote,
-  checklist: CheckList,
+  code: Code,
+  inlineCode: InlineCode,
   delimiter: Delimiter,
-  inlineCode: InlineCode
 }
