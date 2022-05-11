@@ -107,6 +107,7 @@ const Login = () => {
       <Input
         classNameForContainer={`${s.inputContainer} mt-1 mb-1`}
         value={password}
+        type="password"
         isValid={passwordIsValid}
         placeholder="Password"
         onChange={passwordInputHandler}
