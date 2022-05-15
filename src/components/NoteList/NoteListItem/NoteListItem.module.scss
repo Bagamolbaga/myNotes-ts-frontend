@@ -1,3 +1,5 @@
+@import 'styles/_constants.scss';
+
 .container {
   padding: 15px 0 10px 10px;
   margin-right: 10px;
@@ -6,10 +8,10 @@
   border-radius: 5px;
   cursor: pointer;
   transition: .1s;
-  background: #303030;
+  background: $grey-1;
 
   &:hover {
-    background: #3d3d3d;
+    background: $grey-3;
   }
 
   .contentContainer {
@@ -18,7 +20,7 @@
     overflow: hidden;
     .text {
       margin: 0;
-      color: #a5a5a5;
+      color: $grey-6;
 
       .NoteListItemEditorWithoutToolbar {
         .quill .ql-toolbar {
@@ -30,9 +32,10 @@
 }
 
 .selected {
-  background: #505050;
+  background: $grey-4;
+
   &:hover {
-  background: #505050;
+    background: $grey-4;
   }
 }
 

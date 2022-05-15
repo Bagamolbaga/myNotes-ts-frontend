@@ -1,10 +1,12 @@
+@import 'styles/_constants.scss';
+
 .container {
   position: relative;
   max-height: 300px;
 }
 
 .selected {
-  background: #404040;
+  background: $grey-2;
 }
 
 .groupsItem {
@@ -16,7 +18,7 @@
   cursor: pointer;
 
   &:hover {
-    background: #313131;
+    background: $grey-1;
   }
 
   & .iconAndLabelContainer {
@@ -35,7 +37,7 @@
   & .iconDeleteGroup {
     display: flex;
     justify-content: center;
-    color: #858585;
+    color: $grey-4;
     transition: 0.1s;
 
     &:hover {
@@ -56,12 +58,12 @@
   &Count {
     margin-left: 5px;
     margin-right: 40px;
-    color: #858585;
+    color: $grey-4;
   }
 }
 
 .hoverAlt {
-  background: #4e4e4e;
+  background: $grey-2;
   position: absolute;
   z-index: 20;
   top: -10px;

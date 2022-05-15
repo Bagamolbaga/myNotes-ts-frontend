@@ -1,3 +1,5 @@
+@import 'styles/_constants.scss';
+
 .container {
   min-width: 230px;
   height: 100vh;
@@ -69,7 +71,7 @@
     font-size: 20px;
   }
   &:hover {
-    background: #313131;
+    background: $grey-1;
   }
 }
 
@@ -86,12 +88,12 @@
   }
   
   &::-webkit-scrollbar-track {
-    background-color: #424242;
+    background-color: $grey-2;
     border-radius: 5px;
   }
   
   &::-webkit-scrollbar-thumb {
-    background-color: #585858;
+    background-color: $grey-3;
     border-radius: 5px;
   }
 }
@@ -107,7 +109,7 @@
   width: 40px;
   display: flex;
   justify-content: space-between;
-  color: #858585;
+  color: $grey-4;
   & svg {
     cursor: pointer;
     transition: .1s;
@@ -125,12 +127,12 @@
   }
   
   &::-webkit-scrollbar-track {
-    background-color: #424242;
+    background-color: $grey-2;
     border-radius: 5px;
   }
   
   &::-webkit-scrollbar-thumb {
-    background-color: #585858;
+    background-color: $grey-4;
     border-radius: 5px;
   }
 }
