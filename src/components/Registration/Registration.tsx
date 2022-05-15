@@ -143,7 +143,7 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
         placeholder="Login"
         type="text"
         value={name}
-        isValid={nameIsValid}
+        isvalid={nameIsValid}
         icon={<FontAwesomeIcon icon="user" />}
         onChange={(e) => setName(e.target.value)}
       />
@@ -153,7 +153,7 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
         placeholder="Email"
         type="text"
         value={email}
-        isValid={emailIsValid}
+        isvalid={emailIsValid}
         icon={<FontAwesomeIcon icon="at" />}
         onChange={(e) => setEmail(e.target.value)}
       />
@@ -163,7 +163,7 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
         placeholder="Password"
         type="password"
         value={password}
-        isValid={passwordIsValid}
+        isvalid={passwordIsValid}
         icon={<FontAwesomeIcon icon="lock" />}
         onChange={(e) => setPassword(e.target.value)}
       />

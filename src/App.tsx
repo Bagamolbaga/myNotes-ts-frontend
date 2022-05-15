@@ -18,13 +18,17 @@ import Login from "./components/Login/Login";
 import Registration from "./components/Registration/Registration";
 import CreateNote from "./components/CreateNote/CreateNote";
 import MainWrapper from "components/Main/MainWrapper";
-
-// const toastId = toast.loading("Loading data...");
+import { useIsMobile } from "hooks/useIsMobile";
+import MobileSideBar from "components/Mobile/MobileSideBar";
+import MobileNoteList from "components/Mobile/MobileNoteList";
+import MobileMain from "components/Mobile/MobileMain"
+import MobileNoteWrapper from "components/Mobile/MobileNote/MobileNodeWrapper"
 
 function App() {
-  const { user } = useTypeSelector((state) => state);
-  const dispatch = useDispatch();
   const history = useHistory();
+  const dispatch = useDispatch();
+  const { user } = useTypeSelector((state) => state);
+  const { isMobile } = useIsMobile();
 
   const reloadCount = useRef(0);
 
@@ -33,8 +37,6 @@ function App() {
   }, []);
 
   useEffect(() => {
-    console.log("effect");
-
     if (user.isLogin) {
       const toastId = toast.loading("Loading data...");
 
@@ -57,89 +59,69 @@ function App() {
     }
   }, [user]);
 
-  // useLayoutEffect(() => {
-  //   dispatch(authCheck());
-  //   // reloadCount.current++;
-  // }, []);
-
-  // useEffect(() => {
-  //   console.log("effect", user);
-  //   console.log(reloadCount);
-
-  //   // reloadCount.current++;
-  //   if (user.isLogin) {
-  //     const toastId = toast.loading("Loading data...");
-
-  //     dispatch(getAsyncGroup());
-  //     dispatch(getAsyncNotes());
-
-  //     toast.update(toastId, {
-  //       render: "Data loaded!",
-  //       position: "bottom-center",
-  //       type: "success",
-  //       autoClose: 2000,
-  //       isLoading: false
-  //     });
-
-  //     socketRef.emit("joinRoom", user.id!.toString());
-  //   }
-
-  //   if (reloadCount.current === 1 && !user.isLogin) {
-  //     history.push("/login");
-  //   }
-
-  //   // if (reloadCount.current === 3) {
-  //   //   history.goBack();
-  //   // }
-
-  //   // eslint-disable-next-line react-hooks/exhaustive-deps
-  // }, [user.isLogin]);
-
   useEffect(() => {
     reloadCount.current += 1;
   }, []);
 
-  console.log(user, reloadCount.current);
   return (
-    <div className={s.container}>
-      <ToastContainer
-        position="bottom-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-        theme="dark"
-      />
-      <SideBarWrapper />
-      {/* <NoteList /> */}
-      <Switch>
-        <Route exact path="/">
-          <MainWrapper />
-        </Route>
-        <Route exact path="/create-note">
-          <NoteList />
-          <CreateNote />
-        </Route>
-        <Route exact path="/note/:noteId">
-          <NoteList />
-          <NoteWrapper />
-        </Route>
-        <Route exact path="/edit-note/:noteId">
-          <NoteList />
-          <EditNodeWrapper />
-        </Route>
-        <Route exact path="/login">
-          <Login />
-        </Route>
-        <Route exact path="/registration">
-          <Registration />
-        </Route>
-      </Switch>
-    </div>
+    <>
+      <div className={s.container}>
+        <ToastContainer
+          position="bottom-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+        />
+        {!isMobile() && (
+          <>
+            <SideBarWrapper />
+            <Switch>
+              <Route exact path="/">
+                <MainWrapper />
+              </Route>
+              <Route exact path="/create-note">
+                <NoteList />
+                <CreateNote />
+              </Route>
+              <Route exact path="/note/:noteId">
+                <NoteList />
+                <NoteWrapper />
+              </Route>
+              <Route exact path="/edit-note/:noteId">
+                <NoteList />
+                <EditNodeWrapper />
+              </Route>
+              <Route exact path="/login">
+                <Login />
+              </Route>
+              <Route exact path="/registration">
+                <Registration />
+              </Route>
+            </Switch>
+          </>
+        )}
+      </div>
+      {isMobile() && (
+        <>
+          <MobileSideBar />
+          <Route exact path="/">
+            <MobileMain />
+          </Route>
+          <Route exact path="/list">
+            <MobileNoteList />
+          </Route>
+          <Route exact path="/note/:noteId">
+            <MobileNoteWrapper />
+          </Route>
+        </>
+      )}
+    </>
   );
 }
 
