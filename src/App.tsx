@@ -23,6 +23,8 @@ import MobileSideBar from "components/Mobile/MobileSideBar";
 import MobileNoteList from "components/Mobile/MobileNoteList";
 import MobileMain from "components/Mobile/MobileMain"
 import MobileNoteWrapper from "components/Mobile/MobileNote/MobileNodeWrapper"
+import MobileEditNoteWrapper from "components/Mobile/MobileEditNote/MobileEditNoteWrapper"
+import MobileCreateNote from "components/Mobile/MobileCreateNote/MobileCreateNote"
 
 function App() {
   const history = useHistory();
@@ -118,6 +120,12 @@ function App() {
           </Route>
           <Route exact path="/note/:noteId">
             <MobileNoteWrapper />
+          </Route>
+          <Route exact path="/edit-note/:noteId">
+            <MobileEditNoteWrapper />
+          </Route>
+          <Route exact path="/create-note">
+            <MobileCreateNote />
           </Route>
         </>
       )}

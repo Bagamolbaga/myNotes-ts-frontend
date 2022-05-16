@@ -1,12 +1,14 @@
 @import "styles/_constants.scss";
 
 .container {
+  position: relative;
   width: 100%;
   padding: 10px;
   box-sizing: border-box;
   background: $grey-1;
   font-family: 'Inconsolata';
-  overflow-y: auto;
+  overflow-y: scroll;
+  overflow-x: hidden;
 
   &::-webkit-scrollbar {
     width: .75em;
@@ -25,8 +27,8 @@
 .headerContainer {
   // height: 50px;
   background: $grey-1;
-  display: flex;
-  justify-content: space-between;
+  // display: flex;
+  // justify-content: space-between;
   // align-items: center;
   // position: sticky;
   // top: 0;
@@ -43,6 +45,7 @@
       display: flex;
       align-items: center;
       margin-right: 15px;
+      cursor: pointer;
 
       p {
         margin: 0;
@@ -67,7 +70,16 @@
     .inputTagsContainer {
       svg {
         margin-right: 5px;
-        color: $grey-5;
+        color: $grey-6;
+      }
+
+      input {
+        width: 400px;
+        background: none;
+        border: none;
+        outline: none;
+        color: $grey-6;
+        font-size: 16px;
       }
     }
   }
@@ -117,13 +129,34 @@
     background-color: $grey-3;
     border-radius: 5px;
   }
-  
+
   .noteHeader {
     height: 200px;
     border-radius: 25px;
     overflow: hidden;
     position: relative;
     margin-bottom: 10px;
+
+    .imageUrlInput {
+      position: absolute;
+      z-index: 10;
+      top: 100px;
+      transform: translateX(-50%);
+      margin-left: 50%;
+    }
+
+    svg {
+      position: absolute;
+      top: 60px;
+      transform: translateX(-50%);
+      margin-left: 50%;
+      transition: all .1s;
+      cursor: pointer;
+
+      &:hover {
+        color: $grey-6;
+      }
+    }
 
     img {
       object-fit: cover;
@@ -137,6 +170,8 @@
       display: flex;
       align-items: center;
       margin: 15px 15px;
+      width: calc(100% - 30px);
+      box-sizing: border-box;
 
       .groupCircle {
         width: 15px;
@@ -147,19 +182,52 @@
 
       .noteTitle {
         margin: 0;
-        color: $text-grey-1;
+        color: $text-white-1;
       }
-    }
-  }
 
-  .noteFullEditor {
-    .quill .ql-container {
-      min-height: 500px;
+      .titleInput {
+        width: calc(100% - 30px);
+        border-radius: 10px;
+        font-size: 20px;
+        padding: 0 10px;
+        height: 40px;
+        outline: none;
+        border: none;
+        background: $grey-2;
+        color: $text-white-1;
+      }
     }
   }
 }
 
+.btnCreateNoteContainer {
+  position: absolute;
+  z-index: 10;
+  width: 400px;
+  bottom: 60px;
+  margin-left: 50%;
+  transform: translateX(-50%);
 
+  .btnCreateNote {
+    height: 50px;
+
+    &:hover {
+      background: $greenPrimaryHover;
+    }
+  }
+}
+
+.selectGroupModalContainer {
+  position: absolute;
+  z-index: 10;
+  top: 60px;
+  margin-left: -10px;
+  width: 200px;
+  padding: 5px;
+  border-radius: 10px;
+  box-shadow: 0px 0px 39px 1px $grey-dark-1;
+  background: $grey-dark-1;
+}
 
 .optionsModalContainer {
   position: absolute;
@@ -170,8 +238,8 @@
   width: 200px;
   overflow: hidden;
   border-radius: 10px;
-  box-shadow: 0px 0px 39px 1px #282828;
-  background: $grey-2;
+  box-shadow: 0px 0px 39px 1px $grey-dark-1;
+  background: #3b3b3b;
 
   .optionsItemContainer {
     display: flex;
@@ -181,7 +249,7 @@
     transition: .1s;
 
     &:hover {
-      background: $grey-3
+      background: #4d4d4d
     }
 
     .iconContainer {
@@ -216,7 +284,7 @@
     margin-top: 200px;
     padding: 20px;
     border-radius: 10px;
-    background: $grey-2;
+    background: #4d4d4d;
     cursor: default;
 
     p:nth-child(1) {

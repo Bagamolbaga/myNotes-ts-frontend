@@ -8,37 +8,37 @@ const NoteSceleton: FC = () => {
       <div className="NoteSceleton__content-image"></div>
       <div
         className="NoteSceleton__content-text_row"
-        style={{ width: "600px" }}
+        style={{ width: "60%" }}
       ></div>
       <div
         className="NoteSceleton__content-text_row"
-        style={{ width: "300px" }}
+        style={{ width: "30%" }}
       ></div>
       <div
         className="NoteSceleton__content-text_row"
-        style={{ width: "500px" }}
+        style={{ width: "50%" }}
       ></div>
       <div
         className="NoteSceleton__content-text_row"
-        style={{ width: "200px" }}
+        style={{ width: "20%" }}
       ></div>
       <div
         className="NoteSceleton__content-text_row"
-        style={{ width: "900px" }}
-      ></div>
-      <br />
-      <div
-        className="NoteSceleton__content-text_row"
-        style={{ width: "560px" }}
-      ></div>
-      <div
-        className="NoteSceleton__content-text_row"
-        style={{ width: "450px" }}
+        style={{ width: "90%" }}
       ></div>
       <br />
       <div
         className="NoteSceleton__content-text_row"
-        style={{ width: "500px" }}
+        style={{ width: "56%" }}
+      ></div>
+      <div
+        className="NoteSceleton__content-text_row"
+        style={{ width: "45%" }}
+      ></div>
+      <br />
+      <div
+        className="NoteSceleton__content-text_row"
+        style={{ width: "50%" }}
       ></div>
     </div>
   );
