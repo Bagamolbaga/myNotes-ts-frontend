@@ -25,6 +25,8 @@ import MobileMain from "components/Mobile/MobileMain"
 import MobileNoteWrapper from "components/Mobile/MobileNote/MobileNodeWrapper"
 import MobileEditNoteWrapper from "components/Mobile/MobileEditNote/MobileEditNoteWrapper"
 import MobileCreateNote from "components/Mobile/MobileCreateNote/MobileCreateNote"
+import MobileLogin from "components/Mobile/MobileLogin/MobileLogin"
+import MobileRegistration from "components/Mobile/MobileRegistration/MobileRegistration"
 
 function App() {
   const history = useHistory();
@@ -126,6 +128,12 @@ function App() {
           </Route>
           <Route exact path="/create-note">
             <MobileCreateNote />
+          </Route>
+          <Route exact path="/login">
+            <MobileLogin />
+          </Route>
+          <Route exact path="/registration">
+            <MobileRegistration />
           </Route>
         </>
       )}
