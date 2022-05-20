@@ -27,6 +27,7 @@ import MobileEditNoteWrapper from "components/Mobile/MobileEditNote/MobileEditNo
 import MobileCreateNote from "components/Mobile/MobileCreateNote/MobileCreateNote"
 import MobileLogin from "components/Mobile/MobileLogin/MobileLogin"
 import MobileRegistration from "components/Mobile/MobileRegistration/MobileRegistration"
+import MobileOptionsMenuWrapper from "components/Mobile/MobileOptionsMenu/MobileOptionsMenuWrapper";
 
 function App() {
   const history = useHistory();
@@ -116,6 +117,9 @@ function App() {
           <MobileSideBar />
           <Route exact path="/">
             <MobileMain />
+          </Route>
+          <Route exact path="/menu">
+            <MobileOptionsMenuWrapper />
           </Route>
           <Route exact path="/list">
             <MobileNoteList />

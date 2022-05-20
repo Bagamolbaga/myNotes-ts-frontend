@@ -15,6 +15,9 @@ const MobileSideBar = () => {
   return (
     <div className={s.container}>
       <div className={s.iconsList}>
+        <Link to="/menu">
+          <div className={`${s.icon} ${page === '/menu' && s.selected}`}><FontAwesomeIcon size='2x' icon="bars" /></div>
+        </Link>
         <Link to="/list">
           <div className={`${s.icon} ${page === '/list' && s.selected}`}><FontAwesomeIcon size='2x' icon="list" /></div>
         </Link>
