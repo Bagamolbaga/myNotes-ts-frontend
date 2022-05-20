@@ -20,6 +20,7 @@ export interface IUser {
 export interface IGroup {
     id: number
     title: string
+    color: string
     user_id: number
     createdAt: string
     updatedAt: string
@@ -27,6 +28,7 @@ export interface IGroup {
 
 export interface INote {
     id: number
+    headerImg: string
     title: string
     text: string
     user_id: number

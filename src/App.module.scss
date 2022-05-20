@@ -1,0 +1,18 @@
+@import 'styles/_constants.scss';
+
+.container {
+    display: flex;
+    max-height: 100vh;
+}
+
+.content {
+    max-width: 500px;
+    padding: 10px;
+    background: $grey-dark-1;
+}
+
+.content2 {
+    width: 100%;
+    padding: 10px;
+    background: $grey-1;
+}

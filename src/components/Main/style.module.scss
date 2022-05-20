@@ -1,0 +1,44 @@
+@import 'styles/_constants.scss';
+
+.container {
+    width: 100%;
+    height: 100vh;
+    position: relative;
+
+    .image__container {
+        width: 100%;
+        height: 400px;
+        
+        img {
+            object-fit: cover;
+            width: 100%;
+            height: 100%;
+            -webkit-box-shadow: 0px -100px 100px -79px rgba(34, 60, 80, 0.2) inset;
+            -moz-box-shadow: 0px -100px 100px -79px rgba(34, 60, 80, 0.2) inset;
+            box-shadow: 0px -100px 100px -79px #223c5033 inset;
+        }
+    }
+
+    .row {
+        position: absolute;
+        top: 200px;
+        width: 100%;
+        display: flex;
+        justify-content: space-evenly;
+        
+        .block1 {
+            width: 60%;
+            height: 500px;
+            border-radius: 20px;
+            background: $grey-dark-1;
+        }
+
+        .block2 {
+            width: 35%;
+            height: 500px;
+            border-radius: 20px;
+            background: $grey-dark-1;
+        }
+    }
+
+}
