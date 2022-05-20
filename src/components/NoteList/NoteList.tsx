@@ -6,9 +6,9 @@ import s from "./NoteList.module.scss";
 import { INote } from "../../types/state";
 
 interface IList {
-  notes: INote[]
-  isPinned: boolean
-  inputFocusHandler?: () => void
+  notes: INote[];
+  isPinned: boolean;
+  inputFocusHandler?: () => void;
 }
 
 const List: FC<IList> = memo(({ notes, isPinned, inputFocusHandler }) => {
@@ -26,47 +26,52 @@ const List: FC<IList> = memo(({ notes, isPinned, inputFocusHandler }) => {
       ))}
     </div>
   );
-})
+});
 
 const NoteList: FC = () => {
   const { notes, selectedGroup } = useTypeSelector((state) => state);
   const [searchValue, setSearchValue] = useState("");
 
-  const inputRef = useRef<HTMLInputElement>({} as HTMLInputElement)
+  const inputRef = useRef<HTMLInputElement>({} as HTMLInputElement);
 
-  const inputFocusHandler = () => {             //  focus() not working.
-    inputRef.current.value = ''                 //  Needed reset value then set value,
-    inputRef.current.value = searchValue        //  because html optimaized the same value. !!!
-  }
+  const inputFocusHandler = () => {
+    //  focus() not working.
+    inputRef.current.value = ""; //  Needed reset value then set value,
+    inputRef.current.value = searchValue; //  because html optimaized the same value. !!!
+  };
+
+  const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+  };
+
+  const filteredNotesByGroup = () => {
+    if (typeof selectedGroup === "number") {
+      return notes.filter((note) => note.group_id === selectedGroup);
+    }
+
+    return notes;
+  };
 
   const pinnedNotes = useMemo(
     () => notes.filter((note) => note.fixed),
     [notes]
   );
 
-  const filteredNotesByGroup = () => {
-    if (typeof selectedGroup === 'number') {
-      return notes.filter(note => note.group_id === selectedGroup)
-    }
-    
-    return notes
-  }
+  const allNotes = useMemo(
+    () =>
+      searchValue === ""
+        ? filteredNotesByGroup()
+        : notes.filter((note) =>
+            note.title && note.text && note.tags && searchValue !== null
+              ? note.title.toLowerCase().includes(searchValue) ||
+                note.text.toLowerCase().includes(searchValue) ||
+                note.tags.join(" ").toLowerCase().includes(searchValue)
+              : false
+          ),
+    [notes, searchValue, selectedGroup]
+  );
 
-  const allNotes = useMemo(() =>
-    searchValue === ""
-      ? filteredNotesByGroup()
-      : notes.filter((note) =>
-          note.title && note.text && note.tags && searchValue !== null
-            ? note.title.toLowerCase().includes(searchValue) ||
-              note.text.toLowerCase().includes(searchValue) ||
-              note.tags.join(" ").toLowerCase().includes(searchValue)
-            : false
-        )
-  , [notes, searchValue, selectedGroup])
-
-  const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(e.target.value);
-  };
+  const sortedNotesByCreatedTime = allNotes.sort((a, b) => Date.parse(b.createdAt!) - Date.parse(a.createdAt!))
 
   return (
     <div className={s.container}>
@@ -79,10 +84,16 @@ const NoteList: FC = () => {
         <div>
           <div className={s.listTitle}>
             <i className="fas fa-list-ul"></i>
-            <p>{searchValue ? 'Filtered notes' : 'All notes'}</p>
+            <p>{searchValue ? "Filtered notes" : "All notes"}</p>
             <i className={`fas fa-sort-down ${s.arrowRotate}`}></i>
           </div>
-            {!!allNotes.length && <List notes={allNotes} isPinned={false} inputFocusHandler={inputFocusHandler} />}
+          {!!allNotes.length && (
+            <List
+              notes={sortedNotesByCreatedTime}
+              isPinned={false}
+              inputFocusHandler={inputFocusHandler}
+            />
+          )}
         </div>
         <div
           className={s.pinnedList}

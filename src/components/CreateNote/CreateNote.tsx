@@ -7,7 +7,7 @@ import Editor from "../Editor/Editor";
 import GroupItem from "../SideBar/GroupItem/GroupItem";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFolder, faImage } from "@fortawesome/free-regular-svg-icons";
-import { faSortDown, faHashtag } from "@fortawesome/free-solid-svg-icons";
+import { faSortDown } from "@fortawesome/free-solid-svg-icons";
 import s from "./CreateNote.module.scss";
 import Button from "../../UI/Button";
 import { createAsyncNote } from "../../store/asyncActions/asyncNoteActions";
@@ -103,10 +103,6 @@ const Note: FC = () => {
     setShowSelectGroupModal(false);
   };
 
-  const closeOptionsModalHandler = (e: React.MouseEvent) => {
-    showOptions && setShowOptions(false);
-  };
-
   const toggleOptionsModalHandler = (e: React.MouseEvent) => {
     e.stopPropagation();
     setShowOptions(!showOptions);
@@ -115,12 +111,6 @@ const Note: FC = () => {
   const closeChangeGroupModalHandler = (e: React.MouseEvent) => {
     e.stopPropagation();
     showChangeModal && setShowChangeModal(false);
-  };
-
-  const openChangeGroupModalHandler = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    showOptions && setShowOptions(false);
-    !showChangeModal && setShowChangeModal(true);
   };
 
   const stopPropagationEvent = (e: React.MouseEvent) => {
@@ -187,53 +177,7 @@ const Note: FC = () => {
           </Button>
         </Modal>
       )}
-      <div className={s.container} onClick={closeOptionsModalHandler}>
-        {showOptions && (
-          <div
-            className={s.optionsModalContainer}
-            onClick={stopPropagationEvent}
-          >
-            <div className={s.optionsItemContainer}>
-              <div className={s.iconContainer}>
-                <i className="far fa-heart"></i>
-              </div>
-              <p>Add to favorites</p>
-            </div>
-            <div className={s.optionsItemContainer}>
-              <div className={s.iconContainer}>
-                <i className="fas fa-thumbtack"></i>
-              </div>
-              <p>Pin note</p>
-            </div>
-            <div className={s.optionsItemContainer}>
-              <div className={s.iconContainer}>
-                <i className="far fa-edit"></i>
-              </div>
-              <p>Edit note</p>
-            </div>
-            <div className={s.optionsItemContainer}>
-              <div className={s.iconContainer}>
-                <i className="far fa-copy"></i>
-              </div>
-              <p>Copy note</p>
-            </div>
-            <div
-              className={s.optionsItemContainer}
-              onClick={openChangeGroupModalHandler}
-            >
-              <div className={s.iconContainer}>
-                <i className="far fa-folder"></i>
-              </div>
-              <p>Change group</p>
-            </div>
-            <div className={s.optionsItemContainer}>
-              <div className={s.iconContainer}>
-                <i className="far fa-trash-alt"></i>
-              </div>
-              <p>Delete note</p>
-            </div>
-          </div>
-        )}
+      <div className={s.container}>
         {showSelectGroupModal && (
           <div className={s.selectGroupModalContainer}>
             {groups.map((group) => (
@@ -267,30 +211,11 @@ const Note: FC = () => {
                 icon={faSortDown}
               />
             </div>
-            {/* <div className={s.inputTagsContainer}>
-              <FontAwesomeIcon icon={faHashtag} />
-
-              <input
-                value={tags}
-                placeholder="Add tags"
-                type="text"
-                name="tags"
-                onChange={tagsChangeHandler}
-              />
-            </div> */}
             <TagsInput
               tags={tags}
               tagsAddHandler={tagsAddHandler}
               tagsDeleteHandler={tagsDeleteHandler}
             />
-          </div>
-          <div
-            className={s.optionsContainer}
-            onClick={toggleOptionsModalHandler}
-          >
-            <div className={s.options}>
-              <i className="fas fa-ellipsis-h"></i>
-            </div>
           </div>
         </div>
         <div className={s.noteContainer}>

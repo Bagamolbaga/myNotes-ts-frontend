@@ -27,7 +27,7 @@ import {
   fixedNote,
   unFixedNote,
 } from "../../store/asyncActions/asyncNoteActions";
-import { IGroup, IState } from "../../types/state";
+import { IGroup, INote, IState } from "../../types/state";
 import { notesInGroupCounter } from "../../utils/notesInGroupCounter";
 import { notifications } from "utils/snowNotifications";
 
@@ -39,6 +39,7 @@ import { Input } from "UI/Input/Input";
 import Modal from 'UI/Modal'
 
 import s from "./EditNote.module.scss";
+import NoteOptions from "UI/NoteOptions";
 
 interface IParams {
   noteId: string;
@@ -303,41 +304,12 @@ const EditNote: FC = () => {
         onClick={closeOptionsModalHandler}
       >
         {showOptions && (
-          <div
-            className={s.optionsModalContainer}
-            onClick={stopPropagationEvent}
-          >
-            <div className={s.optionsItemContainer}>
-              <div className={s.iconContainer}>
-                <i className="far fa-heart"></i>
-              </div>
-              <p>Add to favorites</p>
-            </div>
-            <div className={s.optionsItemContainer} onClick={pinnedNoteHandler}>
-              <div className={s.iconContainer}>
-                <i className="fas fa-thumbtack"></i>
-              </div>
-              <p>{note?.fixed ? "Unpin note" : "Pin note"}</p>
-            </div>
-            <div className={s.optionsItemContainer}>
-              <div className={s.iconContainer}>
-                <i className="far fa-edit"></i>
-              </div>
-              <p>Edit note</p>
-            </div>
-            <div className={s.optionsItemContainer} onClick={copyNoteHandler}>
-              <div className={s.iconContainer}>
-                <i className="far fa-copy"></i>
-              </div>
-              <p>Copy note</p>
-            </div>
-            <div className={s.optionsItemContainer} onClick={deleteNoteHandler}>
-              <div className={s.iconContainer}>
-                <i className="far fa-trash-alt"></i>
-              </div>
-              <p>Delete note</p>
-            </div>
-          </div>
+          <NoteOptions
+            noteFixed={typeof note?.fixed === 'boolean' ? note?.fixed : false}
+            stopPropagationEvent={stopPropagationEvent}
+            pinnedNoteHandler={pinnedNoteHandler}
+            copyNoteHandler={copyNoteHandler}
+            deleteNoteHandler={deleteNoteHandler} />
         )}
         {showSelectGroupModal && (
           <div className={s.selectGroupModalContainer}>
