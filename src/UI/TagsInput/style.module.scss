@@ -3,8 +3,17 @@
 .container {
     display: flex;
 
+    @media screen and (max-width: 900px) {
+        flex-direction: column;
+    }
+    
     .tagItemsContainer {
         display: flex;
+
+        @media screen and (max-width: 900px) {
+            flex-wrap: wrap;
+            padding: 10px 0;
+        }
     }
 
     .tagsInput {

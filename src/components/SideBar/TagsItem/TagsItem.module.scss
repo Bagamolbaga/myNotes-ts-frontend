@@ -1,3 +1,6 @@
+@import 'styles/_constants.scss';
+
+
 .tagsItem {
   display: flex;
   align-items: center;
@@ -5,7 +8,7 @@
   border-radius: 5px;
   cursor: pointer;
   &:hover {
-    background: #313131;
+    background: $grey-1;
   }
   & p {
     margin: 10px 0;
@@ -16,6 +19,6 @@
   }
   &Count {
     margin-left: 5px;
-    color: #858585;
+    color: $grey-4;
   }
 }

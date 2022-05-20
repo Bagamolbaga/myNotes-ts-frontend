@@ -4,7 +4,7 @@
   position: relative;
   width: 100%;
   padding: 0 30px 10px 30px;
-  background: #323232;
+  background: $grey-1;
   font-family: 'Inconsolata';
   overflow-y: auto;
 
@@ -14,17 +14,17 @@
   }
 
   &::-webkit-scrollbar-track {
-    background-color: #424242;
+    background-color: $grey-2;
   }
 
   &::-webkit-scrollbar-thumb {
-    background-color: #585858;
+    background-color: $grey-3;
   }
 }
 
 .headerContainer {
   height: 50px;
-  background: #323232;
+  background: $grey-1;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -67,7 +67,7 @@
     .inputTagsContainer {
       svg {
         margin-right: 5px;
-        color: #a5a5a5;
+        color: $grey-6;
       }
 
       input {
@@ -75,7 +75,7 @@
         background: none;
         border: none;
         outline: none;
-        color: #a5a5a5;
+        color: $grey-6;
         font-size: 16px;
       }
     }
@@ -92,12 +92,12 @@
       height: 35px;
       width: 35px;
       border-radius: 20px;
-      background: #424242;
+      background: $grey-2;
       cursor: pointer;
       transition: .1s;
 
       &:hover {
-        background: #585858;
+        background: $grey-3;
       }
 
       svg {
@@ -150,7 +150,7 @@
       cursor: pointer;
 
       &:hover {
-        color: #a5a5a5;
+        color: $grey-6;
       }
     }
 
@@ -174,12 +174,11 @@
         height: 15px;
         margin-right: 10px;
         border-radius: 20px;
-        background: red;
       }
 
       .noteTitle {
         margin: 0;
-        color: white;
+        color: $text-white-1;
       }
 
       .titleInput {
@@ -190,15 +189,9 @@
         height: 40px;
         outline: none;
         border: none;
-        background: #424242;
-        color: white;
+        background: $grey-2;
+        color: $text-white-1;
       }
-    }
-  }
-
-  .noteFullEditor {
-    .quill .ql-container {
-      // min-height: 500px;
     }
   }
 }
@@ -215,7 +208,7 @@
     height: 50px;
 
     &:hover {
-      background: #08995d;
+      background: $greenPrimaryHover;
     }
   }
 }
@@ -228,8 +221,8 @@
   width: 200px;
   padding: 5px;
   border-radius: 10px;
-  box-shadow: 0px 0px 39px 1px #282828;
-  background: #282828;
+  box-shadow: 0px 0px 39px 1px $grey-dark-1;
+  background: $grey-dark-1;
 }
 
 .optionsModalContainer {
@@ -241,7 +234,7 @@
   width: 200px;
   overflow: hidden;
   border-radius: 10px;
-  box-shadow: 0px 0px 39px 1px #282828;
+  box-shadow: 0px 0px 39px 1px $grey-dark-1;
   background: #3b3b3b;
 
   .optionsItemContainer {

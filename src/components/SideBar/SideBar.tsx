@@ -134,7 +134,7 @@ const SideBar: FC = () => {
           onClose={closeDeleteGroupModalHandler}
         />
       )}
-      <div className={`${s.container} + ${showSideBar ? s.hide : s.show}`}>
+      <div className={`${s.container} + ${showSideBar ? s.hideS : s.showS}`}>
         <div className={s.header}>
           <div className={s.personContainer}>
             <div className={s.avatar} onClick={logoutHandler}>

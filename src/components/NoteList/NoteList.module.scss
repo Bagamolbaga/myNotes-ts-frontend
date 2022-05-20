@@ -1,8 +1,10 @@
+@import 'styles/_constants.scss';
+
 .container {
   max-width: 400px;
   min-width: 400px;
   padding: 10px;
-  background: #282828;
+  background: $grey-dark-1;
 }
 
 .headerContainer {
@@ -18,15 +20,15 @@
   border-radius: 50px;
   display: flex;
   align-items: center;
-  background: #424242;
-  color: #a5a5a5;
+  background: $grey-2;
+  color: $grey-6;
   transition: .1s;
   &:hover {
     background: #5f5f5f;
-    color: #d4d4d4;
+    color: $text-white-1;
   }
   &:hover input {
-    color: #d4d4d4;
+    color: $text-white-1;
   }
   & input {
     width: 100%;
@@ -34,20 +36,20 @@
     outline: none;
     border: none;
     margin-left: 10px;
-    color: #a5a5a5;
+    color: $grey-6;
     font-size: 18px;
   }
 }
 
 .btnAdd {
-  background: #45a826;
+  background: $greenPrimary;
   border: none;
   outline: none;
   height: 40px;
   width: 40px;
   margin-left: 10px;
   border-radius: 500px;
-  color: white;
+  color:$text-white-1;
   font-size: 20px;
   display: flex;
   justify-content: center;
@@ -55,7 +57,7 @@
   cursor: pointer;
   transition: .1s;
   &:hover {
-    background: #5ec040;
+    background: $greenPrimaryHover;
   }
 }
 
@@ -76,12 +78,12 @@
   }
   
   &::-webkit-scrollbar-track {
-    background-color: #424242;
+    background-color: $grey-2;
     border-radius: 5px;
   }
   
   &::-webkit-scrollbar-thumb {
-    background-color: #585858;
+    background-color: $grey-3;
     border-radius: 5px;
   }
 }

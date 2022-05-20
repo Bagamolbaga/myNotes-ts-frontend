@@ -99,7 +99,7 @@ const Login = () => {
       <Input
         classNameForContainer={`${s.inputContainer}`}
         value={loginOrEmail}
-        isValid={loginIsValid}
+        isvalid={loginIsValid}
         placeholder="Login or Email"
         onChange={loginInputHandler}
         icon={<FontAwesomeIcon icon="user" />}
@@ -108,7 +108,7 @@ const Login = () => {
         classNameForContainer={`${s.inputContainer} mt-1 mb-1`}
         value={password}
         type="password"
-        isValid={passwordIsValid}
+        isvalid={passwordIsValid}
         placeholder="Password"
         onChange={passwordInputHandler}
         icon={<FontAwesomeIcon icon="lock" />}

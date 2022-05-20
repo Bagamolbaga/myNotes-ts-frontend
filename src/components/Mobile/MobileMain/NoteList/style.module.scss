@@ -1,0 +1,90 @@
+@import 'styles/_constants.scss';
+
+.container {
+    // width: 60%;
+    // height: 500px;
+    padding: 20px;
+    margin-bottom: 50px;
+    border-radius: 20px;
+    box-sizing: border-box;
+    background: $grey-dark-1;
+
+    .title {
+        display: flex;
+        align-items: center;
+        gap: 5px;
+        width: 70px;
+        margin: 0;
+        margin-bottom: 20px;
+        font-size: 1.25rem;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all .2s ease-in-out;
+
+        &:hover>svg {
+            color: $greenPrimary;
+            transition: all .2s ease-in-out;
+        }
+    }
+
+    .list__container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        overflow-y: scroll;
+        overflow-x: hidden;
+        height: 600px;
+
+        &::-webkit-scrollbar {
+            width: 5px;
+          }
+          
+          &::-webkit-scrollbar-track {
+            background-color: #424242;
+            border-radius: 5px;
+          }
+          
+          &::-webkit-scrollbar-thumb {
+            background-color: #585858;
+            border-radius: 5px;
+            
+            &:hover {
+                background-color: #6d6d6d;
+            }
+          }
+
+        .icon__container {
+            width: 95%;
+            // min-width: 200px;
+            min-height: 150px;
+            margin-right: 10px;
+            padding: 10px 10px;
+            border-radius: 15px;
+            box-sizing: border-box;
+            background: $grey-2;
+            cursor: pointer;
+            transition: all .2s ease-in-out;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0px 0px 20px -10px black;
+        
+            &:hover {
+                transform: scale(1.025);
+        
+                svg {
+                    color: $text-grey-1;
+                    transition: all .2s ease-in-out;
+                }
+            }
+        
+            svg {
+                font-size: 60px;
+                color: $grey-5;
+                transition: all .2s ease-in-out;
+            }
+        }
+    }
+
+}
+
