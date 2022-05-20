@@ -31,7 +31,6 @@ const SideBar: FC = () => {
     (state) => state
   );
 
-  const [showSideBar, setShowSideBar] = useState(false);
   const [showCreateGroupModal, setShowCreateGroupModal] = useState(false);
 
   const [showDeleteGroupModal, setShowDeleteGroupModal] = useState(false);
@@ -134,7 +133,7 @@ const SideBar: FC = () => {
           onClose={closeDeleteGroupModalHandler}
         />
       )}
-      <div className={`${s.container} + ${showSideBar ? s.hideS : s.showS}`}>
+      <div className={`${s.container}`}>
         <div className={s.header}>
           <div className={s.personContainer}>
             <div className={s.avatar}>
@@ -193,7 +192,7 @@ const SideBar: FC = () => {
             groupList.map((group) => (
               <GroupItem
                 key={group.id}
-                showSideBar={showSideBar}
+                showSideBar={true}
                 color={group.color}
                 label={group.title}
                 notesCount={noteInGroupCounter[group.id]}
