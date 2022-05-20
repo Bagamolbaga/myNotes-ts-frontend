@@ -1,15 +1,27 @@
-* {
-  margin: 0;
-  padding: 0;
-}
+@import 'styles/globals.scss';
+@import 'styles/_constants.scss';
+
 
 body {
-  font-family: Arial, Helvetica, sans-serif;
+  padding: 0;
+  margin: 0;
+  color: #e7e7e7;
+  background: $grey-1;
+  font-family: 'Inconsolata', 'Quicksand', monospace;
+}
+
+a {
+  text-decoration: none;
+  color: #e7e7e7;
 }
 
 .App {
-  width: 1140px;
-  height: 700px;
+  text-align: center;
+}
+
+.ce-block__content {
+  margin: 0;
+  max-width: 100%;
 }
   
 .container {

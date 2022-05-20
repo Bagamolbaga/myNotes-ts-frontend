@@ -1,0 +1,35 @@
+@import "styles/_constants.scss";
+
+.container {
+  position: fixed;
+  bottom: 0;
+  z-index: 999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100vw;
+  height: 50px;
+  border-top: 2px solid $grey-1;
+  background: $grey-2;
+
+  .iconsList {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+
+    .icon {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: 60px;
+      color: $text-grey-1;
+      transition: all .1s ease-in-out;
+    }
+    
+    .selected {
+      color: $greenPrimary;
+      transition: all .1s ease-in-out;
+    }
+  }
+}

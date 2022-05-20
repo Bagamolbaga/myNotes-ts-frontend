@@ -1,0 +1,242 @@
+@import "styles/_constants.scss";
+
+.container {
+  width: 100%;
+  padding: 10px;
+  box-sizing: border-box;
+  background: $grey-1;
+  font-family: 'Inconsolata';
+  overflow-y: auto;
+
+  &::-webkit-scrollbar {
+    width: .75em;
+    display: none;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: $grey-2;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $grey-3;
+  }
+}
+
+.headerContainer {
+  // height: 50px;
+  background: $grey-1;
+  display: flex;
+  justify-content: space-between;
+  // align-items: center;
+  // position: sticky;
+  // top: 0;
+  // opacity: .95;
+  // z-index: 10;
+  margin-bottom: 10px;
+
+  .selectAndInputTagsContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+
+    .selectGroup {
+      display: flex;
+      align-items: center;
+      margin-right: 15px;
+
+      p {
+        margin: 0;
+        margin-right: 5px;
+      }
+
+      svg {
+        font-size: 20px;
+        margin-right: 10px;
+      }
+
+      .arrow {
+        margin-bottom: 6px;
+      }
+
+      .arrowRotate {
+        margin-top: 10px;
+        transform: rotate(180deg);
+      }
+    }
+
+    .inputTagsContainer {
+      svg {
+        margin-right: 5px;
+        color: $grey-5;
+      }
+    }
+  }
+
+  .optionsContainer {
+    display: flex;
+    align-items: center;
+    flex-direction: row-reverse;
+
+    .options {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 35px;
+      width: 35px;
+      border-radius: 20px;
+      background: $grey-2;
+      cursor: pointer;
+      transition: .1s;
+
+      &:hover {
+        background: $grey-3;
+      }
+
+      svg {
+        font-size: 20px;
+      }
+    }
+  }
+}
+
+.noteContainer {
+  // max-height: 90vh;
+  padding-right: 10px;
+  overflow-y: scroll;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background-color: $grey-2;
+    border-radius: 5px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background-color: $grey-3;
+    border-radius: 5px;
+  }
+  
+  .noteHeader {
+    height: 200px;
+    border-radius: 25px;
+    overflow: hidden;
+    position: relative;
+    margin-bottom: 10px;
+
+    img {
+      object-fit: cover;
+      width: 100%;
+      height: 100%;
+    }
+
+    .noteHeaderInfo {
+      position: absolute;
+      bottom: 0;
+      display: flex;
+      align-items: center;
+      margin: 15px 15px;
+
+      .groupCircle {
+        width: 15px;
+        height: 15px;
+        margin-right: 10px;
+        border-radius: 20px;
+      }
+
+      .noteTitle {
+        margin: 0;
+        color: $text-grey-1;
+      }
+    }
+  }
+
+  .noteFullEditor {
+    .quill .ql-container {
+      min-height: 500px;
+    }
+  }
+}
+
+
+
+.optionsModalContainer {
+  position: absolute;
+  z-index: 10;
+  top: 60px;
+  opacity: 1;
+  right: 30px;
+  width: 200px;
+  overflow: hidden;
+  border-radius: 10px;
+  box-shadow: 0px 0px 39px 1px #282828;
+  background: $grey-2;
+
+  .optionsItemContainer {
+    display: flex;
+    align-items: center;
+    padding: 10px 15px;
+    cursor: pointer;
+    transition: .1s;
+
+    &:hover {
+      background: $grey-3
+    }
+
+    .iconContainer {
+      display: flex;
+      align-items: center;
+      height: 20px;
+      width: 20px;
+    }
+
+    p {
+      margin: 0;
+      margin-left: 10px;
+    }
+  }
+}
+
+
+.changeGroupModalContainer {
+  width: 100%;
+  height: 100vh;
+  background: rgba(0, 0, 0, .6);
+  animation: showChangeGroupModal .1s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;
+  cursor: pointer;
+  z-index: 20;
+  position: absolute;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+
+  .changeGroupModal {
+    width: 200px;
+    margin-top: 200px;
+    padding: 20px;
+    border-radius: 10px;
+    background: $grey-2;
+    cursor: default;
+
+    p:nth-child(1) {
+      margin: 0;
+      margin-bottom: 10px;
+      font-size: 20px;
+    }
+
+    p {
+      margin: 10px 0;
+    }
+  }
+}
+
+@keyframes showChangeGroupModal {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 1;
+  }
+}

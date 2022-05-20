@@ -1,0 +1,42 @@
+@import "styles/_constants.scss";
+
+
+.inputContainer {
+  height: 40px;
+  width: 100%;
+  max-width: 100%;
+  box-sizing: border-box;
+  padding: 0 10px;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  background: $grey-2;
+  color: $text-grey-1;
+  transition: all .1s ease-in-out;
+  border: 2px solid $grey-2;
+
+  &:hover {
+    background: $grey-3;
+    color: $text-grey-1;
+    transition: all .1s ease-in-out;
+  }
+
+  &:hover input {
+    color: $text-white-1;
+    transition: all .1s ease-in-out;
+  }
+
+  & input {
+    width: 100%;
+    background: none;
+    outline: none;
+    border: none;
+    margin-left: 10px;
+    color: $text-white-1;
+    font-size: 18px;
+  }
+}
+
+.error {
+  border: 2px solid $red-1;
+}
