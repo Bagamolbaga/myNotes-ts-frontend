@@ -32,6 +32,8 @@ const NoteList = () => {
 
   const createNoteHandler = () => history.push("/create-note");
 
+  const sortedNotesByCreatedTime = notes.sort((a, b) => Date.parse(b.createdAt!) - Date.parse(a.createdAt!))
+
   return (
     <div className={s.container}>
       <div className={s.title} onClick={goToNotesListHandler}>
@@ -43,7 +45,7 @@ const NoteList = () => {
             <FontAwesomeIcon icon="file-circle-plus" />
           </div>
         </div>
-        {notes.map((note) => (
+        {!!sortedNotesByCreatedTime.length && sortedNotesByCreatedTime.map((note) => (
           <Item key={note.id} note={note} />
         ))}
       </div>

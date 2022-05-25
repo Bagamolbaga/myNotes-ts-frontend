@@ -52,6 +52,11 @@ const MobileNoteList: FC = () => {
     return notes
   }
 
+  
+  const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+  };
+
   const allNotes = useMemo(() =>
     searchValue === ""
       ? filteredNotesByGroup()
@@ -64,9 +69,8 @@ const MobileNoteList: FC = () => {
         )
   , [notes, searchValue, selectedGroup])
 
-  const searchHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSearchValue(e.target.value);
-  };
+  const sortedNotesByCreatedTime = allNotes.sort((a, b) => Date.parse(b.createdAt!) - Date.parse(a.createdAt!))
+
 
   return (
     <div className={s.container}>
@@ -82,7 +86,7 @@ const MobileNoteList: FC = () => {
             <p>{searchValue ? 'Filtered notes' : 'All notes'}</p>
             <i className={`fas fa-sort-down ${s.arrowRotate}`}></i>
           </div>
-            {!!allNotes.length && <List notes={allNotes} isPinned={false} inputFocusHandler={inputFocusHandler} />}
+            {!!sortedNotesByCreatedTime.length && <List notes={sortedNotesByCreatedTime} isPinned={false} inputFocusHandler={inputFocusHandler} />}
         </div>
         <div
           className={s.pinnedList}
