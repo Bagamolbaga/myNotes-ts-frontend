@@ -1,15 +1,16 @@
 import React, { useEffect, useRef } from "react";
 import { Switch, Route, useHistory } from "react-router";
+import { useDispatch } from "react-redux";
+import { toast, ToastContainer } from "react-toastify";
+
+import { socketRef } from "./http/socket-io";
 import { useTypeSelector } from "./hooks/useTypeSelector";
+import { useIsMobile } from "hooks/useIsMobile";
+
 import { authCheck } from "./store/asyncActions/asyncUserActions";
 import { getAsyncGroup } from "./store/asyncActions/asyncGroupActions";
 import { getAsyncNotes } from "./store/asyncActions/asyncNoteActions";
-import { useDispatch } from "react-redux";
-import { socketRef } from "./http/socket-io";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
 
-import s from "./App.module.scss";
 import NoteWrapper from "./components/Note/NodeWrapper";
 import EditNodeWrapper from "./components/EditNote/EditNoteWrapper";
 import SideBarWrapper from "./components/SideBar/SideBarWrapper";
@@ -18,7 +19,7 @@ import Login from "./components/Login/Login";
 import Registration from "./components/Registration/Registration";
 import CreateNote from "./components/CreateNote/CreateNote";
 import MainWrapper from "components/Main/MainWrapper";
-import { useIsMobile } from "hooks/useIsMobile";
+
 import MobileSideBar from "components/Mobile/MobileSideBar";
 import MobileNoteList from "components/Mobile/MobileNoteList";
 import MobileMain from "components/Mobile/MobileMain"
@@ -28,6 +29,9 @@ import MobileCreateNote from "components/Mobile/MobileCreateNote/MobileCreateNot
 import MobileLogin from "components/Mobile/MobileLogin/MobileLogin"
 import MobileRegistration from "components/Mobile/MobileRegistration/MobileRegistration"
 import MobileOptionsMenuWrapper from "components/Mobile/MobileOptionsMenu/MobileOptionsMenuWrapper";
+
+import "react-toastify/dist/ReactToastify.css";
+import s from "./App.module.scss";
 
 function App() {
   const history = useHistory();

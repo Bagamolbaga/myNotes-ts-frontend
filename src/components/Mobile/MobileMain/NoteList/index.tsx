@@ -1,10 +1,8 @@
-import React, { useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { useTypeSelector } from "hooks/useTypeSelector";
-import { useHorizontalScroll } from "hooks/useHorizontalScroll";
 import { selectActiveGroup } from "store/actions/groupActions";
 import { selectNote } from "store/actions/noteActions";
 

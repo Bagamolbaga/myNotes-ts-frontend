@@ -1,6 +1,6 @@
 import React, { ChangeEvent, MouseEvent, FC, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { useTypeSelector } from "../../hooks/useTypeSelector";
@@ -26,8 +26,9 @@ import s from "./SideBar.module.scss";
 
 const SideBar: FC = () => {
   const history = useHistory();
+  const location = useLocation()
   const dispatch = useDispatch();
-  const { user, groups, notes, selectedGroup } = useTypeSelector(
+  const { user, groups, notes, selectedGroup, selectNoteId } = useTypeSelector(
     (state) => state
   );
 
@@ -79,12 +80,16 @@ const SideBar: FC = () => {
   const deleteGroupHandler = (id: number) => {
     setShowDeleteGroupModal(false)
 
-    const noteWithAnotherGroup = notes.find(note => note.group_id !== id)
-
-    if (noteWithAnotherGroup !== undefined) {
-      dispatch(selectNote(noteWithAnotherGroup.id))
+    const noteInAnotherGroup = notes.find(note => note.group_id !== id)
+    const noteInDeleteGroup = notes.find(note => note.id === selectNoteId)
+    
+    if (noteInAnotherGroup !== undefined) {
+      if (['/note', '/edit'].includes(location.pathname.substring(0, 5)) && noteInDeleteGroup?.group_id === id) {
+        dispatch(selectNote(noteInAnotherGroup.id))
+        history.push(`/note/${noteInAnotherGroup.id}`)
+      }
+      
       dispatch(asyncDeleteGroup(id));
-      history.push(`/note/${noteWithAnotherGroup.id}`)
     } else {
       dispatch(showAllNote())
       dispatch(asyncDeleteGroup(id));
