@@ -1,82 +1,93 @@
-import React, { ChangeEvent, KeyboardEvent, useEffect, useState } from "react";
+import React, {
+  ChangeEvent,
+  KeyboardEvent,
+  useEffect,
+  useState,
+  useRef,
+} from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { AnimatePresence } from "framer-motion/dist/framer-motion";
 
 import { useOnClickOutside } from "hooks/useOnClickOutside";
 
-import { Input } from "UI/Input/Input";
-import s from "./style.module.scss";
-import { useRef } from "react";
 import ToDoItem from "./Item";
+import { Input } from "UI/Input/Input";
+
+import s from "./style.module.scss";
 
 export type ToDo = {
-  id: number
-  title: string
-  done: boolean
-}
+  id: number;
+  title: string;
+  done: boolean;
+};
 
 const TodoList = () => {
-
-  const [data, setData] = useState<ToDo[]>(JSON.parse(localStorage.getItem('todo') || '[]') || [])
+  const [data, setData] = useState<ToDo[]>(
+    JSON.parse(localStorage.getItem("todo") || "[]") || []
+  );
 
   const [title, setTitle] = useState("");
   const [titleIsValid, setTitleisValid] = useState(true);
 
-  const inputRef = useRef<HTMLDivElement>(null)
+  const inputRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    localStorage.setItem('todo', JSON.stringify(data))
-  }, [data])
-  
+    localStorage.setItem("todo", JSON.stringify(data));
+  }, [data]);
+
   useEffect(() => {
-    if (title.length !== 0) setTitleisValid(true)
-  }, [title])
+    if (title.length !== 0) setTitleisValid(true);
+  }, [title]);
 
   const onClickOutsideHandler = () => {
     if (title.length === 0) {
-      setTitleisValid(true)
+      setTitleisValid(true);
     }
-  }
+  };
 
-  useOnClickOutside(inputRef, onClickOutsideHandler)
+  useOnClickOutside(inputRef, onClickOutsideHandler);
 
-  const onChangeTitleHandler = (e: ChangeEvent<HTMLInputElement>) =>{
+  const onChangeTitleHandler = (e: ChangeEvent<HTMLInputElement>) => {
     setTitle(e.target.value);
-  }
+  };
 
   const onPressEnter = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      addToDoHandler()
+    if (e.key === "Enter") {
+      addToDoHandler();
     }
-  }
+  };
 
   const addToDoHandler = () => {
     if (title.length === 0) {
-      setTitleisValid(false)
+      setTitleisValid(false);
     }
 
     if (title.trim().length !== 0) {
-      setData([...data,
+      setData([
+        ...data,
         {
           id: data.length,
           title,
           done: false,
-        }
-      ])
+        },
+      ]);
 
-      setTitle('')
+      setTitle("");
     }
-  }
+  };
 
   const doneToggleToDoHandler = (id: number) => {
-    setData(data.map(todo => {
-      if (todo.id === id) todo.done = !todo.done
-      return todo
-    }))
-  }
+    setData(
+      data.map((todo) => {
+        if (todo.id === id) todo.done = !todo.done;
+        return todo;
+      })
+    );
+  };
 
   const deleteToDoHandler = (id: number) => {
-    setData(data.filter(todo => todo.id !== id))
-  }
+    setData(data.filter((todo) => todo.id !== id));
+  };
 
   return (
     <div className={s.container}>
@@ -90,14 +101,21 @@ const TodoList = () => {
             icon={<FontAwesomeIcon icon="list-check" />}
           />
         </div>
-          <button className={s.btnAdd} onClick={addToDoHandler}>
-            <FontAwesomeIcon icon="plus" />
-          </button>
+        <button className={s.btnAdd} onClick={addToDoHandler}>
+          <FontAwesomeIcon icon="plus" />
+        </button>
       </div>
       <div className={s.todoList}>
-        {
-          data.map(item => (<ToDoItem key={item.id} todo={item} doneToggleHandler={doneToggleToDoHandler} deleteHandler={deleteToDoHandler} />))
-        }
+        <AnimatePresence>
+          {data.map((item) => (
+            <ToDoItem
+              key={item.id}
+              todo={item}
+              doneToggleHandler={doneToggleToDoHandler}
+              deleteHandler={deleteToDoHandler}
+            />
+          ))}
+        </AnimatePresence>
       </div>
     </div>
   );
