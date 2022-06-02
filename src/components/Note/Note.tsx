@@ -1,7 +1,17 @@
 import React, { FC, useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useParams, useHistory } from "react-router-dom";
+import { OutputData } from "@editorjs/editorjs";
+import { motion } from "framer-motion/dist/framer-motion";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFolder } from "@fortawesome/free-regular-svg-icons";
+
 import { useTypeSelector } from "../../hooks/useTypeSelector";
+import { useDebounce } from "hooks/useDebounce";
+import { useOnClickOnside } from "hooks/useOnClickOnside";
+import { useTitle } from "hooks/useTitle";
+import { dateCreatedParse } from "utils/dateCreatedParse";
+
 import { selectNote } from "../../store/actions/noteActions";
 import {
   createAsyncNote,
@@ -9,19 +19,11 @@ import {
   unFixedNote,
   asyncDeleteNote,
 } from "../../store/asyncActions/asyncNoteActions";
-import { OutputData } from "@editorjs/editorjs";
 
 import Editor from "components/Editor/Editor";
 import TagsInput from "UI/TagsInput";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFolder } from '@fortawesome/free-regular-svg-icons'
-
 import s from "./Note.module.scss";
-import { useDebounce } from "hooks/useDebounce";
-import { useOnClickOnside } from "hooks/useOnClickOnside";
-import { dateCreatedParse } from "utils/dateCreatedParse";
-import { useTitle } from "hooks/useTitle";
 
 interface IParams {
   noteId: string;
@@ -38,25 +40,25 @@ const Note: FC = () => {
       dispatch(selectNote(Number(noteId)));
     }
   }, []);
-  
+
   const note = notes.filter((item) => item.id === Number(noteId))[0];
   const group = groups.find((group) => group.id === note.group_id);
-  const tags = note.tags
-  
-  useTitle(note.title)
+  const tags = note.tags;
+
+  useTitle(note.title);
 
   const dataText = JSON.parse(note.text) as OutputData;
 
-  const containerRef = useRef<HTMLDivElement>(null)
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const [showOptions, setShowOptions] = useState(false);
   const [showChangeModal, setShowChangeModal] = useState(false);
 
   const onsideClickHandler = () => {
-    history.push(`/edit-note/${noteId}`)
-  }
+    history.push(`/edit-note/${noteId}`);
+  };
 
-  useOnClickOnside(containerRef, onsideClickHandler)
+  useOnClickOnside(containerRef, onsideClickHandler);
 
   const closeModalHandler = (e: React.MouseEvent) => {
     showOptions && setShowOptions(false);
@@ -108,7 +110,7 @@ const Note: FC = () => {
 
   const deleteNoteHandler = () => {
     dispatch(asyncDeleteNote(selectNoteId as number));
-    history.push('/')
+    history.push("/");
   };
 
   return (
@@ -130,7 +132,14 @@ const Note: FC = () => {
           </div>
         </div>
       )}
-      <div ref={containerRef} className={s.container} onClick={closeModalHandler}>
+      <motion.div
+        initial={{ opacity: 0.7 }}
+        animate={{ opacity: 1 }}
+        layout
+        ref={containerRef}
+        className={s.container}
+        onClick={closeModalHandler}
+      >
         {showOptions && (
           <div
             className={s.optionsModalContainer}
@@ -188,18 +197,18 @@ const Note: FC = () => {
         </div>
         <div className={s.noteContainer}>
           <div className={s.noteHeader}>
-            <img
-              src={note.headerImg}
-              alt=""
-            />
+            <img src={note.headerImg} alt="" />
             <div className={s.noteHeaderInfo}>
-              <div className={s.groupCircle} style={{background: group?.color}}></div>
+              <div
+                className={s.groupCircle}
+                style={{ background: group?.color }}
+              ></div>
               <h1 className={s.noteTitle}>{note.title}</h1>
             </div>
           </div>
           <Editor readOnly={true} key={note.id} id={note.id} value={dataText} />
         </div>
-      </div>
+      </motion.div>
     </>
   );
 };

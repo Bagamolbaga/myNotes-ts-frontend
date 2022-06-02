@@ -2,6 +2,7 @@ import React, { ChangeEvent, MouseEvent, FC, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { AnimatePresence, motion } from "framer-motion/dist/framer-motion";
 
 import { useTypeSelector } from "../../hooks/useTypeSelector";
 
@@ -26,7 +27,7 @@ import s from "./SideBar.module.scss";
 
 const SideBar: FC = () => {
   const history = useHistory();
-  const location = useLocation()
+  const location = useLocation();
   const dispatch = useDispatch();
   const { user, groups, notes, selectedGroup, selectNoteId } = useTypeSelector(
     (state) => state
@@ -36,7 +37,8 @@ const SideBar: FC = () => {
   const [showCreateGroupModal, setShowCreateGroupModal] = useState(false);
 
   const [showDeleteGroupModal, setShowDeleteGroupModal] = useState(false);
-  const [selectGroupForDelete, setSelectGroupForDelete] = useState<null | IGroup>(null)
+  const [selectGroupForDelete, setSelectGroupForDelete] =
+    useState<null | IGroup>(null);
 
   const [newGroupTitleValue, setNewGroupTitleValue] = useState("");
   const [newGroupColorValue, setNewGroupColorValue] = useState("#c16dcb");
@@ -50,11 +52,11 @@ const SideBar: FC = () => {
   const closeCreateGroupModalHandler = () => setShowCreateGroupModal(false);
 
   const showDeleteGroupModalHandler = (e: MouseEvent, group: IGroup) => {
-    e.stopPropagation()
-    setSelectGroupForDelete(group)
-    setShowDeleteGroupModal(true)
-  }
-  const closeDeleteGroupModalHandler = () => setShowDeleteGroupModal(false)
+    e.stopPropagation();
+    setSelectGroupForDelete(group);
+    setShowDeleteGroupModal(true);
+  };
+  const closeDeleteGroupModalHandler = () => setShowDeleteGroupModal(false);
 
   const newGroupTitleValueChangeHandler = (e: ChangeEvent<HTMLInputElement>) =>
     setNewGroupTitleValue(e.target.value);
@@ -78,24 +80,26 @@ const SideBar: FC = () => {
   };
 
   const deleteGroupHandler = (id: number) => {
-    setShowDeleteGroupModal(false)
+    setShowDeleteGroupModal(false);
 
-    const noteInAnotherGroup = notes.find(note => note.group_id !== id)
-    const noteInDeleteGroup = notes.find(note => note.id === selectNoteId)
-    
+    const noteInAnotherGroup = notes.find((note) => note.group_id !== id);
+    const noteInDeleteGroup = notes.find((note) => note.id === selectNoteId);
+
     if (noteInAnotherGroup !== undefined) {
-      if (['/note', '/edit'].includes(location.pathname.substring(0, 5)) && noteInDeleteGroup?.group_id === id) {
-        dispatch(selectNote(noteInAnotherGroup.id))
-        history.push(`/note/${noteInAnotherGroup.id}`)
+      if (
+        ["/note", "/edit"].includes(location.pathname.substring(0, 5)) &&
+        noteInDeleteGroup?.group_id === id
+      ) {
+        dispatch(selectNote(noteInAnotherGroup.id));
+        history.push(`/note/${noteInAnotherGroup.id}`);
       }
-      
+
       dispatch(asyncDeleteGroup(id));
     } else {
-      dispatch(showAllNote())
+      dispatch(showAllNote());
       dispatch(asyncDeleteGroup(id));
-      history.push(`/`)
+      history.push(`/`);
     }
-
   };
 
   const logoutHandler = () => {
@@ -110,13 +114,19 @@ const SideBar: FC = () => {
       dispatch(selectNote(firstNote.id));
       history.push(`/note/${firstNote.id}`);
     } else {
-      history.push('/create-note');
+      history.push("/create-note");
     }
   };
 
   const noteInGroupCounter = notesInGroupCounter(notes);
 
   const groupList = reverseGroupList === true ? [...groups].reverse() : groups;
+
+  const spring = {
+    type: "spring",
+    stiffness: 700,
+    damping: 30,
+  };
 
   return (
     <>
@@ -139,11 +149,17 @@ const SideBar: FC = () => {
           onClose={closeDeleteGroupModalHandler}
         />
       )}
-      <div className={`${s.container} + ${showSideBar ? s.hideS : s.showS}`}>
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        data-isShow={showSideBar}
+        layout
+        className={`${s.container}`}
+      >
         <div className={s.header}>
           <div className={s.personContainer}>
             <div className={s.avatar} onClick={logoutHandler}>
-              { user.isLogin && <img src={user.avatar} alt="Avatar" />}
+              {user.isLogin && <img src={user.avatar} alt="Avatar" />}
             </div>
             <p className={s.name}>{user.name}</p>
           </div>
@@ -155,40 +171,52 @@ const SideBar: FC = () => {
           </div>
         </div>
         <p className={s.headTabTitle}>Quick links</p>
-        <div
-          className={`${s.TabContainer} + ${
-            showSideBar ? s.reverseTabOnlyIcon : s.reverseTabAllContent
-          }`}
+        <motion.div
+          initial={{ opacity: 0.7 }}
+          animate={{ opacity: 1 }}
+        data-isShow={showSideBar}
+
+          layout
+          className={`${s.TabContainer}`}
           onClick={goHomeHandler}
         >
           <FontAwesomeIcon icon="house" />
           <p className={s.tabTitle}>Home</p>
-        </div>
-        <div
-          className={`${s.TabContainer} + ${
-            showSideBar ? s.reverseTabOnlyIcon : s.reverseTabAllContent
-          }`}
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0.7 }}
+          animate={{ opacity: 1 }}
+        data-isShow={showSideBar}
+
+          layout
+          className={`${s.TabContainer}`}
           onClick={showAllNotesHandler}
         >
           <FontAwesomeIcon icon="receipt" />
           <p className={s.tabTitle}>Notes</p>
-        </div>
-        <div
-          className={`${s.TabContainer} + ${
-            showSideBar ? s.reverseTabOnlyIcon : s.reverseTabAllContent
-          }`}
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0.7 }}
+          animate={{ opacity: 1 }}
+        data-isShow={showSideBar}
+
+          layout
+          className={`${s.TabContainer}`}
         >
           <FontAwesomeIcon icon="heart" />
           <p className={s.tabTitle}>Favorites</p>
-        </div>
-        <div
-          className={`${s.TabContainer} + ${
-            showSideBar ? s.reverseTabOnlyIcon : s.reverseTabAllContent
-          }`}
+        </motion.div>
+        <motion.div
+          initial={{ opacity: 0.7 }}
+          animate={{ opacity: 1 }}
+        data-isShow={showSideBar}
+
+          layout
+          className={`${s.TabContainer}`}
         >
           <i className="fas fa-users"></i>
           <p className={s.tabTitle}>Collective</p>
-        </div>
+        </motion.div>
         <div className={s.groupsTitleContainer}>
           <div>
             <p className={s.headTabTitle}>Groups</p>
@@ -217,11 +245,13 @@ const SideBar: FC = () => {
                 notesCount={noteInGroupCounter[group.id]}
                 isSelected={selectedGroup === group.id ? true : false}
                 onClick={() => onClickGroupHandler(group)}
-                deleteHandler={(e: MouseEvent<HTMLDivElement>) => showDeleteGroupModalHandler(e, group)}
+                deleteHandler={(e: MouseEvent<HTMLDivElement>) =>
+                  showDeleteGroupModalHandler(e, group)
+                }
               />
             ))}
         </div>
-      </div>
+      </motion.div>
     </>
   );
 };
