@@ -1,10 +1,8 @@
-import React, { useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { useTypeSelector } from "hooks/useTypeSelector";
-import { useHorizontalScroll } from "hooks/useHorizontalScroll";
 import { selectActiveGroup } from "store/actions/groupActions";
 import { selectNote } from "store/actions/noteActions";
 
@@ -32,6 +30,8 @@ const NoteList = () => {
 
   const createNoteHandler = () => history.push("/create-note");
 
+  const sortedNotesByCreatedTime = notes.sort((a, b) => Date.parse(b.createdAt!) - Date.parse(a.createdAt!))
+
   return (
     <div className={s.container}>
       <div className={s.title} onClick={goToNotesListHandler}>
@@ -43,7 +43,7 @@ const NoteList = () => {
             <FontAwesomeIcon icon="file-circle-plus" />
           </div>
         </div>
-        {notes.map((note) => (
+        {!!sortedNotesByCreatedTime.length && sortedNotesByCreatedTime.map((note) => (
           <Item key={note.id} note={note} />
         ))}
       </div>

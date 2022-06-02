@@ -1,9 +1,10 @@
-import React, { FC, useState, useMemo, useCallback, memo, useRef } from "react";
+import React, { FC, useState, useMemo, memo, useRef } from "react";
 import { useTypeSelector } from "../../hooks/useTypeSelector";
 import NoteListItem from "./NoteListItem/NoteListItem";
 import SearchHeader from "./SearchHeader/SearchHeader";
 import s from "./NoteList.module.scss";
 import { INote } from "../../types/state";
+import { motion } from "framer-motion/dist/framer-motion";
 
 interface IList {
   notes: INote[];
@@ -71,10 +72,17 @@ const NoteList: FC = () => {
     [notes, searchValue, selectedGroup]
   );
 
-  const sortedNotesByCreatedTime = allNotes.sort((a, b) => Date.parse(b.createdAt!) - Date.parse(a.createdAt!))
+  const sortedNotesByCreatedTime = allNotes.sort(
+    (a, b) => Date.parse(b.createdAt!) - Date.parse(a.createdAt!)
+  );
 
   return (
-    <div className={s.container}>
+    <motion.div
+      initial={{ opacity: 0.7 }}
+      animate={{ opacity: 1 }}
+      layout
+      className={s.container}
+    >
       <SearchHeader
         inputRef={inputRef}
         searchValue={searchValue}
@@ -107,7 +115,7 @@ const NoteList: FC = () => {
           {pinnedNotes && <List notes={pinnedNotes} isPinned />}
         </div>
       </div>
-    </div>
+    </motion.div>
   );
 };
 

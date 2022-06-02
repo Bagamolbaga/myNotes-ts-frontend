@@ -8,6 +8,7 @@ import { useTitle } from "hooks/useTitle";
 import { useTypeSelector } from "hooks/useTypeSelector";
 import { registration, authGoogle } from "store/asyncActions/asyncUserActions";
 import firebase, { uploadPhoto } from "http/firebase";
+import { notifications } from "utils/snowNotifications";
 
 import { Input } from "UI/Input/Input";
 import googleIcon from "assets/google-color.svg";
@@ -105,6 +106,8 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
       setNameIsValid(false)
       setEmailIsValid(false)
       setPasswordIsValid(false)
+
+      notifications.error('Write all data!')
     }
 
     if (nameIsValid && name.length !== 0 && emailIsValid && email.length !== 0 && passwordIsValid && password.length !== 0) {

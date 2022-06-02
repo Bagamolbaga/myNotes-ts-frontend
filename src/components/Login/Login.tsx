@@ -12,6 +12,7 @@ import { Input } from "../../UI/Input/Input";
 import googleIcon from "assets/google-color.svg";
 
 import s from "./Login.module.scss";
+import { notifications } from "utils/snowNotifications";
 
 const MIN_LENGTH = 6;
 
@@ -64,6 +65,8 @@ const Login = () => {
     if (loginOrEmail.length === 0 && password.length === 0) {
       setLoginIsValid(false)
       setPasswordIsValid(false)
+      
+      notifications.error('Write all data!')
     }
 
     if (loginIsValid && loginOrEmail.length !== 0 && passwordIsValid && password.length !== 0) {
