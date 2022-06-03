@@ -4,7 +4,7 @@ import NoteListItem from "./NoteListItem/NoteListItem";
 import SearchHeader from "./SearchHeader/SearchHeader";
 import s from "./NoteList.module.scss";
 import { INote } from "../../types/state";
-import { motion } from "framer-motion/dist/framer-motion";
+import { motion, AnimatePresence } from "framer-motion/dist/framer-motion";
 
 interface IList {
   notes: INote[];
@@ -17,14 +17,16 @@ const List: FC<IList> = memo(({ notes, isPinned, inputFocusHandler }) => {
 
   return (
     <div className={`${s.list} ${isPinned && s.pinnedList}`}>
-      {notes.map((note) => (
-        <NoteListItem
-          key={note.id}
-          note={note}
-          selected={note.id === selectNoteId ? true : false}
-          inputFocusHandler={!isPinned ? inputFocusHandler : undefined}
-        />
-      ))}
+      <AnimatePresence>
+        {notes.map((note) => (
+          <NoteListItem
+            key={note.id}
+            note={note}
+            selected={note.id === selectNoteId ? true : false}
+            inputFocusHandler={!isPinned ? inputFocusHandler : undefined}
+          />
+        ))}
+      </AnimatePresence>
     </div>
   );
 });

@@ -62,8 +62,10 @@
 
 .borderDefault {
     border-left: 4px solid $grey-2;
+    transition: border .2s ease-in-out;
 }
 
 .borderDone {
     border-left: 4px solid #0be07d;
+    transition: border .2s ease-in-out;
 }

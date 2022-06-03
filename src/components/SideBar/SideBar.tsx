@@ -160,6 +160,9 @@ const SideBar: FC = () => {
           <div className={s.personContainer}>
             <div className={s.avatar} onClick={logoutHandler}>
               {user.isLogin && <img src={user.avatar} alt="Avatar" />}
+              <div className={s.iconLogoutContainer}>
+                <FontAwesomeIcon size="lg" icon="arrow-right-from-bracket" />
+              </div>
             </div>
             <p className={s.name}>{user.name}</p>
           </div>
@@ -174,47 +177,51 @@ const SideBar: FC = () => {
         <motion.div
           initial={{ opacity: 0.7 }}
           animate={{ opacity: 1 }}
-        data-isShow={showSideBar}
-
+          data-isShow={showSideBar}
           layout
           className={`${s.TabContainer}`}
           onClick={goHomeHandler}
         >
-          <FontAwesomeIcon icon="house" />
+          <div className={s.iconContainer}>
+            <FontAwesomeIcon icon="house" />
+          </div>
           <p className={s.tabTitle}>Home</p>
         </motion.div>
         <motion.div
           initial={{ opacity: 0.7 }}
           animate={{ opacity: 1 }}
-        data-isShow={showSideBar}
-
+          data-isShow={showSideBar}
           layout
           className={`${s.TabContainer}`}
           onClick={showAllNotesHandler}
         >
-          <FontAwesomeIcon icon="receipt" />
+          <div className={s.iconContainer}>
+            <FontAwesomeIcon icon="receipt" />
+          </div>
           <p className={s.tabTitle}>Notes</p>
         </motion.div>
         <motion.div
           initial={{ opacity: 0.7 }}
           animate={{ opacity: 1 }}
-        data-isShow={showSideBar}
-
+          data-isShow={showSideBar}
           layout
           className={`${s.TabContainer}`}
         >
-          <FontAwesomeIcon icon="heart" />
+          <div className={s.iconContainer}>
+            <FontAwesomeIcon icon="heart" />
+          </div>
           <p className={s.tabTitle}>Favorites</p>
         </motion.div>
         <motion.div
           initial={{ opacity: 0.7 }}
           animate={{ opacity: 1 }}
-        data-isShow={showSideBar}
-
+          data-isShow={showSideBar}
           layout
           className={`${s.TabContainer}`}
         >
-          <i className="fas fa-users"></i>
+          <div className={s.iconContainer}>
+            <FontAwesomeIcon icon="users" />
+          </div>
           <p className={s.tabTitle}>Collective</p>
         </motion.div>
         <div className={s.groupsTitleContainer}>

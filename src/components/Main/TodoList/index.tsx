@@ -5,8 +5,8 @@ import React, {
   useState,
   useRef,
 } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { AnimatePresence } from "framer-motion/dist/framer-motion";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { useOnClickOutside } from "hooks/useOnClickOutside";
 

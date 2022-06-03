@@ -30,16 +30,45 @@
 }
 
 .avatar {
+  position: relative;
   height: 50px;
   width: 50px;
   border-radius: 50%;
   margin-right: 10px;
   overflow: hidden;
+  cursor: pointer;
+  transition: opacity .1s ease-in-out;
+
+  &:hover {
+    img {
+      opacity: .3;
+      transition: opacity .1s ease-in-out;
+    }
+
+    .iconLogoutContainer {
+      display: flex;
+      opacity: 1;
+      transition: all .1s ease-in-out;
+    }
+  }
 
   & img {
     object-fit: cover;
     width: 100%;
     height: 100%;
+  }
+
+  .iconLogoutContainer {
+    position: absolute;
+    display: none;
+    opacity: 0;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 999;
+    transition: all .1s ease-in-out;
   }
 }
 
@@ -83,11 +112,18 @@
   &:hover {
     background: $grey-1;
   }
+
+  .iconContainer {
+    width: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
 }
 
 .TabContainer[data-isShow="true"] {
   transform: rotateY(180deg);
-  padding: 0 5px;
+  padding: 0 5px 0 0;
 }
 
 .tabTitle {

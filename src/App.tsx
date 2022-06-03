@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from "react";
 import { Switch, Route, useHistory } from "react-router";
 import { useDispatch } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
+import { AnimatePresence } from "framer-motion/dist/framer-motion";
 
 import { socketRef } from "./http/socket-io";
 import { useTypeSelector } from "./hooks/useTypeSelector";
@@ -22,12 +23,12 @@ import MainWrapper from "components/Main/MainWrapper";
 
 import MobileSideBar from "components/Mobile/MobileSideBar";
 import MobileNoteList from "components/Mobile/MobileNoteList";
-import MobileMain from "components/Mobile/MobileMain"
-import MobileNoteWrapper from "components/Mobile/MobileNote/MobileNodeWrapper"
-import MobileEditNoteWrapper from "components/Mobile/MobileEditNote/MobileEditNoteWrapper"
-import MobileCreateNote from "components/Mobile/MobileCreateNote/MobileCreateNote"
-import MobileLogin from "components/Mobile/MobileLogin/MobileLogin"
-import MobileRegistration from "components/Mobile/MobileRegistration/MobileRegistration"
+import MobileMain from "components/Mobile/MobileMain";
+import MobileNoteWrapper from "components/Mobile/MobileNote/MobileNodeWrapper";
+import MobileEditNoteWrapper from "components/Mobile/MobileEditNote/MobileEditNoteWrapper";
+import MobileCreateNote from "components/Mobile/MobileCreateNote/MobileCreateNote";
+import MobileLogin from "components/Mobile/MobileLogin/MobileLogin";
+import MobileRegistration from "components/Mobile/MobileRegistration/MobileRegistration";
 import MobileOptionsMenuWrapper from "components/Mobile/MobileOptionsMenu/MobileOptionsMenuWrapper";
 
 import "react-toastify/dist/ReactToastify.css";
@@ -89,22 +90,28 @@ function App() {
         />
         {!isMobile() && (
           <>
-            <SideBarWrapper />
+            {user.isLogin &&<SideBarWrapper />}
             <Switch>
               <Route exact path="/">
                 <MainWrapper />
               </Route>
               <Route exact path="/create-note">
                 <NoteList />
-                <CreateNote />
+                <AnimatePresence>
+                  <CreateNote />
+                </AnimatePresence>
               </Route>
               <Route exact path="/note/:noteId">
                 <NoteList />
-                <NoteWrapper />
+                <AnimatePresence>
+                  <NoteWrapper />
+                </AnimatePresence>
               </Route>
               <Route exact path="/edit-note/:noteId">
                 <NoteList />
-                <EditNodeWrapper />
+                <AnimatePresence>
+                  <EditNodeWrapper />
+                </AnimatePresence>
               </Route>
               <Route exact path="/login">
                 <Login />

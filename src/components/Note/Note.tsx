@@ -2,15 +2,13 @@ import React, { FC, useState, useEffect, useRef } from "react";
 import { useDispatch } from "react-redux";
 import { Link, useParams, useHistory } from "react-router-dom";
 import { OutputData } from "@editorjs/editorjs";
-import { motion } from "framer-motion/dist/framer-motion";
+import { motion, Variants } from "framer-motion/dist/framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFolder } from "@fortawesome/free-regular-svg-icons";
 
 import { useTypeSelector } from "../../hooks/useTypeSelector";
-import { useDebounce } from "hooks/useDebounce";
 import { useOnClickOnside } from "hooks/useOnClickOnside";
 import { useTitle } from "hooks/useTitle";
-import { dateCreatedParse } from "utils/dateCreatedParse";
 
 import { selectNote } from "../../store/actions/noteActions";
 import {
@@ -74,12 +72,6 @@ const Note: FC = () => {
     showChangeModal && setShowChangeModal(false);
   };
 
-  const openChangeGroupModalHandler = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    showOptions && setShowOptions(false);
-    !showChangeModal && setShowChangeModal(true);
-  };
-
   const stopPropagationEvent = (e: React.MouseEvent) => {
     e.stopPropagation();
   };
@@ -113,6 +105,24 @@ const Note: FC = () => {
     history.push("/");
   };
 
+  const variants: Variants = {
+    initial: {
+      opacity: 0,
+      x: 50
+    },
+    show: {
+      opacity: 1,
+      x: 0,
+    },
+    hide: {
+      opacity: 0,
+      x: 50,
+      transition: {
+        duration: 0.2,
+      },
+    },
+  };
+
   return (
     <>
       {showChangeModal && (
@@ -133,9 +143,10 @@ const Note: FC = () => {
         </div>
       )}
       <motion.div
-        initial={{ opacity: 0.7 }}
-        animate={{ opacity: 1 }}
-        layout
+        initial={"initial"}
+        animate={"show"}
+        exit={"hide"}
+        variants={variants}
         ref={containerRef}
         className={s.container}
         onClick={closeModalHandler}
