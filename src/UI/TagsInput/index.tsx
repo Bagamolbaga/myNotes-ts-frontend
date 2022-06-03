@@ -31,7 +31,7 @@ const TagsInput: FC<ITagsInput> = ({
       tagsAddHandler && tagsAddHandler(newTag);
       setValue("");
     }
-  }, [value]);
+  }, [value, onlyView]);
 
   return (
     <div className={s.container}>

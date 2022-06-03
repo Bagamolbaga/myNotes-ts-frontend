@@ -8,8 +8,8 @@ import React, {
 } from "react";
 import { useDispatch } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
-import { toast } from "react-toastify";
 import { OutputData } from "@editorjs/editorjs";
+import { motion, Variants } from "framer-motion/dist/framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFolder } from "@fortawesome/free-regular-svg-icons";
 import { faSortDown } from "@fortawesome/free-solid-svg-icons";
@@ -27,20 +27,20 @@ import {
   fixedNote,
   unFixedNote,
 } from "../../store/asyncActions/asyncNoteActions";
-import { IGroup, INote, IState } from "../../types/state";
+import { IGroup, IState } from "../../types/state";
 import { notesInGroupCounter } from "../../utils/notesInGroupCounter";
 import { notifications } from "utils/snowNotifications";
 
 import Editor from "../Editor/Editor";
 import GroupItem from "../SideBar/GroupItem/GroupItem";
+
 import Button from "../../UI/Button";
 import TagsInput from "UI/TagsInput";
 import { Input } from "UI/Input/Input";
 import Modal from "UI/Modal";
+import NoteOptions from "UI/NoteOptions";
 
 import s from "./EditNote.module.scss";
-import NoteOptions from "UI/NoteOptions";
-import { motion, Variants } from "framer-motion/dist/framer-motion";
 
 interface IParams {
   noteId: string;
@@ -198,12 +198,6 @@ const EditNote: FC = () => {
   const closeChangeGroupModalHandler = (e: React.MouseEvent) => {
     e.stopPropagation();
     showChangeModal && setShowChangeModal(false);
-  };
-
-  const openChangeGroupModalHandler = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    showOptions && setShowOptions(false);
-    !showChangeModal && setShowChangeModal(true);
   };
 
   const stopPropagationEvent = (e: React.MouseEvent) => {

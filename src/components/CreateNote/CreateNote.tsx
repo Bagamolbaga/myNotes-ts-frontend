@@ -110,11 +110,6 @@ const Note: FC = () => {
     setShowSelectGroupModal(false);
   };
 
-  const toggleOptionsModalHandler = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    setShowOptions(!showOptions);
-  };
-
   const closeChangeGroupModalHandler = (e: React.MouseEvent) => {
     e.stopPropagation();
     showChangeModal && setShowChangeModal(false);

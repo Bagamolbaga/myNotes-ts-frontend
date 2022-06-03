@@ -7,10 +7,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFolder } from "@fortawesome/free-regular-svg-icons";
 
 import { useTypeSelector } from "../../hooks/useTypeSelector";
-import { useDebounce } from "hooks/useDebounce";
 import { useOnClickOnside } from "hooks/useOnClickOnside";
 import { useTitle } from "hooks/useTitle";
-import { dateCreatedParse } from "utils/dateCreatedParse";
 
 import { selectNote } from "../../store/actions/noteActions";
 import {
@@ -72,12 +70,6 @@ const Note: FC = () => {
   const closeChangeGroupModalHandler = (e: React.MouseEvent) => {
     e.stopPropagation();
     showChangeModal && setShowChangeModal(false);
-  };
-
-  const openChangeGroupModalHandler = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    showOptions && setShowOptions(false);
-    !showChangeModal && setShowChangeModal(true);
   };
 
   const stopPropagationEvent = (e: React.MouseEvent) => {
