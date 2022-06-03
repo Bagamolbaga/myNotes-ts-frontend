@@ -36,10 +36,11 @@ import GroupItem from "../SideBar/GroupItem/GroupItem";
 import Button from "../../UI/Button";
 import TagsInput from "UI/TagsInput";
 import { Input } from "UI/Input/Input";
-import Modal from 'UI/Modal'
+import Modal from "UI/Modal";
 
 import s from "./EditNote.module.scss";
 import NoteOptions from "UI/NoteOptions";
+import { motion, Variants } from "framer-motion/dist/framer-motion";
 
 interface IParams {
   noteId: string;
@@ -123,10 +124,10 @@ const EditNote: FC = () => {
 
   const saveNewHeaderImg = () => {
     editNoteHandler();
-    closeImageUrlModal()
+    closeImageUrlModal();
     notifications.success("Header image changed!");
     console.log("saved HEADER IMAGE");
-  }
+  };
 
   useEffect(() => {
     console.log("render");
@@ -241,8 +242,12 @@ const EditNote: FC = () => {
   const deleteNoteHandler = () => {
     dispatch(asyncDeleteNote(selectNoteId as number));
     if (notes.length !== 0) {
-      dispatch(selectNote(notes[0].id));
-      history.push(`/note/${notes[0].id}`);
+      dispatch(
+        selectNote(notes.filter((note) => note.id !== selectNoteId)[0].id)
+      );
+      history.push(
+        `/note/${notes.filter((note) => note.id !== selectNoteId)[0].id}`
+      );
     } else {
       history.push("/");
     }
@@ -265,7 +270,23 @@ const EditNote: FC = () => {
 
   let showEditNoteBtn = isTagsChanges || isTitleChanges || isTextChanges;
 
-  // const folderStyle = { color: selectGroup.color };
+  const variants: Variants = {
+    initial: {
+      opacity: 0,
+      x: -50,
+    },
+    show: {
+      opacity: 1,
+      x: 0,
+    },
+    hide: {
+      opacity: 0,
+      x: -50,
+      transition: {
+        duration: 0.2,
+      },
+    },
+  };
 
   return (
     <>
@@ -289,27 +310,30 @@ const EditNote: FC = () => {
 
       {showImageUrlInput && (
         <Modal title="Paste new URL image" onClose={closeImageUrlModal}>
-          <Input
-            onChange={imageUrlChangeHandler}
-          />
+          <Input onChange={imageUrlChangeHandler} />
           <Button className="mt-2" color="#39d695" onClick={saveNewHeaderImg}>
             OK
           </Button>
         </Modal>
       )}
 
-      <div
+      <motion.div
+        initial={"initial"}
+        animate={"show"}
+        exit={"hide"}
+        variants={variants}
         ref={containerRef}
         className={s.container}
         onClick={closeOptionsModalHandler}
       >
         {showOptions && (
           <NoteOptions
-            noteFixed={typeof note?.fixed === 'boolean' ? note?.fixed : false}
+            noteFixed={typeof note?.fixed === "boolean" ? note?.fixed : false}
             stopPropagationEvent={stopPropagationEvent}
             pinnedNoteHandler={pinnedNoteHandler}
             copyNoteHandler={copyNoteHandler}
-            deleteNoteHandler={deleteNoteHandler} />
+            deleteNoteHandler={deleteNoteHandler}
+          />
         )}
         {showSelectGroupModal && (
           <div className={s.selectGroupModalContainer}>
@@ -415,7 +439,7 @@ const EditNote: FC = () => {
             </Button>
           </div>
         )}
-      </div>
+      </motion.div>
     </>
   );
 };

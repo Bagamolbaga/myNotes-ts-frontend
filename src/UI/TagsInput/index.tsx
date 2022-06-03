@@ -1,4 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
+import { AnimatePresence } from "framer-motion/dist/framer-motion";
+
 import TagItem from "UI/TagItem";
 
 import s from "./style.module.scss";
@@ -34,6 +36,7 @@ const TagsInput: FC<ITagsInput> = ({
   return (
     <div className={s.container}>
       <div className={s.tagItemsContainer}>
+      <AnimatePresence>
         {tags &&
           tags.map((tag) => (
             <TagItem
@@ -43,6 +46,7 @@ const TagsInput: FC<ITagsInput> = ({
               tagsDeleteHandler={tagsDeleteHandler}
             />
           ))}
+      </AnimatePresence>
       </div>
       {!onlyView && tags.length < 7 && (
         <input

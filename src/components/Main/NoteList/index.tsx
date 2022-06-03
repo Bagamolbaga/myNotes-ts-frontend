@@ -1,6 +1,7 @@
 import React, { useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { AnimatePresence } from "framer-motion/dist/framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 import { useTypeSelector } from "hooks/useTypeSelector";
@@ -17,9 +18,9 @@ const NoteList = () => {
   const dispatch = useDispatch();
   const { notes } = useTypeSelector((state) => state);
 
-  const noteListRef = useRef<HTMLDivElement>(null)
+  const noteListRef = useRef<HTMLDivElement>(null);
 
-  useHorizontalScroll(noteListRef)
+  useHorizontalScroll(noteListRef);
 
   const goToNotesListHandler = () => {
     if (notes.length !== 0) {
@@ -35,23 +36,26 @@ const NoteList = () => {
 
   const createNoteHandler = () => history.push("/create-note");
 
-  const sortedNotesByCreatedTime = notes.sort((a, b) => Date.parse(b.createdAt!) - Date.parse(a.createdAt!))
-
+  const sortedNotesByCreatedTime = notes.sort(
+    (a, b) => Date.parse(b.createdAt!) - Date.parse(a.createdAt!)
+  );
 
   return (
     <div className={s.container}>
       <div className={s.title} onClick={goToNotesListHandler}>
         Notes <FontAwesomeIcon icon="angle-right" />
       </div>
-      <div className={s.list__container} ref={noteListRef} >
+      <div className={s.list__container} ref={noteListRef}>
         <div className={s.icon__container} onClick={createNoteHandler}>
           <div className={s.icon}>
             <FontAwesomeIcon icon="file-circle-plus" />
           </div>
         </div>
-        {sortedNotesByCreatedTime.map((note) => (
-          <Item key={note.id} note={note} />
-        ))}
+        <AnimatePresence>
+          {sortedNotesByCreatedTime.map((note) => (
+            <Item key={note.id} note={note} />
+          ))}
+        </AnimatePresence>
       </div>
     </div>
   );
