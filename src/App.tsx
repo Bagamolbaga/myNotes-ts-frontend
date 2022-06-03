@@ -90,7 +90,7 @@ function App() {
         />
         {!isMobile() && (
           <>
-            <SideBarWrapper />
+            {user.isLogin &&<SideBarWrapper />}
             <Switch>
               <Route exact path="/">
                 <MainWrapper />
