@@ -192,7 +192,7 @@ const SideBar: FC = () => {
             groupList.map((group) => (
               <GroupItem
                 key={group.id}
-                showSideBar={true}
+                showSideBar={false}
                 color={group.color}
                 label={group.title}
                 notesCount={noteInGroupCounter[group.id]}

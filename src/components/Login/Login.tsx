@@ -122,6 +122,12 @@ const Login = () => {
           <span className={`${s.registrRedirect} ml-1`}>Registration</span>
         </Link>
       </p>
+      <p className="mt-1">
+        Forgot password?
+        <Link to="/reset-password">
+          <span className={`${s.registrRedirect} ml-1`}>Reset password</span>
+        </Link>
+      </p>
       <div className={`pt-1 pb-1 ${s.authError}`}>
         <p>{authError}</p>
       </div>

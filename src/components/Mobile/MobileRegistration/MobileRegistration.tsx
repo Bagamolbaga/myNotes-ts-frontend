@@ -182,6 +182,12 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
       ) : (
         <p>Please select an Image for Preview</p>
       )}
+      <p>
+        You have account?
+        <Link to="/login">
+          <span className={`${s.loginRedirect} ml-1`}>Login</span>
+        </Link>
+      </p>
       <p className="authorization__container-label-error">
         {authError}
         {validError}
@@ -203,12 +209,6 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
         </div>
         <span>Login with Google</span>
       </div>
-      <p>
-        You have account?
-        <Link to="/login">
-          <span className={`${s.loginRedirect} ml-1`}>Login</span>
-        </Link>
-      </p>
     </Row>
   );
 };
