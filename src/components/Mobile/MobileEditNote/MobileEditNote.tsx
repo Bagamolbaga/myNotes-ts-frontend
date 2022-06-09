@@ -35,9 +35,12 @@ import GroupItem from "components/SideBar/GroupItem/GroupItem";
 import Button from "UI/Button";
 import TagsInput from "UI/TagsInput";
 import { Input } from "UI/Input/Input";
-import Modal from 'UI/Modal'
+import Modal from "UI/Modal";
 
 import s from "./MobileEditNote.module.scss";
+
+const MAX_DATA_TEXT_LENGTH = 5000;
+const MAX_URL_IMG_LENGTH = 255;
 
 interface IParams {
   noteId: string;
@@ -83,12 +86,22 @@ const EditNote: FC = () => {
   const isTagsChanges = tags.length !== note?.tags.length;
   const isTitleChanges = title !== note?.title;
 
-  const debouncedDataText = useDebounce<OutputData>(editorValue, 10000);
+  const debouncedDataText = useDebounce<OutputData>(editorValue, 5000);
   const debouncedTitle = useDebounce<string>(title, 2000);
   const debouncedTags = useDebounce<string[]>(tags, 2000);
 
+  const DATA_TEXT_LENGTH = JSON.stringify(editorValue).length;
+
   useEffect(() => {
-    if (firstRender.current) {
+    if (firstRender.current && DATA_TEXT_LENGTH > MAX_DATA_TEXT_LENGTH) {
+      notifications.error(
+        `Limit ${MAX_DATA_TEXT_LENGTH} exceeded. Now ${DATA_TEXT_LENGTH}`
+      );
+    }
+  }, [editorValue]);
+
+  useEffect(() => {
+    if (firstRender.current && DATA_TEXT_LENGTH < MAX_DATA_TEXT_LENGTH) {
       editNoteHandler();
       notifications.success("Editor saved!");
       console.log("saved EDITOR");
@@ -120,11 +133,16 @@ const EditNote: FC = () => {
   }, [selectGroup]);
 
   const saveNewHeaderImg = () => {
-    editNoteHandler();
-    closeImageUrlModal()
-    notifications.success("Header image changed!");
-    console.log("saved HEADER IMAGE");
-  }
+    if (imageUrl.length < MAX_URL_IMG_LENGTH) {
+      editNoteHandler();
+      setShowImageUrlInput(false);
+      notifications.success("Header image changed!");
+    } else {
+      notifications.error(
+        `Limit ${MAX_URL_IMG_LENGTH} exceeded. Now ${imageUrl.length}`
+      );
+    }
+  };
 
   useEffect(() => {
     console.log("render");
@@ -153,7 +171,10 @@ const EditNote: FC = () => {
   );
 
   const showImageUrlModal = () => setShowImageUrlInput(true);
-  const closeImageUrlModal = () => setShowImageUrlInput(false);
+  const closeClickOutsideImageUrlModal = () => {
+    setImageUrl(note!.headerImg);
+    setShowImageUrlInput(false);
+  };
 
   const imageUrlChangeHandler = (e: ChangeEvent<HTMLInputElement>) =>
     setImageUrl(e.target.value);
@@ -195,12 +216,6 @@ const EditNote: FC = () => {
   const closeChangeGroupModalHandler = (e: React.MouseEvent) => {
     e.stopPropagation();
     showChangeModal && setShowChangeModal(false);
-  };
-
-  const openChangeGroupModalHandler = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    showOptions && setShowOptions(false);
-    !showChangeModal && setShowChangeModal(true);
   };
 
   const stopPropagationEvent = (e: React.MouseEvent) => {
@@ -259,6 +274,27 @@ const EditNote: FC = () => {
     // history.push(`/note/${noteId}`);
   };
 
+  const editNoteClickHandler = () => {
+    if (DATA_TEXT_LENGTH < MAX_DATA_TEXT_LENGTH) {
+      dispatch(
+        editAsyncNotes({
+          title,
+          text: JSON.stringify(editorValue),
+          tags: tags,
+          groupId: selectGroup.id,
+          headerImg: imageUrl,
+        })
+      );
+      notifications.success("Editor saved!");
+    }
+
+    if (DATA_TEXT_LENGTH > MAX_DATA_TEXT_LENGTH) {
+      notifications.error(
+        `Limit ${MAX_DATA_TEXT_LENGTH} exceeded. Now ${DATA_TEXT_LENGTH}`
+      );
+    }
+  };
+
   const noteInGroupCounter = notesInGroupCounter(notes);
 
   let showEditNoteBtn = isTagsChanges || isTitleChanges || isTextChanges;
@@ -286,10 +322,11 @@ const EditNote: FC = () => {
       )}
 
       {showImageUrlInput && (
-        <Modal title="Paste new URL image" onClose={closeImageUrlModal}>
-          <Input
-            onChange={imageUrlChangeHandler}
-          />
+        <Modal
+          title="Paste new URL image"
+          onClose={closeClickOutsideImageUrlModal}
+        >
+          <Input type="url" onChange={imageUrlChangeHandler} />
           <Button className="mt-2" color="#39d695" onClick={saveNewHeaderImg}>
             OK
           </Button>
@@ -436,7 +473,7 @@ const EditNote: FC = () => {
             <Button
               className={s.btnCreateNote}
               color="#39d695"
-              onClick={editNoteHandler}
+              onClick={editNoteClickHandler}
             >
               Edit
             </Button>

@@ -179,7 +179,7 @@ const SideBar: FC = () => {
           animate={{ opacity: 1 }}
           data-isShow={showSideBar}
           layout
-          className={`${s.TabContainer}`}
+          className={`${s.TabContainer} ${location.pathname === '/' && s.selected}`}
           onClick={goHomeHandler}
         >
           <div className={s.iconContainer}>
@@ -192,7 +192,7 @@ const SideBar: FC = () => {
           animate={{ opacity: 1 }}
           data-isShow={showSideBar}
           layout
-          className={`${s.TabContainer}`}
+          className={`${s.TabContainer} ${location.pathname !== '/' && s.selected}`}
           onClick={showAllNotesHandler}
         >
           <div className={s.iconContainer}>
@@ -201,23 +201,11 @@ const SideBar: FC = () => {
           <p className={s.tabTitle}>Notes</p>
         </motion.div>
         <motion.div
-          initial={{ opacity: 0.7 }}
-          animate={{ opacity: 1 }}
+          initial={{ opacity: 0.5 }}
+          animate={{ opacity: 0.5 }}
           data-isShow={showSideBar}
           layout
-          className={`${s.TabContainer}`}
-        >
-          <div className={s.iconContainer}>
-            <FontAwesomeIcon icon="heart" />
-          </div>
-          <p className={s.tabTitle}>Favorites</p>
-        </motion.div>
-        <motion.div
-          initial={{ opacity: 0.7 }}
-          animate={{ opacity: 1 }}
-          data-isShow={showSideBar}
-          layout
-          className={`${s.TabContainer}`}
+          className={`${s.TabContainer} ${s.TabContainerFeature}`}
         >
           <div className={s.iconContainer}>
             <FontAwesomeIcon icon="users" />
