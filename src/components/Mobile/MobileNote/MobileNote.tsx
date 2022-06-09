@@ -1,7 +1,14 @@
 import React, { FC, useState, useEffect, useRef } from "react";
-import { useDispatch } from "react-redux";
 import { Link, useParams, useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { OutputData } from "@editorjs/editorjs";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
+import { faFolder } from '@fortawesome/free-regular-svg-icons'
+
 import { useTypeSelector } from "hooks/useTypeSelector";
+import { useOnClickOnside } from "hooks/useOnClickOnside";
+import { useTitle } from "hooks/useTitle";
+
 import { selectNote } from "store/actions/noteActions";
 import {
   createAsyncNote,
@@ -9,19 +16,12 @@ import {
   unFixedNote,
   asyncDeleteNote,
 } from "store/asyncActions/asyncNoteActions";
-import { OutputData } from "@editorjs/editorjs";
 
 import Editor from "components/Editor/Editor";
+
 import TagsInput from "UI/TagsInput";
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faFolder } from '@fortawesome/free-regular-svg-icons'
-
 import s from "./MobileNote.module.scss";
-import { useDebounce } from "hooks/useDebounce";
-import { useOnClickOnside } from "hooks/useOnClickOnside";
-import { dateCreatedParse } from "utils/dateCreatedParse";
-import { useTitle } from "hooks/useTitle";
 
 interface IParams {
   noteId: string;

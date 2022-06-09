@@ -17,7 +17,7 @@ import s from "./Registration.module.scss";
 
 const MIN_LENGTH = 6;
 
-const emailRegExp = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/
+const emailRegExp = /[a-z0-9]+@[a-z]+\.[a-z]{2,3}/;
 
 interface AuthorizationProps {
   isReg?: boolean;
@@ -36,17 +36,17 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  
+  const [passwordRepeat, setPasswordRepeat] = useState("");
+
   const [file, setFile] = useState<File>();
   const [fileUrl, setFileUrl] = useState<IFileUrl>();
-  
+
   const [nameIsValid, setNameIsValid] = useState(true);
   const [emailIsValid, setEmailIsValid] = useState(true);
   const [passwordIsValid, setPasswordIsValid] = useState(true);
+  const [passwordRepeatIsValid, setPasswordRepeatIsValid] = useState(true);
 
-  const [validError, setValidError] = useState("");
-  
-  useTitle('Registration')
+  useTitle("Registration");
 
   useEffect(() => {
     if (user.isLogin) history.push("/");
@@ -59,7 +59,6 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
     }
 
     if (name.length === 0) setNameIsValid(true);
-
   }, [name]);
 
   useEffect(() => {
@@ -71,12 +70,10 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
         setEmailIsValid(true);
       } else {
         setEmailIsValid(false);
-      } 
+      }
     }
 
     if (email.length === 0) setEmailIsValid(true);
-
-
   }, [email]);
 
   useEffect(() => {
@@ -86,9 +83,17 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
     }
 
     if (password.length === 0) setPasswordIsValid(true);
-
   }, [password]);
 
+  useEffect(() => {
+    if (password !== passwordRepeat) {
+      setPasswordRepeatIsValid(false);
+    } else {
+      setPasswordRepeatIsValid(true);
+    }
+
+    if (passwordRepeat.length === 0) setPasswordRepeatIsValid(true);
+  }, [passwordRepeat, password]);
 
   const fileInputHandler = (e: React.ChangeEvent<HTMLInputElement>) => {
     const f: any = e.target.files !== null && e.target.files[0];
@@ -102,15 +107,25 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
   };
 
   const registrHandler = async () => {
-    if (name.length === 0 && email.length === 0 && password.length === 0) {
-      setNameIsValid(false)
-      setEmailIsValid(false)
-      setPasswordIsValid(false)
+    if (name.length === 0 && email.length === 0 && password.length === 0 && passwordRepeat.length === 0) {
+      setNameIsValid(false);
+      setEmailIsValid(false);
+      setPasswordIsValid(false);
+      setPasswordRepeatIsValid(false)
 
-      notifications.error('Write all data!')
+      notifications.error("Write all data!");
     }
 
-    if (nameIsValid && name.length !== 0 && emailIsValid && email.length !== 0 && passwordIsValid && password.length !== 0) {
+    if (
+      nameIsValid &&
+      name.length !== 0 &&
+      emailIsValid &&
+      email.length !== 0 &&
+      passwordIsValid &&
+      password.length !== 0 &&
+      passwordRepeatIsValid &&
+      passwordRepeat.length !== 0
+    ) {
       const url = await uploadPhoto(file);
       dispatch(registration(name, email, password, url));
     }
@@ -140,7 +155,6 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
   return (
     <Row className={s.container}>
       <h2 className="authorization__container-title">Registration</h2>
-      
       <Input
         classNameForContainer={`${s.inputContainer}`}
         placeholder="Login"
@@ -150,7 +164,6 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
         icon={<FontAwesomeIcon icon="user" />}
         onChange={(e) => setName(e.target.value)}
       />
-      
       <Input
         classNameForContainer={`${s.inputContainer} mt-1`}
         placeholder="Email"
@@ -160,7 +173,6 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
         icon={<FontAwesomeIcon icon="at" />}
         onChange={(e) => setEmail(e.target.value)}
       />
-      
       <Input
         classNameForContainer={`${s.inputContainer} mt-1`}
         placeholder="Password"
@@ -170,7 +182,15 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
         icon={<FontAwesomeIcon icon="lock" />}
         onChange={(e) => setPassword(e.target.value)}
       />
-      
+      <Input
+        classNameForContainer={`${s.inputContainer} mt-1`}
+        placeholder="Password repeat"
+        type="password"
+        value={passwordRepeat}
+        isvalid={passwordRepeatIsValid}
+        icon={<FontAwesomeIcon icon="lock" />}
+        onChange={(e) => setPasswordRepeat(e.target.value)}
+      />
       <Input
         classNameForContainer={`${s.inputContainer} mt-1`}
         placeholder="Avatar"
@@ -185,14 +205,18 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
       ) : (
         <p>Please select an Image for Preview</p>
       )}
+      <p>
+        You have account?
+        <Link to="/login">
+          <span className={`${s.loginRedirect} ml-1`}>Login</span>
+        </Link>
+      </p>
       <p className="authorization__container-label-error">
         {authError}
-        {validError}
       </p>
       <button
         type="button"
         className={s.button}
-        disabled={Boolean(validError)}
         onClick={registrHandler}
       >
         Registration
@@ -206,12 +230,6 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
         </div>
         <span>Login with Google</span>
       </div>
-      <p>
-        You have account?
-        <Link to="/login">
-          <span className={`${s.loginRedirect} ml-1`}>Login</span>
-        </Link>
-      </p>
     </Row>
   );
 };

@@ -54,7 +54,7 @@ export const sendEmailResetPassword = (nameOrEmail: string) => async (dispatch: 
 
   if (res.data.token) {
     localStorage.setItem('my-notes-token', res.data.token)
-    dispatch(setUser(jwtDecode(res.data.token)))
+    dispatch(setUser({...jwtDecode(res.data.token), isLogin: false}))
     dispatch(setAuthError(''))
   }
 }

@@ -18,6 +18,8 @@ import SideBarWrapper from "./components/SideBar/SideBarWrapper";
 import NoteList from "./components/NoteList/NoteList";
 import Login from "./components/Login/Login";
 import Registration from "./components/Registration/Registration";
+import ResetPassword from "components/ResetPassword/ResetPassword";
+import ResetPasswordToken from "components/ResetPassword/ResetPasswordToken";
 import CreateNote from "./components/CreateNote/CreateNote";
 import MainWrapper from "components/Main/MainWrapper";
 
@@ -83,14 +85,13 @@ function App() {
           newestOnTop={false}
           closeOnClick
           rtl={false}
-          pauseOnFocusLoss
           draggable
           pauseOnHover
           theme="dark"
         />
         {!isMobile() && (
           <>
-            {user.isLogin &&<SideBarWrapper />}
+            {user.isLogin && <SideBarWrapper />}
             <Switch>
               <Route exact path="/">
                 <MainWrapper />
@@ -118,6 +119,12 @@ function App() {
               </Route>
               <Route exact path="/registration">
                 <Registration />
+              </Route>
+              <Route exact path="/reset-password">
+                <ResetPassword />
+              </Route>
+              <Route exact path="/reset-password/:tokenId">
+                <ResetPasswordToken />
               </Route>
             </Switch>
           </>
@@ -149,6 +156,12 @@ function App() {
           </Route>
           <Route exact path="/registration">
             <MobileRegistration />
+          </Route>
+          <Route exact path="/reset-password">
+            <ResetPassword />
+          </Route>
+          <Route exact path="/reset-password/:tokenId">
+            <ResetPasswordToken />
           </Route>
         </>
       )}
