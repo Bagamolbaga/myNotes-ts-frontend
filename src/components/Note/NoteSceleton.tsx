@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import "./NoteSceleton.scss";
+import "./NoteSceleton.module.scss";
 
 const NoteSceleton: FC = () => {
   return (

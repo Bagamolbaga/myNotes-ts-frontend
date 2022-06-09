@@ -167,7 +167,7 @@ const Authorization: React.FC<AuthorizationProps> = ({ isReg }) => {
       <Input
         classNameForContainer={`${s.inputContainer} mt-1`}
         placeholder="Email"
-        type="text"
+        type="email"
         value={email}
         isvalid={emailIsValid}
         icon={<FontAwesomeIcon icon="at" />}

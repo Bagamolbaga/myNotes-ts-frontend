@@ -121,6 +121,22 @@
   }
 }
 
+.selected {
+  background: $grey-2;
+
+  &:hover {
+    background: $grey-2;
+  }
+}
+
+.TabContainerFeature {
+  cursor: default;
+
+  &:hover {
+    background: none;
+  }
+}
+
 .TabContainer[data-isShow="true"] {
   transform: rotateY(180deg);
   padding: 0 5px 0 0;

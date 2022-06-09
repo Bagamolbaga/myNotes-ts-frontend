@@ -102,6 +102,7 @@ const Login = () => {
       <Input
         classNameForContainer={`${s.inputContainer}`}
         value={loginOrEmail}
+        type="email"
         isvalid={loginIsValid}
         placeholder="Login or Email"
         onChange={loginInputHandler}
