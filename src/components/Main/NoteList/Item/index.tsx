@@ -71,7 +71,7 @@ const Item: FC<IItem> = ({ note }) => {
         {note.tags?.map((tag) => (
           <TagItem className="mt-05" key={tag} tag={tag} onlyView />
         ))}
-        <span>{dateCreatedParse(note.createdAt!)}</span>
+        <div className={s.item__date}>{dateCreatedParse(note.createdAt!)}</div>
       </div>
     </motion.div>
   );

@@ -38,9 +38,9 @@ const TagsInput: FC<ITagsInput> = ({
       <div className={s.tagItemsContainer}>
       <AnimatePresence>
         {tags &&
-          tags.map((tag) => (
+          tags.map((tag, index) => (
             <TagItem
-              key={tag}
+              key={index}
               onlyView={onlyView}
               tag={tag}
               tagsDeleteHandler={tagsDeleteHandler}
