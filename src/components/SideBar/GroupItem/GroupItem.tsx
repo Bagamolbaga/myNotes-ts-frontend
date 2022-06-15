@@ -1,5 +1,5 @@
 import React, { FC, MouseEvent, useState } from "react";
-import { motion } from "framer-motion/dist/framer-motion";
+import { motion, Variants } from "framer-motion/dist/framer-motion";
 
 import s from "./GroupItem.module.scss";
 
@@ -26,12 +26,34 @@ const GroupItem: FC<GroupItemProps> = ({
 }) => {
   const [showPopUp, setShowPopUp] = useState(false);
 
+  const variants: Variants = {
+    initial: {
+      opacity: 0,
+    },
+    show: {
+      opacity: 1,
+    },
+    hide: {
+      opacity: 0,
+      transition: {
+        duration: 0.2,
+      },
+    },
+  };
+
   const iconStyle = {
     color: color,
   };
 
   return (
-    <div className={s.container} onClick={onClick}>
+    <motion.div
+      initial={"initial"}
+      animate={"show"}
+      exit={"hide"}
+      variants={variants}
+      className={s.container}
+      onClick={onClick}
+    >
       <motion.div
         onMouseEnter={() => setShowPopUp(true)}
         onMouseLeave={() => setShowPopUp(false)}
@@ -60,7 +82,7 @@ const GroupItem: FC<GroupItemProps> = ({
         )}
       </motion.div>
       {showPopUp && showSideBar && <p className={s.hoverAlt}>{label}</p>}
-    </div>
+    </motion.div>
   );
 };
 

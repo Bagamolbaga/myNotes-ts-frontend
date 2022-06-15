@@ -2,6 +2,7 @@ import React, { ChangeEvent, MouseEvent, FC, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { AnimatePresence, motion } from "framer-motion/dist/framer-motion";
 
 import { useTypeSelector } from "hooks/useTypeSelector";
 
@@ -188,21 +189,23 @@ const SideBar: FC = () => {
           </div>
         </div>
         <div className={s.groupItemsContainer}>
-          {groupList &&
-            groupList.map((group) => (
-              <GroupItem
-                key={group.id}
-                showSideBar={false}
-                color={group.color}
-                label={group.title}
-                notesCount={noteInGroupCounter[group.id]}
-                isSelected={selectedGroup === group.id ? true : false}
-                onClick={() => onClickGroupHandler(group)}
-                deleteHandler={(e: MouseEvent<HTMLDivElement>) =>
-                  showDeleteGroupModalHandler(e, group)
-                }
-              />
-            ))}
+          <AnimatePresence>
+            {groupList &&
+              groupList.map((group) => (
+                <GroupItem
+                  key={group.id}
+                  showSideBar={false}
+                  color={group.color}
+                  label={group.title}
+                  notesCount={noteInGroupCounter[group.id]}
+                  isSelected={selectedGroup === group.id ? true : false}
+                  onClick={() => onClickGroupHandler(group)}
+                  deleteHandler={(e: MouseEvent<HTMLDivElement>) =>
+                    showDeleteGroupModalHandler(e, group)
+                  }
+                />
+              ))}
+          </AnimatePresence>
         </div>
       </div>
     </>

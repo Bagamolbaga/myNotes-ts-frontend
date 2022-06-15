@@ -23,6 +23,8 @@ import GroupItem from "./GroupItem/GroupItem";
 import CreateGroupModal from "./CreateGroupModal";
 import DeleteGroupYesNoModal from "./DeleteGroupYesNoModal";
 
+import AvatarPlaceholder from "assets/avatarPlaceholder.jpg";
+
 import s from "./SideBar.module.scss";
 
 const SideBar: FC = () => {
@@ -43,6 +45,8 @@ const SideBar: FC = () => {
   const [newGroupTitleValue, setNewGroupTitleValue] = useState("");
   const [newGroupColorValue, setNewGroupColorValue] = useState("#c16dcb");
   const [reverseGroupList, setReverseGroupList] = useState(false);
+
+  const [avatarLoadedError, setAvatarLoadedError] = useState(false)
 
   const firstNote = notes[0];
 
@@ -118,15 +122,13 @@ const SideBar: FC = () => {
     }
   };
 
+  const imageErrorLoaded = () => {
+    setAvatarLoadedError(true)
+  }
+
   const noteInGroupCounter = notesInGroupCounter(notes);
 
   const groupList = reverseGroupList === true ? [...groups].reverse() : groups;
-
-  const spring = {
-    type: "spring",
-    stiffness: 700,
-    damping: 30,
-  };
 
   return (
     <>
@@ -159,7 +161,7 @@ const SideBar: FC = () => {
         <div className={s.header}>
           <div className={s.personContainer}>
             <div className={s.avatar} onClick={logoutHandler}>
-              {user.isLogin && <img src={user.avatar} alt="Avatar" />}
+              {user.isLogin && <img src={avatarLoadedError ? AvatarPlaceholder : user.avatar} onError={imageErrorLoaded} alt="Avatar" />}
               <div className={s.iconLogoutContainer}>
                 <FontAwesomeIcon size="lg" icon="arrow-right-from-bracket" />
               </div>
@@ -173,14 +175,16 @@ const SideBar: FC = () => {
             <i className="fas fa-chevron-right"></i>
           </div>
         </div>
-        
+
         <p className={s.headTabTitle}>Quick links</p>
         <motion.div
           initial={{ opacity: 0.7 }}
           animate={{ opacity: 1 }}
           data-isShow={showSideBar}
           layout
-          className={`${s.TabContainer} ${location.pathname === '/' && s.selected}`}
+          className={`${s.TabContainer} ${
+            location.pathname === "/" && s.selected
+          }`}
           onClick={goHomeHandler}
         >
           <div className={s.iconContainer}>
@@ -193,7 +197,9 @@ const SideBar: FC = () => {
           animate={{ opacity: 1 }}
           data-isShow={showSideBar}
           layout
-          className={`${s.TabContainer} ${location.pathname !== '/' && s.selected}`}
+          className={`${s.TabContainer} ${
+            location.pathname !== "/" && s.selected
+          }`}
           onClick={showAllNotesHandler}
         >
           <div className={s.iconContainer}>
@@ -233,21 +239,23 @@ const SideBar: FC = () => {
         </div>
 
         <div className={s.groupItemsContainer}>
-          {groupList &&
-            groupList.map((group) => (
-              <GroupItem
-                key={group.id}
-                showSideBar={showSideBar}
-                color={group.color}
-                label={group.title}
-                notesCount={noteInGroupCounter[group.id]}
-                isSelected={selectedGroup === group.id ? true : false}
-                onClick={() => onClickGroupHandler(group)}
-                deleteHandler={(e: MouseEvent<HTMLDivElement>) =>
-                  showDeleteGroupModalHandler(e, group)
-                }
-              />
-            ))}
+          <AnimatePresence>
+            {groupList &&
+              groupList.map((group) => (
+                <GroupItem
+                  key={group.id}
+                  showSideBar={showSideBar}
+                  color={group.color}
+                  label={group.title}
+                  notesCount={noteInGroupCounter[group.id]}
+                  isSelected={selectedGroup === group.id ? true : false}
+                  onClick={() => onClickGroupHandler(group)}
+                  deleteHandler={(e: MouseEvent<HTMLDivElement>) =>
+                    showDeleteGroupModalHandler(e, group)
+                  }
+                />
+              ))}
+          </AnimatePresence>
         </div>
       </motion.div>
     </>
