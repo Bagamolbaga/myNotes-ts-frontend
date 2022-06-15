@@ -173,6 +173,7 @@ const SideBar: FC = () => {
             <i className="fas fa-chevron-right"></i>
           </div>
         </div>
+        
         <p className={s.headTabTitle}>Quick links</p>
         <motion.div
           initial={{ opacity: 0.7 }}
@@ -212,6 +213,7 @@ const SideBar: FC = () => {
           </div>
           <p className={s.tabTitle}>Collective</p>
         </motion.div>
+
         <div className={s.groupsTitleContainer}>
           <div>
             <p className={s.headTabTitle}>Groups</p>
@@ -229,6 +231,7 @@ const SideBar: FC = () => {
             </div>
           </div>
         </div>
+
         <div className={s.groupItemsContainer}>
           {groupList &&
             groupList.map((group) => (
