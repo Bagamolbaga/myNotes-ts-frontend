@@ -22,6 +22,9 @@ import Editor from "components/Editor/Editor";
 import TagsInput from "UI/TagsInput";
 
 import s from "./Note.module.scss";
+import { withErrorBoundary } from "react-error-boundary";
+import Error from "components/Error/Error";
+
 
 interface IParams {
   noteId: string;
@@ -33,15 +36,16 @@ const Note: FC = () => {
   const { noteId } = useParams<IParams>();
   const { notes, groups, selectNoteId } = useTypeSelector((state) => state);
 
-  useEffect(() => {
-    if (noteId && typeof selectNoteId === "boolean") {
-      dispatch(selectNote(Number(noteId)));
-    }
-  }, []);
-
-  const note = notes.filter((item) => item.id === Number(noteId))[0];
+  
+  const note = notes.filter((item) => item.uuid === noteId)[0];
   const group = groups.find((group) => group.id === note.group_id);
   const tags = note.tags;
+
+  useEffect(() => {
+    if (noteId && typeof selectNoteId === "boolean") {
+      dispatch(selectNote(note.id));
+    }
+  }, []);
 
   useTitle(note.title);
 
@@ -224,4 +228,6 @@ const Note: FC = () => {
   );
 };
 
-export default Note;
+export default withErrorBoundary(Note, {
+  FallbackComponent: Error
+});

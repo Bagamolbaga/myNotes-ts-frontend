@@ -19,5 +19,7 @@ export const notifications = {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-      })
+      }),
+
+      closeAll: () => toast.dismiss()
 }

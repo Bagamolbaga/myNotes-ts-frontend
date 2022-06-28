@@ -95,7 +95,7 @@ const SideBar: FC = () => {
         noteInDeleteGroup?.group_id === id
       ) {
         dispatch(selectNote(noteInAnotherGroup.id));
-        history.push(`/note/${noteInAnotherGroup.id}`);
+        history.push(`/note/${noteInAnotherGroup.uuid}`);
       }
 
       dispatch(asyncDeleteGroup(id));
@@ -116,7 +116,7 @@ const SideBar: FC = () => {
     if (notes.length !== 0) {
       dispatch(selectActiveGroup("All"));
       dispatch(selectNote(firstNote.id));
-      history.push(`/note/${firstNote.id}`);
+      history.push(`/note/${firstNote.uuid}`);
     } else {
       history.push("/create-note");
     }

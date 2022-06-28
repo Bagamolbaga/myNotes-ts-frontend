@@ -2,6 +2,7 @@ import React, { FC, useState, useEffect, useCallback, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { OutputData } from "@editorjs/editorjs";
+import { v4 as uuidv4 } from 'uuid'
 import { motion, Variants } from "framer-motion/dist/framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFolder, faImage } from "@fortawesome/free-regular-svg-icons";
@@ -30,6 +31,8 @@ const Note: FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
   const { groups, notes, selectNoteId } = useTypeSelector(getState);
+
+  const selectNote = notes.find((note) => note.id === selectNoteId);
 
   const [showSelectGroupModal, setShowSelectGroupModal] = useState(false);
   const [selectGroup, setSelectGroup] = useState<IGroup | null>(
@@ -126,6 +129,7 @@ const Note: FC = () => {
   const createNoteHandler = () => {
     dispatch(
       createAsyncNote({
+        uuid: uuidv4(),
         headerImg: imageUrl,
         title,
         text: JSON.stringify(editorValue),
@@ -136,8 +140,8 @@ const Note: FC = () => {
   };
 
   useEffect(() => {
-    if (typeof selectNoteId === "number") history.push(`/note/${selectNoteId}`);
-  }, [selectNoteId]);
+    if (typeof selectNoteId === "number") history.push(`/note/${selectNote?.uuid}`);
+  }, [selectNoteId, selectNote]);
 
   const noteInGroupCounter = notesInGroupCounter(notes);
 

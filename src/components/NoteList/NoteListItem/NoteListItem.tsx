@@ -48,9 +48,9 @@ const NoteListItem: FC<NoteListItemProps> = ({
     },
   };
 
-  const selectHandler = (id: number) => {
-    history.push(`/note/${note.id}`);
-    dispatch(selectNote(id));
+  const selectHandler = () => {
+    history.push(`/note/${note.uuid}`);
+    dispatch(selectNote(note.id));
   };
 
   const circleColor = {
@@ -67,7 +67,7 @@ const NoteListItem: FC<NoteListItemProps> = ({
       exit={"hide"}
       variants={variants}
       className={`${s.container} ${selected && s.selected}`}
-      onClick={() => selectHandler(note.id)}
+      onClick={selectHandler}
     >
       <div className={s.typeContainer}>
         <div className={s.typeCircle} style={circleColor}></div>

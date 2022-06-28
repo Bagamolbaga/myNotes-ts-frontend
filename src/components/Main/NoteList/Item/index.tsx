@@ -36,7 +36,7 @@ const Item: FC<IItem> = ({ note }) => {
 
   const itemSelectHandler = () => {
     dispatch(selectNote(note.id));
-    history.push(`/note/${note.id}`);
+    history.push(`/note/${note.uuid}`);
   };
 
   const circleColor = {

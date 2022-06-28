@@ -41,6 +41,7 @@ type UserRes = {
           tags: data.tags,
           user_id: user.id,
           group_id: selectedGroup,
+          uuid: data.uuid
         })
       },
   
