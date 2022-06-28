@@ -28,7 +28,7 @@ const NoteList = () => {
 
       dispatch(selectActiveGroup("All"));
       dispatch(selectNote(firstNote.id));
-      history.push(`/note/${firstNote.id}`);
+      history.push(`/note/${firstNote.uuid}`);
     } else {
       history.push("/create-note");
     }

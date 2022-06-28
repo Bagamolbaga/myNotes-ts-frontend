@@ -28,6 +28,7 @@ export interface IGroup {
 
 export interface INote {
     id: number
+    uuid: string
     headerImg: string
     title: string
     text: string

@@ -126,6 +126,9 @@ function App() {
               <Route exact path="/reset-password/:tokenId">
                 <ResetPasswordToken />
               </Route>
+              <Route exact>
+                <MainWrapper />
+              </Route>
             </Switch>
           </>
         )}

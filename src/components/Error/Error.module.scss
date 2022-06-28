@@ -1,0 +1,52 @@
+@import "styles/_constants.scss";
+
+.container {
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+  width: 100%;
+  padding-top: 100px;
+
+  h2, h3 {
+    font-weight: 400;
+  }
+
+  h2 {
+    margin: 0;
+    font-size: 5rem;
+    color: $red-2;
+  }
+
+  h3 {
+    font-size: 2rem;
+  }
+
+  .btn {
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    background: $grey-2;
+    transition: all .1s ease-in-out;
+  
+    & svg {
+      font-size: 20px;
+    }
+  
+    &:hover {
+      background: $grey-3;
+    }
+  
+    .iconContainer {
+      width: 30px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .tabTitle {
+      margin: 15px 15px;
+    }
+  }
+}

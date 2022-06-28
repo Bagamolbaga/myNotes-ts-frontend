@@ -8,6 +8,8 @@ import React, {
 } from "react";
 import { useDispatch } from "react-redux";
 import { useParams, useHistory } from "react-router-dom";
+import { withErrorBoundary } from "react-error-boundary";
+import { v4 as uuidv4 } from "uuid";
 import { OutputData } from "@editorjs/editorjs";
 import { motion, Variants } from "framer-motion/dist/framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -33,6 +35,7 @@ import { notifications } from "utils/snowNotifications";
 
 import Editor from "../Editor/Editor";
 import GroupItem from "../SideBar/GroupItem/GroupItem";
+import Error from "components/Error/Error";
 
 import Button from "../../UI/Button";
 import TagsInput from "UI/TagsInput";
@@ -58,8 +61,8 @@ const EditNote: FC = () => {
   const { groups, notes, selectNoteId } = useTypeSelector(getState);
   const firstRender = useRef(false);
 
-  const note = notes.find((note) => note.id === Number(noteId));
-  const group = groups.find((group) => group.id === note?.group_id);
+  const note = notes.find((note) => note.uuid === noteId);
+  const group = groups.find((group) => group.id === note!.group_id);
 
   useTitle(`Edit | ${note?.title}`);
 
@@ -148,7 +151,7 @@ const EditNote: FC = () => {
   }, []);
 
   const outsideClickHandler = () => {
-    !showImageUrlInput && history.push(`/note/${noteId}`);
+    !showImageUrlInput && history.push(`/note/${note?.uuid}`);
   };
 
   const outsideInputClickHandler = () => {
@@ -237,6 +240,7 @@ const EditNote: FC = () => {
         text: note!.text,
         tags: note!.tags,
         groupId: note!.group_id,
+        uuid: uuidv4(),
       })
     );
   };
@@ -248,7 +252,7 @@ const EditNote: FC = () => {
         selectNote(notes.filter((note) => note.id !== selectNoteId)[0].id)
       );
       history.push(
-        `/note/${notes.filter((note) => note.id !== selectNoteId)[0].id}`
+        `/note/${notes.filter((note) => note.id !== selectNoteId)[0].uuid}`
       );
     } else {
       history.push("/");
@@ -445,4 +449,6 @@ const EditNote: FC = () => {
   );
 };
 
-export default EditNote;
+export default withErrorBoundary(EditNote, {
+  FallbackComponent: Error,
+});
