@@ -11,12 +11,14 @@ import { selectNote } from "store/actions/noteActions";
 
 import Item from "./Item";
 
+import { LANGUAGE } from "UI/LANGUAGES";
+
 import s from "./style.module.scss";
 
 const NoteList = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { notes } = useTypeSelector((state) => state);
+  const { notes, lang } = useTypeSelector((state) => state);
 
   const noteListRef = useRef<HTMLDivElement>(null);
 
@@ -43,7 +45,7 @@ const NoteList = () => {
   return (
     <div className={s.container}>
       <div className={s.title} onClick={goToNotesListHandler}>
-        Notes <FontAwesomeIcon icon="angle-right" />
+        {LANGUAGE[lang].MainPage.Notes} <FontAwesomeIcon icon="angle-right" />
       </div>
       <div className={s.list__container} ref={noteListRef}>
         <div className={s.icon__container} onClick={createNoteHandler}>

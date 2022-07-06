@@ -8,6 +8,7 @@ const initialState: IState = {
     showEditNoteForm: false,
     authError: '',
     loading: false,
+    lang: 'en-US',
     user: {
         isLogin: false,
     },
@@ -146,6 +147,11 @@ export const reducer = (state = initialState, action: IActions) : IState => {
       return {
         ...state,
         loading: action.payload
+      }
+    case otherActionTypes.SET_LANGUAGE:
+      return {
+        ...state,
+        lang: action.payload
       }
     default:
       return state

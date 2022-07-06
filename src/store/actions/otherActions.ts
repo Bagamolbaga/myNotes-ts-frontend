@@ -2,6 +2,7 @@ export enum otherActionTypes {
   SET_EROR = "SET_EROR",
   GO_BACK = "GO_BACK",
   SET_LOADING = "SET_LOADING",
+  SET_LANGUAGE = "SET_LANGUAGE"
 }
 
 interface setAuthErrorAction {
@@ -18,6 +19,11 @@ interface setLoadingAction {
   payload: boolean;
 }
 
+interface setLanguageAction {
+  type: otherActionTypes.SET_LANGUAGE;
+  payload: 'ru-RU' | 'en-US'
+}
+
 export const setAuthError = (value: string): setAuthErrorAction => ({
   type: otherActionTypes.SET_EROR,
   payload: value,
@@ -32,4 +38,9 @@ export const setLoading = (value: boolean): setLoadingAction => ({
   payload: value,
 });
 
-export type OtherActions = setAuthErrorAction | goBackAction | setLoadingAction;
+export const setLanguage = (lang: 'ru-RU' | 'en-US') : setLanguageAction => ({
+  type: otherActionTypes.SET_LANGUAGE,
+  payload: lang
+})
+
+export type OtherActions = setAuthErrorAction | goBackAction | setLoadingAction | setLanguageAction;

@@ -1,0 +1,49 @@
+@import 'styles/_constants.scss';
+
+.container {
+  position: absolute;
+  bottom: 0;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+
+  .selectCountry {
+    height: 100%;
+
+    &:hover {
+      background: $grey-3;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+
+    }
+  }
+
+  .flagList {
+    position: absolute;
+    bottom: 40px;
+    border-radius: 2px;
+    background: $grey-2;
+
+    &:hover {
+      background: $grey-3;
+    }
+  }
+
+  .country {
+    height: 40px;
+    width: 40px;
+
+    img {
+      width: 100%;
+      height: 100%;
+
+    }
+  }
+}
+
+.container[data-isShow="true"] {
+  right: 0;
+}

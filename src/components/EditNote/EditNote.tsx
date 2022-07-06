@@ -43,6 +43,8 @@ import { Input } from "UI/Input/Input";
 import Modal from "UI/Modal";
 import NoteOptions from "UI/NoteOptions";
 
+import { LANGUAGE } from "UI/LANGUAGES";
+
 import s from "./EditNote.module.scss";
 
 const MAX_DATA_TEXT_LENGTH = 5000;
@@ -58,7 +60,7 @@ const EditNote: FC = () => {
   const { noteId } = useParams<IParams>();
   const history = useHistory();
   const dispatch = useDispatch();
-  const { groups, notes, selectNoteId } = useTypeSelector(getState);
+  const { groups, notes, selectNoteId, lang } = useTypeSelector(getState);
   const firstRender = useRef(false);
 
   const note = notes.find((note) => note.uuid === noteId);
@@ -319,7 +321,7 @@ const EditNote: FC = () => {
     <>
       {showImageUrlInput && (
         <Modal
-          title="Paste new URL image"
+          title={LANGUAGE[lang].Modals.PasteURLImage}
           onClose={closeClickOutsideImageUrlModal}
         >
           <Input type="url" onChange={imageUrlChangeHandler} />
@@ -373,7 +375,7 @@ const EditNote: FC = () => {
               <FontAwesomeIcon color={selectGroup?.color} icon={faFolder} />
 
               <p className="groupLabel">
-                {selectGroup ? selectGroup.title : "Unselect group"}
+                {selectGroup ? selectGroup.title : "Select group"}
               </p>
               <FontAwesomeIcon
                 className="mb-0.5"

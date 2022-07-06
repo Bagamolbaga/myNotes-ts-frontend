@@ -2,7 +2,7 @@ import React, { FC, useState, useEffect, useCallback, useRef } from "react";
 import { useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { OutputData } from "@editorjs/editorjs";
-import { v4 as uuidv4 } from 'uuid'
+import { v4 as uuidv4 } from "uuid";
 import { motion, Variants } from "framer-motion/dist/framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFolder, faImage } from "@fortawesome/free-regular-svg-icons";
@@ -23,34 +23,42 @@ import { Input } from "../../UI/Input/Input";
 import Modal from "../../UI/Modal";
 import TagsInput from "UI/TagsInput";
 
+import { LANGUAGE } from "UI/LANGUAGES";
+
 import s from "./CreateNote.module.scss";
 
 const getState = (state: IState) => state;
 
-const Note: FC = () => {
+const CreateNote: FC = () => {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { groups, notes, selectNoteId } = useTypeSelector(getState);
+
+  const { groups, notes, selectNoteId, lang } = useTypeSelector(getState);
 
   const selectNote = notes.find((note) => note.id === selectNoteId);
 
   const [showSelectGroupModal, setShowSelectGroupModal] = useState(false);
   const [selectGroup, setSelectGroup] = useState<IGroup | null>(
-    !groups.length ? null : groups[0]
+    !!groups.length ? groups[0] : null
   );
+
   const [showImageUrlInput, setShowImageUrlInput] = useState(false);
   const [imageUrl, setImageUrl] = useState("");
   const [tags, setTags] = useState<string[]>([]);
   const [showTitleInput, setShowTitleInput] = useState(false);
-  const [title, setTitle] = useState("Write title note");
+  const [title, setTitle] = useState(LANGUAGE[lang].CreatePage.WriteTitle);
   const [editorValue, setEditorValue] = useState<OutputData>();
 
-  const [showOptions, setShowOptions] = useState(false);
   const [showChangeModal, setShowChangeModal] = useState(false);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
   useTitle("Create note");
+
+  useEffect(() => {
+    if (typeof selectNoteId === "number")
+      history.push(`/note/${selectNote?.uuid}`);
+  }, [selectNoteId, selectNote]);
 
   // const tagsChangeHandler = (e: React.ChangeEvent<HTMLInputElement>) =>
   //   setTags(e.target.value);
@@ -83,7 +91,7 @@ const Note: FC = () => {
 
   const outsideInputClickHandler = () => {
     if (title === "") {
-      setTitle("Write title note");
+      setTitle(LANGUAGE[lang].CreatePage.WriteTitle);
     }
     setShowTitleInput(false);
   };
@@ -92,17 +100,16 @@ const Note: FC = () => {
 
   const showTitleInputHandler = (e: React.MouseEvent) => {
     e.stopPropagation();
-    title === "Write title note" && setTitle("");
+    title === LANGUAGE[lang].CreatePage.WriteTitle && setTitle("");
     setShowTitleInput(true);
   };
 
   const closeTitleInputHandler = (e: React.MouseEvent) => {
     e.stopPropagation();
     if (title === "") {
-      setTitle("Write title note");
+      setTitle(LANGUAGE[lang].CreatePage.WriteTitle);
     }
     setShowTitleInput(false);
-    console.log("hide");
   };
 
   const toggleSelectGroupModalHandler = () =>
@@ -139,10 +146,6 @@ const Note: FC = () => {
     );
   };
 
-  useEffect(() => {
-    if (typeof selectNoteId === "number") history.push(`/note/${selectNote?.uuid}`);
-  }, [selectNoteId, selectNote]);
-
   const noteInGroupCounter = notesInGroupCounter(notes);
 
   let showCreateNoteBtn =
@@ -168,25 +171,11 @@ const Note: FC = () => {
 
   return (
     <>
-      {showChangeModal && (
-        <div
-          className={s.changeGroupModalContainer}
-          onClick={closeChangeGroupModalHandler}
-        >
-          <div className={s.changeGroupModal} onClick={stopPropagationEvent}>
-            <p>Select new group</p>
-            {/* <GroupItem
-              isSelected={false}
-              onClick={() => null}
-              showSideBar={false}
-              color="#c42bc5"
-              label="Gachi"
-            /> */}
-          </div>
-        </div>
-      )}
       {showImageUrlInput && (
-        <Modal title="Paste URL image" onClose={closeModalImageUrlHandler}>
+        <Modal
+          title={LANGUAGE[lang].Modals.PasteURLImage}
+          onClose={closeModalImageUrlHandler}
+        >
           <Input
             className={s.imageUrlInput}
             value={imageUrl}
@@ -201,10 +190,13 @@ const Note: FC = () => {
           </Button>
         </Modal>
       )}
-      <motion.div initial={"initial"}
+      <motion.div
+        initial={"initial"}
         animate={"show"}
         exit={"hide"}
-        variants={variants} className={s.container}>
+        variants={variants}
+        className={s.container}
+      >
         {showSelectGroupModal && (
           <div className={s.selectGroupModalContainer}>
             {groups.map((group) => (
@@ -230,7 +222,9 @@ const Note: FC = () => {
             >
               <FontAwesomeIcon color={selectGroup?.color} icon={faFolder} />
               <p className="groupLabel">
-                {selectGroup ? selectGroup.title : "Unselect group"}
+                {selectGroup
+                  ? selectGroup.title
+                  : LANGUAGE[lang].CreatePage.UnselectGroup}
               </p>
               <FontAwesomeIcon
                 className="mb-0.5"
@@ -299,4 +293,4 @@ const Note: FC = () => {
   );
 };
 
-export default Note;
+export default CreateNote;

@@ -1,10 +1,15 @@
 import React, { FC, useState, useMemo, memo, useRef } from "react";
+import { motion, AnimatePresence } from "framer-motion/dist/framer-motion";
+
 import { useTypeSelector } from "../../hooks/useTypeSelector";
+import { INote } from "../../types/state";
+
 import NoteListItem from "./NoteListItem/NoteListItem";
 import SearchHeader from "./SearchHeader/SearchHeader";
+
+import { LANGUAGE } from "UI/LANGUAGES";
+
 import s from "./NoteList.module.scss";
-import { INote } from "../../types/state";
-import { motion, AnimatePresence } from "framer-motion/dist/framer-motion";
 
 interface IList {
   notes: INote[];
@@ -32,7 +37,7 @@ const List: FC<IList> = memo(({ notes, isPinned, inputFocusHandler }) => {
 });
 
 const NoteList: FC = () => {
-  const { notes, selectedGroup } = useTypeSelector((state) => state);
+  const { notes, selectedGroup, lang } = useTypeSelector((state) => state);
   const [searchValue, setSearchValue] = useState("");
 
   const inputRef = useRef<HTMLInputElement>({} as HTMLInputElement);
@@ -80,8 +85,8 @@ const NoteList: FC = () => {
 
   return (
     <motion.div
-      initial={{ opacity: 0.7 }}
-      animate={{ opacity: 1 }}
+      initial={{ opacity: 0.7}}
+      animate={{ opacity: 1}}
       layout
       className={s.container}
     >
@@ -94,7 +99,7 @@ const NoteList: FC = () => {
         <div>
           <div className={s.listTitle}>
             <i className="fas fa-list-ul"></i>
-            <p>{searchValue ? "Filtered notes" : "All notes"}</p>
+            <p>{searchValue ? LANGUAGE[lang].NoteList.FilteredNotes : LANGUAGE[lang].NoteList.AllNotes}</p>
             <i className={`fas fa-sort-down ${s.arrowRotate}`}></i>
           </div>
           {!!allNotes.length && (
@@ -111,7 +116,7 @@ const NoteList: FC = () => {
         >
           <div className={s.listTitle}>
             <i className="fas fa-list-ul"></i>
-            <p>Pinned notes</p>
+            <p>{LANGUAGE[lang].NoteList.PinnedNotes}</p>
             <i className={`fas fa-sort-down ${s.arrowRotate}`}></i>
           </div>
           {pinnedNotes && <List notes={pinnedNotes} isPinned />}

@@ -22,6 +22,9 @@ import { notifications } from "utils/snowNotifications";
 import GroupItem from "./GroupItem/GroupItem";
 import CreateGroupModal from "./CreateGroupModal";
 import DeleteGroupYesNoModal from "./DeleteGroupYesNoModal";
+import ChangeLanguage from "./ChangeLanguage/ChangeLanguage";
+
+import { LANGUAGE } from "UI/LANGUAGES";
 
 import AvatarPlaceholder from "assets/avatarPlaceholder.jpg";
 
@@ -31,9 +34,11 @@ const SideBar: FC = () => {
   const history = useHistory();
   const location = useLocation();
   const dispatch = useDispatch();
-  const { user, groups, notes, selectedGroup, selectNoteId } = useTypeSelector(
+  const { user, groups, notes, selectedGroup, selectNoteId, lang } = useTypeSelector(
     (state) => state
   );
+
+  const CURR_LANGUAGE = LANGUAGE[lang];
 
   const [showSideBar, setShowSideBar] = useState(false);
   const [showCreateGroupModal, setShowCreateGroupModal] = useState(false);
@@ -176,7 +181,7 @@ const SideBar: FC = () => {
           </div>
         </div>
 
-        <p className={s.headTabTitle}>Quick links</p>
+        <p className={s.headTabTitle}>{CURR_LANGUAGE.SideBar.QuickLinks}</p>
         <motion.div
           initial={{ opacity: 0.7 }}
           animate={{ opacity: 1 }}
@@ -190,7 +195,7 @@ const SideBar: FC = () => {
           <div className={s.iconContainer}>
             <FontAwesomeIcon icon="house" />
           </div>
-          <p className={s.tabTitle}>Home</p>
+          <p className={s.tabTitle}>{CURR_LANGUAGE.SideBar.Home}</p>
         </motion.div>
         <motion.div
           initial={{ opacity: 0.7 }}
@@ -205,7 +210,7 @@ const SideBar: FC = () => {
           <div className={s.iconContainer}>
             <FontAwesomeIcon icon="receipt" />
           </div>
-          <p className={s.tabTitle}>Notes</p>
+          <p className={s.tabTitle}>{CURR_LANGUAGE.SideBar.Notes}</p>
         </motion.div>
         <motion.div
           initial={{ opacity: 0.5 }}
@@ -217,12 +222,12 @@ const SideBar: FC = () => {
           <div className={s.iconContainer}>
             <FontAwesomeIcon icon="users" />
           </div>
-          <p className={s.tabTitle}>Collective</p>
+          <p className={s.tabTitle}>{CURR_LANGUAGE.SideBar.Collective}</p>
         </motion.div>
 
         <div className={s.groupsTitleContainer}>
           <div>
-            <p className={s.headTabTitle}>Groups</p>
+            <p className={s.headTabTitle}>{CURR_LANGUAGE.SideBar.Groups}</p>
           </div>
           <div className={s.groupsIconsContainer}>
             <div onClick={reverseGroupListHandler}>
@@ -257,6 +262,8 @@ const SideBar: FC = () => {
               ))}
           </AnimatePresence>
         </div>
+
+        <ChangeLanguage showSideBar={showSideBar} />
       </motion.div>
     </>
   );

@@ -5,6 +5,7 @@ export interface IState {
     showEditNoteForm: boolean
     authError: string
     loading: boolean
+    lang: 'ru-RU' | 'en-US'
     user: IUser
     groups: IGroup[]
     notes: INote[]
