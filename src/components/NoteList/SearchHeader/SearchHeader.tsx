@@ -1,7 +1,12 @@
 import React, { FC } from "react";
-import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
 import { showCreateNoteForm } from "store/actions/noteActions";
+import { useTypeSelector } from "hooks/useTypeSelector";
+
+import { LANGUAGE } from "UI/LANGUAGES";
+
 import s from "./searchHeader.module.scss";
 
 interface SearchHeaderProps {
@@ -18,6 +23,8 @@ const SearchHeader: FC<SearchHeaderProps> = ({
   const history = useHistory();
   const dispatch = useDispatch();
 
+  const lang = useTypeSelector(state => state.lang)
+
   const createNoteRedirectHandler = () => {
     dispatch(showCreateNoteForm());
     history.push("/create-note");
@@ -31,7 +38,7 @@ const SearchHeader: FC<SearchHeaderProps> = ({
           ref={inputRef}
           value={searchValue}
           onChange={searchHandler}
-          placeholder="search atributes..."
+          placeholder={LANGUAGE[lang].NoteList.SearchAtr}
           type="text"
         />
       </div>

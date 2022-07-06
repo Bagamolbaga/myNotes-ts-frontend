@@ -7,19 +7,21 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useTitle } from "hooks/useTitle";
 import { useTypeSelector } from "../../hooks/useTypeSelector";
 import { login, authGoogle } from "../../store/asyncActions/asyncUserActions";
+import { notifications } from "utils/snowNotifications";
 
 import { Input } from "../../UI/Input/Input";
+import { LANGUAGE } from "UI/LANGUAGES";
+
 import googleIcon from "assets/google-color.svg";
 
 import s from "./Login.module.scss";
-import { notifications } from "utils/snowNotifications";
 
 const MIN_LENGTH = 6;
 
 const Login = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { authError, user } = useTypeSelector((state) => state);
+  const { authError, user, lang } = useTypeSelector((state) => state);
 
   const [loginOrEmail, setLoginOrEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,7 +29,7 @@ const Login = () => {
   const [loginIsValid, setLoginIsValid] = useState(true);
   const [passwordIsValid, setPasswordIsValid] = useState(true);
 
-  useTitle('Login')
+  useTitle("Login");
 
   useEffect(() => {
     if (user.isLogin) history.push("/");
@@ -40,7 +42,6 @@ const Login = () => {
     }
 
     if (loginOrEmail.length === 0) setLoginIsValid(true);
-
   }, [loginOrEmail]);
 
   useEffect(() => {
@@ -50,7 +51,6 @@ const Login = () => {
     }
 
     if (loginOrEmail.length === 0) setPasswordIsValid(true);
-
   }, [password]);
 
   const loginInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
@@ -63,16 +63,21 @@ const Login = () => {
 
   const loginHandler = () => {
     if (loginOrEmail.length === 0 && password.length === 0) {
-      setLoginIsValid(false)
-      setPasswordIsValid(false)
-      
-      notifications.error('Write all data!')
+      setLoginIsValid(false);
+      setPasswordIsValid(false);
+
+      notifications.error("Write all data!");
     }
 
-    if (loginIsValid && loginOrEmail.length !== 0 && passwordIsValid && password.length !== 0) {
+    if (
+      loginIsValid &&
+      loginOrEmail.length !== 0 &&
+      passwordIsValid &&
+      password.length !== 0
+    ) {
       dispatch(login(loginOrEmail, password));
     }
-  } 
+  };
 
   const loginWithGoogleHandler = () => {
     let user = { name: "", email: "", avatar: "" };
@@ -95,16 +100,17 @@ const Login = () => {
       .catch((err: any) => console.log(err));
   };
 
-
   return (
     <div className={`${s.container}`}>
-      <h2 className="authorization__container-title">Login</h2>
+      <h2 className="authorization__container-title">
+        {LANGUAGE[lang].LoginPage.Login}
+      </h2>
       <Input
         classNameForContainer={`${s.inputContainer}`}
         value={loginOrEmail}
         type="email"
         isvalid={loginIsValid}
-        placeholder="Login or Email"
+        placeholder={LANGUAGE[lang].LoginPage.LoginPlaceholder}
         onChange={loginInputHandler}
         icon={<FontAwesomeIcon icon="user" />}
       />
@@ -113,27 +119,31 @@ const Login = () => {
         value={password}
         type="password"
         isvalid={passwordIsValid}
-        placeholder="Password"
+        placeholder={LANGUAGE[lang].LoginPage.PasswordPlaceholder}
         onChange={passwordInputHandler}
         icon={<FontAwesomeIcon icon="lock" />}
       />
       <p className="m-0">
-        You have account?
+        {LANGUAGE[lang].LoginPage.HaveAccount}
         <Link to="/registration">
-          <span className={`${s.registrRedirect} ml-1`}>Registration</span>
+          <span className={`${s.registrRedirect} ml-1`}>
+            {LANGUAGE[lang].LoginPage.RegistrationTitle}
+          </span>
         </Link>
       </p>
       <p className="mt-1">
-        Forgot password?
+        {LANGUAGE[lang].LoginPage.ForgotPassword}
         <Link to="/reset-password">
-          <span className={`${s.registrRedirect} ml-1`}>Reset password</span>
+          <span className={`${s.registrRedirect} ml-1`}>
+            {LANGUAGE[lang].LoginPage.ResetPasswordTitle}
+          </span>
         </Link>
       </p>
       <div className={`pt-1 pb-1 ${s.authError}`}>
         <p>{authError}</p>
       </div>
       <button className={`${s.button} mt-1`} onClick={loginHandler}>
-        Login
+        {LANGUAGE[lang].LoginPage.LoginButton}
       </button>
       <div
         className={`${s.button__googleSignIn} mt-1`}

@@ -1,4 +1,8 @@
+import { useTypeSelector } from "hooks/useTypeSelector";
 import React, { FC, MouseEvent } from "react";
+
+import { LANGUAGE } from "UI/LANGUAGES";
+
 import s from "./style.module.scss";
 
 interface NoteOptionsProps {
@@ -16,25 +20,27 @@ const NoteOptions: FC<NoteOptionsProps> = ({
   copyNoteHandler,
   deleteNoteHandler,
 }) => {
+  const lang = useTypeSelector(state => state.lang)
+
   return (
     <div className={s.optionsModalContainer} onClick={stopPropagationEvent}>
       <div className={s.optionsItemContainer} onClick={pinnedNoteHandler}>
         <div className={s.iconContainer}>
           <i className="fas fa-thumbtack"></i>
         </div>
-        <p>{noteFixed ? "Unpin note" : "Pin note"}</p>
+        <p>{noteFixed ? LANGUAGE[lang].NoteOptions.Unpin : LANGUAGE[lang].NoteOptions.Pin}</p>
       </div>
       <div className={s.optionsItemContainer} onClick={copyNoteHandler}>
         <div className={s.iconContainer}>
           <i className="far fa-copy"></i>
         </div>
-        <p>Copy note</p>
+        <p>{LANGUAGE[lang].NoteOptions.Copy}</p>
       </div>
       <div className={s.optionsItemContainer} onClick={deleteNoteHandler}>
         <div className={s.iconContainer}>
           <i className="far fa-trash-alt"></i>
         </div>
-        <p>Delete note</p>
+        <p>{LANGUAGE[lang].NoteOptions.Delete}</p>
       </div>
     </div>
   );

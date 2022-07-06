@@ -8,6 +8,9 @@ import { socketRef } from "./http/socket-io";
 import { useTypeSelector } from "./hooks/useTypeSelector";
 import { useIsMobile } from "hooks/useIsMobile";
 
+import { getBrowserLanguage } from 'utils/getBrowserLanguage'
+
+import { setLanguage } from './store/actions/otherActions'
 import { authCheck } from "./store/asyncActions/asyncUserActions";
 import { getAsyncGroup } from "./store/asyncActions/asyncGroupActions";
 import { getAsyncNotes } from "./store/asyncActions/asyncNoteActions";
@@ -36,9 +39,11 @@ import MobileOptionsMenuWrapper from "components/Mobile/MobileOptionsMenu/Mobile
 import "react-toastify/dist/ReactToastify.css";
 import s from "./App.module.scss";
 
+
 function App() {
   const history = useHistory();
   const dispatch = useDispatch();
+
   const { user } = useTypeSelector((state) => state);
   const { isMobile } = useIsMobile();
 
@@ -46,6 +51,9 @@ function App() {
 
   useEffect(() => {
     dispatch(authCheck());
+    dispatch(setLanguage(getBrowserLanguage()));
+    // dispatch(setLanguage('en-US'));
+    
   }, []);
 
   useEffect(() => {
