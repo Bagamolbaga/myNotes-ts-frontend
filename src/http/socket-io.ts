@@ -15,7 +15,6 @@ socketRef.on('deleteNote', (id: number) => {
 })
 
 socketRef.on('editNote', (data: any) => {
-    // store.dispatch(selectNote(data.selectNoteId)) нужен для старой версии
     store.dispatch(editNote(data))
 })
 
