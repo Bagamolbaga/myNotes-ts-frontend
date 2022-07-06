@@ -50,7 +50,7 @@ const Login = () => {
       if (password.length >= MIN_LENGTH) setPasswordIsValid(true);
     }
 
-    if (loginOrEmail.length === 0) setPasswordIsValid(true);
+    if (password.length === 0) setPasswordIsValid(true);
   }, [password]);
 
   const loginInputHandler = (e: ChangeEvent<HTMLInputElement>) => {

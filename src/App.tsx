@@ -52,8 +52,6 @@ function App() {
   useEffect(() => {
     dispatch(authCheck());
     dispatch(setLanguage(getBrowserLanguage()));
-    // dispatch(setLanguage('en-US'));
-    
   }, []);
 
   useEffect(() => {

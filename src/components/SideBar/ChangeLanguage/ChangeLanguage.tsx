@@ -1,6 +1,6 @@
 import React, { FC, useRef, useState } from "react";
 import { useDispatch } from "react-redux";
-import { AnimatePresence, motion } from "framer-motion/dist/framer-motion";
+import { motion } from "framer-motion/dist/framer-motion";
 
 import { useTypeSelector } from "hooks/useTypeSelector";
 
