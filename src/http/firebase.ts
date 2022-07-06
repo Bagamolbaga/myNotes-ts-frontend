@@ -1,25 +1,25 @@
-import firebase from 'firebase'
-import 'firebase/storage'
-import md5 from 'md5'
+import firebase from "firebase";
+import "firebase/storage";
+import md5 from "md5";
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyBbotDfEGOIWINmMa0JkO5jnBM5n-Wv6ss',
-  authDomain: 'mynotes-27fe6.firebaseapp.com',
-  projectId: 'mynotes-27fe6',
-  storageBucket: 'mynotes-27fe6.appspot.com',
-  messagingSenderId: '1030387612315',
-  appId: '1:1030387612315:web:56a593447740df6109a43e',
-  measurementId: 'G-G96MFEDKE5',
-}
+  apiKey: process.env.REACT_APP_API_KEY,
+  authDomain: process.env.REACT_APP_AUTH_DOMAIN,
+  projectId: process.env.REACT_APP_PROJECT_ID,
+  storageBucket: process.env.REACT_APP_STORAGE_BUCKET,
+  messagingSenderId: process.env.REACT_APP_MESSAGER_SENDING_ID,
+  appId: process.env.REACT_APP_APP_ID,
+  measurementId: process.env.REACT_APP_MEASUREMEBT_ID,
+};
 
-firebase.initializeApp(firebaseConfig)
+firebase.initializeApp(firebaseConfig);
 
-const storageRef = firebase.storage().ref()
+const storageRef = firebase.storage().ref();
 
 export const uploadPhoto = async (file: any) => {
-  const snap = await storageRef.child(`${md5(file.name)}.jpg`).put(file)
-  const url = await snap.ref.getDownloadURL()
-  return url
-}
+  const snap = await storageRef.child(`${md5(file.name)}.jpg`).put(file);
+  const url = await snap.ref.getDownloadURL();
+  return url;
+};
 
-export default firebase
+export default firebase;
