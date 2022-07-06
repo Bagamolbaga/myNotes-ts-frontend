@@ -7,7 +7,7 @@ import { notifications } from "utils/snowNotifications";
 
 import s from "./Error.module.scss";
 
-const Error = ({ error, resetErrorBoundary} : any) => {
+const Error = ({ error, resetErrorBoundary }: any) => {
   const { selectNoteId, notes } = useTypeSelector((state) => state);
   const history = useHistory();
 
@@ -21,7 +21,7 @@ const Error = ({ error, resetErrorBoundary} : any) => {
   useEffect(() => {
     const selectNote = notes.find((note) => note.id === selectNoteId);
     if (selectNote) {
-      resetErrorBoundary()
+      resetErrorBoundary();
       history.push(`/note/${selectNote.uuid}`);
     }
   }, [selectNoteId]);
