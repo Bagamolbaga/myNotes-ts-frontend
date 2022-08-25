@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from "react";
-import { Switch, Route, useHistory } from "react-router";
+import { Switch, Route, useHistory } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import { AnimatePresence } from "framer-motion/dist/framer-motion";
